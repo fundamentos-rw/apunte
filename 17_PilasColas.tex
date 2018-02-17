@@ -673,6 +673,36 @@ imprimir las cartas que se hayan apilado hasta el momento.
 \end{partes}
 \end{ejercicio}
 
+\extractionlabel{guia}
+\begin{ejercicio}
+En la parada del colectivo 130 pueden ocurrir dos eventos diferentes:
+
+\begin{itemize}
+    \item Llega una persona
+    \item Llega un colectivo con $n$ asientos libres, y se suben al mismo todas las personas que están
+esperando, en orden de llegada, hasta que no quedan asientos libres.
+\end{itemize}
+
+Cada evento se representa con una tupla que incluye:
+\begin{itemize}
+    \item El instante de tiempo (cantidad de segundos desde el inicio del día)
+    \item El tipo de evento, que puede ser \verb|'p'| (persona) o \verb|'c'| (colectivo).
+    \item En el caso de un evento de tipo \verb|'c'| hay un tercer elemento que es
+        la cantidad de asientos libres.
+\end{itemize}
+
+Escribir una función que recibe una lista de eventos, ordenados
+cronológicamente, y devuelva el promedio de tiempo de espera de los pasajeros
+en la parada.
+
+Ejemplo:
+\begin{codigo-python-sn}
+promedio_espera([(35,'p'), (43,'p'), (80,'c',1), (98,'p'), (142,'c',2)])
+    -> 62.6667
+\end{codigo-python-sn}
+(calculado como $(45+99+44) / 3$)
+\end{ejercicio}
+
 \newpage
 \section{Apéndice}
 
