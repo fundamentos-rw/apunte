@@ -696,11 +696,24 @@ cronológicamente, y devuelva el promedio de tiempo de espera de los pasajeros
 en la parada.
 
 Ejemplo:
-\begin{codigo-python-sn}
+\begin{lstlisting}[numbers=none]
 promedio_espera([(35,'p'), (43,'p'), (80,'c',1), (98,'p'), (142,'c',2)])
-    -> 62.6667
-\end{codigo-python-sn}
-(calculado como $(45+99+44) / 3$)
+    -> 62.6667 (calculado como (45+99+44) / 3)
+\end{lstlisting}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Escribir una función que recibe una expresión matemática (en forma de cadena) y
+devuelve \verb|True| si los paréntesis (\verb|'()'|), corchetes
+(\verb|'[]'|) y llaves (\verb|'{}'|) están correctamente balanceados,
+\verb|False| en caso contrario. Ejemplos:
+\begin{lstlisting}[numbers=none]
+validar('(x+y)/2') -> True
+validar('[8*4(x+y)]+{2/5}') -> True
+validar('(x+y]/2') -> False
+validar('1+)2(+3') -> False
+\end{lstlisting}
 \end{ejercicio}
 
 \newpage
