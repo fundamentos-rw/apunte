@@ -1080,34 +1080,61 @@ lugar de lanzar |StopIteration|.
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Agregar a la clase \emph{ListaEnlazada} un método \verb!next! que vaya
-devolviendo uno a uno cada elemento de la lista, desde el primero hasta el
-último.  Al llegar al final de la lista debe levantar una excepción de la
-clase \emph{StopIteration}.  Para el correcto funcionamiento de este método, ¿es
-necesario agregar un atributo adicional a la clase?
+Implementar el método \verb!__str__! de \verb|ListaEnlazada|, para que se
+genere una salida legible de lo que contiene la lista, similar a las listas de
+python.
 \end{ejercicio}
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Utilizando el método \verb!next! del ejercicio anterior, redefinir el
-método \verb!__str__! de \emph{ListaEnlazada}, para que se genere una salida
-legible de lo que contiene la lista, similar a las listas de python. \\
-{\bf Nota}: este método debe devolver una cadena, no imprimirla por
-pantalla.
-\end{ejercicio}
-
-\extractionlabel{guia}
-\begin{ejercicio}
-Agregar a \emph{ListaEnlazada} un método \verb!extend! que reciba una
-\emph{ListaEnlazada} y agregue a la lista actual los elementos que se encuentran
+Agregar a \verb|ListaEnlazada| un método \verb!extend! que reciba una
+\verb|ListaEnlazada| y agregue a la lista actual los elementos que se encuentran
 en la lista recibida.
 \end{ejercicio}
 
 \extractionlabel{guia}
 \begin{ejercicio}
+Implementar el método \verb|remover_todos(elemento)| de \verb|ListaEnlazada|, que recibe
+un elemento y remueve de la lista todas las apariciones del mismo, devolviendo la cantidad
+de elementos removidos. La lista debe ser recorrida una sola vez.
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Implementar el método \verb|duplicar(elemento)| de \verb|ListaEnlazada|, que recibe
+un elemento y duplica todas las apariciones del mismo. Ejemplo:
+
+\begin{verbatim}
+L = 1 -> 5 -> 8 -> 8 -> 2 -> 8
+L.duplicar(8) => L = 1 -> 5 -> 8 -> 8 -> 8 -> 8 -> 2 -> 8 -> 8
+\end{verbatim}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Implementar el método \verb|filter(f)| de \verb|ListaEnlazada|, que recibe
+una función y devuelve {\bf una nueva lista enlazada} con los elementos para los
+cuales la aplicación de \verb|f| devuelve \verb|True|. La nueva lista debe ser construida
+recorriendo los nodos una sola vez (es decir, no se puede llamar a \verb|append|). Ejemplo:
+
+\begin{verbatim}
+L = 1 -> 5 -> 8 -> 8 -> 2 -> 8
+L.filter(es_primo) -> L2 = 5 -> 2
+\end{verbatim}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Escribir un método de la clase \verb|ListaEnlazada| que invierta el orden
+de la lista (es decir, el primer elemento queda como último y
+viceversa).
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
 Una {\bf lista circular} es una lista cuyo último nodo está ligado al primero,
-de modo que es posible recorrerla infinitamente.  \\
-Escribir la clase \emph{ListaCircular}, incluyendo los métodos \verb!insert!,
+de modo que es posible recorrerla infinitamente.
+Escribir la clase \verb|ListaCircular|, incluyendo los métodos \verb!insert!,
 \verb!append!, \verb!remove! y \verb!pop!.
 \end{ejercicio}
 
@@ -1115,16 +1142,7 @@ Escribir la clase \emph{ListaCircular}, incluyendo los métodos \verb!insert!,
 \begin{ejercicio}
 Una {\bf lista doblemente enlazada} es una lista en la cual cada nodo tiene
 una referencia al anterior además de al próximo de modo que es posible
-recorrerla en ambas direcciones. \\
-Escribir la clase \emph{ListaDobleEnlazada}, incluyendo los métodos
+recorrerla en ambas direcciones.
+Escribir la clase \verb|ListaDobleEnlazada|, incluyendo los métodos
 \verb!insert!, \verb!append!, \verb!remove! y \verb!pop!.
 \end{ejercicio}
-
-\extractionlabel{guia}
-\begin{ejercicio}
-Escribir un método de la clase \emph{ListaEnlazada} que invierta el orden
-de la lista (es decir, el primer elemento queda como último y
-viceversa, y se invierte la dirección de todos los enlaces). \\
-{\bf Nota}: operar directamente sobre los elementos de la lista.
-\end{ejercicio}
-
