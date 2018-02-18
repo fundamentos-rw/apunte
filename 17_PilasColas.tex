@@ -619,72 +619,93 @@ caso de un cola de atención de clientes.
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Escribir una clase \emph{TorreDeControl} que modele el trabajo de una torre
-de control de un aeropuerto, con una pista de aterrizaje.  La torre trabaja
-en dos etapas: \emph{reconocimiento} y \emph{acción}.
-\begin{partes}
-    \item Escribir un método \verb!reconocimiento!, que verifique si hay algún
-nuevo avión esperando para aterrizar y/o despegar, y de ser así los encole
-en la cola correspondiente. Para ello, utilizar \verb!random.randrange(2)!.
-    \item Escribir un método \verb!acción!, que haga aterrizar o
-bien despegar, al primero de los aviones que esté esperando (los que
-esperan para aterrizar tienen prioridad). Debe desencolar el avión de su
-cola y devolver la información correspondiente.
-    \item Escribir un método \verb!__str__! que imprima el estado actual de
-ambas colas.
-    \item Escribir un programa que inicialice la torre de control, y luego llame
-continuamente a los métodos \verb!reconocimiento! y \verb!acción!,
-imprimiendo la acción tomada y el estado de la torre de control cada vez.
-\end{partes}
+Escribir una clase \emph{TorreDeControl} que modele el trabajo de una torre de
+control de un aeropuerto con una pista de aterrizaje. Los aviones que están
+esperando para aterrizar tienen prioridad sobre los que están esperando para
+despegar.  La clase debe funcionar conforme al siguiente ejemplo:
+
+\begin{lstlisting}[numbers=none]
+>>> torre = TorreDeControl()
+>>> torre.nuevo_arribo('AR156')
+>>> torre.nueva_partida('KLM1267')
+>>> torre.nuevo_arribo('AR32')
+>>> torre.ver_estado()
+Vuelos esperando para aterrizar: AR156, AR32
+Vuelos esperando para despegar: KLM1267
+>>> torre.asignar_pista()
+El vuelo AR156 aterrizó con éxito.
+>>> torre.asignar_pista()
+El vuelo AR32 aterrizó con éxito.
+>>> torre.asignar_pista()
+El vuelo KLM1267 despegó con éxito.
+>>> torre.asignar_pista()
+No hay vuelos en espera.
+\end{lstlisting}
 \end{ejercicio}
 
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Atención a los pacientes de un consultorio médico, con varios doctores.
-\begin{partes}
-    \item Escribir una clase \verb|ColaDePacientes|, con los métodos
-\verb|nuevo_paciente|, que reciba el nombre del paciente y lo encole, y un
-método \verb|proximo_paciente| que devuelva el primer paciente en la cola y
-lo desencole.
-    \item Escribir una clase \verb|Recepcion|, que contenga un diccionario con
-las colas correspondientes a cada doctor o doctora, y los métodos
-\verb|nuevo_paciente| que reciba el nombre del paciente y del especialista, y
-\verb|proximo_paciente| que reciba el nombre de la persona liberada y
-devuelva el próximo paciente en espera.
-    \item Escribir un programa que permita al usuario ingresar nuevos pacientes
-o indicar que un consultorio se ha liberado y en ese caso imprima el
-próximo paciente en espera.
-\end{partes}
-\end{ejercicio}
+Escribir las clases \verb|Impresora| y \verb|Oficina| que permita
+modelar el funcionamiento de un conjunto de impresoras conectadas en red.
 
+\noindent
+Una impresora:
+\begin{itemize}[nosep]
+\item Tiene un nombre, y una capacidad máxima de tinta.
+\item Permite encolar un documento para imprimir (recibiendo el nombre del documento).
+\item Permite imprimir el documento que está al frente de la cola.
+	\begin{itemize}[nosep]
+		\item Si no hay documentos encolados, se muestra un mensaje informándolo.
+		\item Si no hay tinta suficiente, se muestra un mensaje informándolo.
+		\item En caso contrario, se muestra el nombre del documento, y se gasta 1 unidad de tinta.
+	\end{itemize}
+\item Permite cargar el cartucho de tinta
+\end{itemize}
 
-\extractionlabel{guia}
-\begin{ejercicio}
-Juego de Cartas
-\begin{partes}
-    \item Crear una clase \verb|Carta| que contenga un palo y un valor.
-    \item Crear una clase \verb|PilaDeCartas| que vaya apilando las cartas una
-debajo de otra, pero sólo permita apilarlas si son de un número
-inmediatamente inferior y de distinto palo. Si se intenta apilar una carta
-incorrecta, debe lanzar una excepción.
-    \item Agregar el método \verb|__str__| a la clase PilaDeCartas, para
-imprimir las cartas que se hayan apilado hasta el momento.
-\end{partes}
+\noindent
+Una oficina:
+\begin{itemize}[nosep]
+\item Permite agregar una impresora
+\item Permite obtener una impresora por nombre
+\item Permite quitar una impresora por nombre
+\item Permite obtener la impresora que tenga menos documentos encolados.
+\end{itemize}
+
+\noindent
+Ejemplo:
+
+\begin{lstlisting}[numbers=none]
+>>> o = Oficina()
+>>> o.agregar_impresora(Impresora('HP1234', 1))
+>>> o.agregar_impresora(Impresora('Epson666', 5))
+>>> o.impresora('HP1234').encolar('tp1.pdf')
+>>> o.impresora('Epson666').encolar('tp2.pdf')
+>>> o.impresora('HP1234').encolar('tp3.pdf')
+>>> o.obtener_impresora_libre().encolar('tp4.pdf') # se encola en Epson666
+>>> o.impresora('HP1234').imprimir()
+tp1.pdf impreso
+>>> o.impresora('HP1234').imprimir()
+No tengo tinta :(
+>>> o.impresora('HP1234').cargar_tinta()
+>>> o.impresora('HP1234').imprimir()
+tp3.pdf impreso
+\end{lstlisting}
 \end{ejercicio}
 
 \extractionlabel{guia}
 \begin{ejercicio}
 En la parada del colectivo 130 pueden ocurrir dos eventos diferentes:
 
-\begin{itemize}
+\begin{itemize}[nosep]
     \item Llega una persona
     \item Llega un colectivo con $n$ asientos libres, y se suben al mismo todas las personas que están
 esperando, en orden de llegada, hasta que no quedan asientos libres.
 \end{itemize}
 
+\noindent
 Cada evento se representa con una tupla que incluye:
-\begin{itemize}
+\begin{itemize}[nosep]
     \item El instante de tiempo (cantidad de segundos desde el inicio del día)
     \item El tipo de evento, que puede ser \verb|'p'| (persona) o \verb|'c'| (colectivo).
     \item En el caso de un evento de tipo \verb|'c'| hay un tercer elemento que es
@@ -700,6 +721,26 @@ Ejemplo:
 promedio_espera([(35,'p'), (43,'p'), (80,'c',1), (98,'p'), (142,'c',2)])
     -> 62.6667 (calculado como (45+99+44) / 3)
 \end{lstlisting}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Juego de Cartas
+\begin{partes}
+    \item Crear una clase \verb|Carta| que contenga un palo y un valor.
+    \item Crear una clase \verb|Solitario| que permita apilar las cartas una
+arriba de otra, pero sólo permita apilar una carta si es de un número
+inmediatamente inferior y de distinto palo a la carta que está en el tope.  Si
+se intenta apilar una carta incorrecta, debe lanzar una excepción.
+\end{partes}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Crear una clase \verb|PilaConMaximo| que soporte las operaciones de \verb|Pila|
+(\verb|apilar(elemento)| y \verb|desapilar()|), y además incluya el método
+\verb|obtener_maximo()| {\bf en tiempo constante}.  Ayuda: usar dos pilas, una
+para guardar los elementos y otra para guardar los máximos.
 \end{ejercicio}
 
 \extractionlabel{guia}
