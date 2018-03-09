@@ -651,7 +651,7 @@ Se dice que ``Python viene con las baterías incluidas''. Esto es porque el
 intérprete incluye un conjunto numeroso de módulos ya implementados con
 utilidades de uso general: matemática, acceso al
 sistema operativo y la red, depuración, criptografía, compresión, interfaces
-gráficas\ldots ¡Incluso hay una tortuga!
+gráficas\ldots\ ¡Incluso hay una tortuga!
 
 \begin{sabias_que}
 El lenguaje de programación \emph{Logo}, creado en 1967 y utilizado
@@ -753,6 +753,27 @@ def f(valor):
 v1, v2, v3 = f(x)
 # empaquetado
 v = f(y)
+\end{codigo-python-sn}
+\end{sintaxis}
+
+\begin{sintaxis}{\lstinline!import modulo!}
+Permite utilizar funciones y valores definidos en el módulo especificado.
+Las referencias deben ser precedidas por el nombre del módulo y ``|.|''.
+\begin{codigo-python-sn}
+>>> import math
+>>> math.cos(2 * math.pi)
+1.0
+\end{codigo-python-sn}
+\end{sintaxis}
+
+\begin{sintaxis}{\lstinline!from modulo import ref1, ref2, ...!}
+Similar a |import modulo|, pero importando únicamente las funciones y valores
+especificados, y además eliminando la necesidad de anteponer el nombre del
+módulo al utilizarlos:
+\begin{codigo-python-sn}
+>>> from math import cos, pi
+>>> cos(2 * pi)
+1.0
 \end{codigo-python-sn}
 \end{sintaxis}
 
