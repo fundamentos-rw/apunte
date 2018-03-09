@@ -594,6 +594,97 @@ ValueError: need more than 3 values to unpack^)
 \end{codigo-python-sn}
 \end{atencion}
 
+
+\section{Módulos}
+
+A medida que los programas se hacen más grandes y complejos suele ser
+conveniente dividirlos en \emph{módulos}. Cada uno de los programas que
+escribimos hasta ahora están formados por un único módulo, ya que cada archivo
+|.py| es un módulo.
+
+\begin{codigo}{\label{modulo-saludos} saludos.py}{Módulo con funciones para
+    saludar}
+\begin{codigo-python-sn}
+def hola(nombre)
+    return "Hola, " + nombre
+
+def adios(nombre)
+    return "Adiós, " + nombre
+\end{codigo-python-sn}
+\end{codigo}
+
+\begin{codigo}{\label{modulo-main} saludos.py}{Módulo principal del programa}
+\begin{codigo-python-sn}
+(@import saludos@)
+
+def main()
+    nombre = input("¿Cuál es tu nombre?")
+    print((@saludos.hola(nombre)@))
+    print((@saludos.adios(nombre)@))
+
+main()
+\end{codigo-python-sn}
+\end{codigo}
+
+En Código~\ref{modulo-saludos} y Código~\ref{modulo-main} se muestra un ejemplo
+de un programa formado por dos módulos, |saludos| y |main|:
+
+\begin{itemize}
+\item El módulo |saludos| define dos funciones: |hola| y |adios|. Notar que lo
+    único que hacemos es definir funciones pero nunca las llamamos, justamente
+    porque las vamos a invocar desde el módulo |main|.
+\item Lo primero que hacemos en el módulo |main| es utilizar la instrucción de
+    Python |import saludos|, para indicar al intérprete que queremos utilizar
+    las funciones definidas en el módulo |saludos|. Luego las invocamos, con la
+    diferencia de que tenemos que anteceder el nombre de cada función con el
+    nombre del módulo y un ``|.|'', en este caso |saludos.hola| y |saludos.chau|.
+    Y finalmente llamamos a la función |main()|.
+\end{itemize}
+
+Para ejecutar el programa lo hacemos con el comando |python main.py|. Cuando el
+intérprete encuentre la instrucción |import saludo| automáticamente buscará el
+archivo |saludo.py| y lo ejecutará.
+
+\subsection{Módulos estándar}
+
+Se dice que ``Python viene con las baterías incluidas''. Esto es porque el
+intérprete incluye un conjunto numeroso de módulos ya implementados con
+utilidades de uso general: matemática, acceso al
+sistema operativo y la red, depuración, criptografía, compresión, interfaces
+gráficas\ldots ¡Incluso hay una tortuga!
+
+\begin{sabias_que}
+El lenguaje de programación \emph{Logo}, creado en 1967 y utilizado
+principalmente con fines educativos, introdujo la idea de crear dibujos
+utilizando la metáfora de una \emph{tortuga} que se mueve por la pantalla
+obedeciendo a comandos simples.
+
+El módulo |turtle| de Python nos permite crear dibujos usando un sistema muy
+similar al de Logo:
+
+\noindent\begin{minipage}{.45\textwidth}
+\begin{codigo-python-sn}
+import turtle
+
+turtle.shape("turtle")
+turtle.color('red', 'yellow')
+turtle.begin_fill()
+for i in range(5):
+    turtle.forward(200)
+    turtle.right(144)
+turtle.end_fill()
+turtle.done()
+\end{codigo-python-sn}
+\end{minipage}\hfill%
+\begin{minipage}{.45\textwidth}
+\centerline{\includegraphics[width=0.5\textwidth]{graficos/turtle}}
+\end{minipage}
+\end{sabias_que}
+
+La lista completa de módulos incluidos y sus respectivas instrucciones de uso
+se puede ver en
+\url{https://docs.python.org/3/library/index.html}.
+
 \section{Resumen}
 
 \begin{itemize}
