@@ -199,6 +199,90 @@ valor la palabra en el idioma al que se quiere traducir.  Sin embargo esta
 aplicación es poco destacable, ya que esta forma de traducir suele dar
 resultados poco satisfactorios.
 
+\section{Conjuntos}
+
+Supongamos que queremos modelar un registro de donantes de órganos.
+Este registro se comporta como un \emph{conjunto} de elementos, donde cada
+elemento es una persona, y el conjunto:
+
+\begin{enumerate}
+    \item no puede contener elementos repetidos: una persona puede ser donante
+        o no, pero no puede figurar dos o más veces en el registro.
+    \item debe permitir averiguar si un elemento pertenece o no al conjunto en
+        \emph{tiempo constante}: no importa si hay 1, 10 o 100000 donantes,
+        queremos tener la capacidad de averiguar si una persona determinada
+        es donante o no rápidamente.
+\end{enumerate}
+
+Si implementáramos el registro usando una lista de Python, nos encontraríamos
+con que no cumplimos con los requisitos:
+
+\begin{enumerate}
+    \item La lista puede contener elementos repetidos. Si bien podemos salvar este
+        detalle preguntando si el elemento se encuentra o no en la lista antes
+        de agregarlo, esto sería muy poco eficiente, ya que:
+    \item Como vimos en la Sección~\ref{busqueda-lineal}, buscar un elemento en la
+        lista consume una cantidad de tiempo proporcional a la cantidad de
+        elementos presentes en la lista, con lo que no es posible cumplir con
+        el requerimiento de tiempo constante.
+\end{enumerate}
+
+Una solución posible es usar un diccionario, guardando como clave el número de
+documento de la persona donante, y como valor\ldots\ ¡cualquier cosa! No
+importa qué vayamos asignar como valor, ya que lo único que queremos aprovechar
+del diccionario es la capacidad de tener claves únicas y poder preguntar en
+tiempo constante si una clave está o no presente. Por ejemplo, si usamos |True|
+como valor:
+
+\begin{codigo-python-sn}
+>>> donantes = {}
+>>> donantes[12345] = True
+>>> donantes[23456] = True
+>>> 23456 in donantes
+True
+>>> 34567 in donantes
+False
+>>> donantes.pop(23456)
+>>> 23456 in donantes
+False
+\end{codigo-python-sn}
+
+Sin embargo, utilizar un diccionario para modelar un conjunto de elementos no
+es la solución más \emph{elegante}: hay una mejor forma de hacerlo, que es
+utilizando el tipo de datos |set|\footnote{La palabra ``set'' significa
+``conjunto'' en inglés.}.
+
+\begin{codigo-python-sn}
+>>> donantes = set()
+>>> donantes.add(12345)
+>>> donantes.add(23456)
+>>> 23456 in donantes
+True
+>>> 34567 in donantes
+False
+>>> donantes.remove(23456)
+>>> 23456 in donantes
+False
+\end{codigo-python-sn}
+
+Un |set| permite agregar y quitar elementos cumpliendo los requisitos de
+unicidad y búsqueda en tiempo constante. Además es posible hacer operaciones
+entre |set|s como unión, intersección y diferencia muy fácilmente:
+
+\begin{codigo-python-sn}
+>>> s1 = set([1, 2, 3, 4])
+>>> s2 = set([3, 4, 5, 6])
+>>> s1.union(s2)
+{1, 2, 3, 4, 5, 6}
+>>> s1.intersection(s2)
+{3, 4}
+>>> s1.difference(s2)
+{1, 2}
+\end{codigo-python-sn}
+
+La referencia completa del tipo de dato |set| puede verse en
+\url{https://docs.python.org/3/library/stdtypes.html#set}.
+
 \section{Resumen}
 
 \begin{itemize}
