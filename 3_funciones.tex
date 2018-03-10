@@ -766,6 +766,16 @@ Las referencias deben ser precedidas por el nombre del módulo y ``|.|''.
 \end{codigo-python-sn}
 \end{sintaxis}
 
+\begin{sintaxis}{\lstinline!import modulo as variable!}
+Hace lo mismo que |import modulo|, pero nos permite llamar al módulo con
+una variable nombrada por nosotros.
+\begin{codigo-python-sn}
+>>> import math as matematica
+>>> matematica.cos(2 * matematica.pi)
+1.0
+\end{codigo-python-sn}
+\end{sintaxis}
+
 \begin{sintaxis}{\lstinline!from modulo import ref1, ref2, ...!}
 Similar a |import modulo|, pero importando únicamente las funciones y valores
 especificados, y además eliminando la necesidad de anteponer el nombre del
