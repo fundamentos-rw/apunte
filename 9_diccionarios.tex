@@ -354,9 +354,7 @@ tiempo constante si una clave está o no presente. Por ejemplo, si usamos |True|
 como valor:
 
 \begin{codigo-python-sn}
->>> donantes = {}
->>> donantes[12345] = True
->>> donantes[23456] = True
+>>> donantes = {12345: True, 23456: True}
 >>> 23456 in donantes
 True
 >>> 34567 in donantes
@@ -371,10 +369,16 @@ es la solución más \emph{elegante}: hay una mejor forma de hacerlo, que es
 utilizando el tipo de datos |set|\footnote{La palabra ``set'' significa
 ``conjunto'' en inglés.}.
 
+Para crear un |set| usamos la sintaxis |{<expresion>, <expresion>, ...}|\footnote{%
+Notar que la sintaxis para crear un conjunto es muy similar a la de creación de
+diccionarios. El caso especial es cuando queremos crear un conjunto vacío: la
+sintaxis {\texttt \{\}} no funcionará, ya que eso crea un diccionario vacío. Podemos
+crear un conjunto vacío con: \verb|set()|}:
+
 \begin{codigo-python-sn}
->>> donantes = set()
->>> donantes.add(12345)
->>> donantes.add(23456)
+>>> donantes = {12345, 23456}
+>>> type(donantes)
+<class 'set'>
 >>> 23456 in donantes
 True
 >>> 34567 in donantes
@@ -384,18 +388,19 @@ False
 False
 \end{codigo-python-sn}
 
-Un |set| permite agregar y quitar elementos cumpliendo los requisitos de
+Un |set| es una estructura de datos mutable (como las listas y los
+diccionarios), que permite agregar y quitar elementos cumpliendo los requisitos de
 unicidad y búsqueda en tiempo constante. Además es posible hacer operaciones
 entre |set|s como unión, intersección y diferencia muy fácilmente:
 
 \begin{codigo-python-sn}
->>> s1 = set([1, 2, 3, 4])
+>>> s1 = {1, 2, 3, 4}
 >>> s1
 {1, 2, 3, 4}
 >>> s1.add(1)
->>> s
+>>> s1
 {1, 2, 3, 4}
->>> s2 = set([3, 4, 5, 6])
+>>> s2 = {3, 4, 5, 6}
 >>> s1.union(s2)
 {1, 2, 3, 4, 5, 6}
 >>> s1.intersection(s2)
