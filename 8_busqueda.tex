@@ -464,21 +464,23 @@ inventario. Cada entrada del inventario está compuesta por el título del libro
 el autor, la cantidad disponible y el precio. Por ejemplo:
 
 \begin{center}
+\small
+\rowcolors[]{2}{}{light-gray}
 \begin{tabular}{p{8cm} p{3cm} r r}
 {\bf Título} & {\bf Autor} & {\bf Cantidad} & {\bf Precio} \\
 \hline
-The Art of Computer Programming, Volumes 1-4 & Donald Knuth & 12 & 179.62 \\ \hline
-Concrete Mathematics: A Foundation for Computer Science & Donald Knuth & 5 & 54.77 \\ \hline
-The Pragmatic Programmer: From Journeyman to Master & Andrew Hunt and David Thomas & 3 & 33.17 \\ \hline
-Clean Code: A Handbook of Agile Software Craftsmanship & Robert C. Martin & 7 & 38.99 \\ \hline
-Code Complete: A Practical Handbook of Software Construction & Steve McConnell & 0 & 29.97 \\ \hline
-Learning Python & Mark Lutz & 4 & 40.95 \\ \hline
-\ldots \\ \hline
+The Art of Computer Programming, Volumes 1-4 & Donald Knuth & 12 & 179.62 \\
+Concrete Mathematics: A Foundation for Computer Science & Donald Knuth & 5 & 54.77 \\
+The Pragmatic Programmer: From Journeyman to Master & Andrew Hunt and David Thomas & 3 & 33.17 \\
+Clean Code: A Handbook of Agile Software Craftsmanship & Robert C. Martin & 7 & 38.99 \\
+Code Complete: A Practical Handbook of Software Construction & Steve McConnell & 0 & 29.97 \\
+Learning Python & Mark Lutz & 4 & 40.95 \\
+\ldots & \ldots & \ldots & \ldots \\ \hline
 \end{tabular}
 \end{center}
 
-Podemos representar nuestro inventario en Python utilizando una \emph{lista de
-tuplas}:
+Podemos representar nuestro inventario en Python utilizando una lista de
+tuplas:
 
 \begin{codigo-python-sn}
 inventario = [
@@ -608,7 +610,8 @@ filtrando una secuencia según una condición:
 (@[@)<variable> (@for@) <variable> (@in@) <secuencia> (@if@) <condicion>(@]@)
 \end{codigo-python-sn}
 
-Si quisiéramos transformar la lista obteniendo únicamente las cantidades:
+Para aplicar la transformación propuesta (quedándonos únicamente con las
+cantidades), podríamos implementarlo de esta manera:
 
 \begin{codigo-python-sn}
 def obtener_cantidades(inventario):
@@ -618,7 +621,8 @@ def obtener_cantidades(inventario):
     return cantidades
 \end{codigo-python-sn}
 
-También podemos obtener el mismo resultado con una lista por comprensión:
+Pero en este caso también podemos obtener el mismo resultado con una lista por
+comprensión:
 
 \begin{codigo-python-sn}
 def obtener_cantidades(inventario):
@@ -650,8 +654,8 @@ Es decir que la sintaxis general de las listas por comprensión es:
 \end{codigo-python-sn}
 \end{observacion}
 
-Si volvemos a nuestro problema inicial (obtener la cantidad total de libros del
-autor), ya tenemos una forma de filtrar y transformar, y lo único que nos falta
+Volviendo a nuestro problema inicial: obtener la cantidad total de libros del
+autor; ya tenemos una forma de filtrar y transformar, y lo único que nos falta
 es la acumulación. Pero recordemos que ya conocíamos una forma simple de
 acumular sumando elementos: ¡la función |sum|!
 
