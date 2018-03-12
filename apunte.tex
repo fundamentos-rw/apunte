@@ -78,9 +78,13 @@
         \setlength{\itemsep}{0pt}}}
 {   \end{list} }
 
-\setmainfont[Ligatures=TeX]{TeXGyrePagellaX}  % Nuevo Palatino.
-\setmonofont[Scale=0.9]{DejaVu Sans Mono}
-\usepackage[T1,small,euler-digits]{eulervm}
+\setmainfont
+     [ BoldFont       = texgyrepagella-bold.otf ,
+       ItalicFont     = texgyrepagella-italic.otf ,
+       BoldItalicFont = texgyrepagella-bolditalic.otf ]
+     {texgyrepagella-regular.otf}
+\usepackage{DejaVuSansMono}
+\setmonofont[Scale=0.9]{DejaVuSansMono}
 
 \usepackage{array}            % Permite alinear los párrafos en las celdas verticalmente
 \usepackage{enumitem}
