@@ -1,6 +1,8 @@
-\chapter[Algoritmos de búsqueda]{Algoritmos de búsqueda}
+\chapter[Más sobre listas]{Más sobre listas y secuencias}
 
-\section{El problema de la búsqueda}
+\section{Búsqueda lineal}
+
+\subsection*{El problema de la búsqueda}
 
 Presentamos ahora uno de los problemas más clásicos de la computación, \emph{el
 problema de la búsqueda}, que se puede enunciar de la siguiente manera:
@@ -81,7 +83,7 @@ operaciones \lstinline+in+ e \lstinline+index()+. La pregunta queda planteada
 por ahora pero daremos un método para averiguarlo más adelante en esta unidad.
 
 
-\section{Cómo programar la búsqueda lineal a mano}
+\subsection*{Búsqueda lineal}
 
 Nos interesa ver qué sucede si programamos la búsqueda usando operaciones más
 elementales, y no las grandes primitivas \lstinline+in+ e \lstinline+index()+.
@@ -92,8 +94,6 @@ Supongamos entonces que en nuestra versión de Python no existen ni \lstinline+i
 ni \lstinline+index()+. Podemos en cambio acceder a cada uno de los elementos
 de la lista a través de una construcción \lstinline+for+, y también, por
 supuesto, podemos acceder a un elemento de la lista mediante un índice.
-
-\section{Búsqueda lineal}
 
 Diseñamos una solución: Podemos comparar uno a uno los elementos de la
 lista con el valor de \lstinline!x!, y retornar el valor de la posición
@@ -161,23 +161,31 @@ elementos tenga la lista.
 
 Nuestra hipótesis es: {\bf Si la lista crece, la cantidad de comparaciones
 para encontrar un valor arbitrario crecerá en forma proporcional al tamaño de
-la lista}.
+la lista}. Por lo tanto diremos que:
 
-Diremos que este algoritmo tiene un comportamiento \emph{proporcional a la
+\begin{observacion}
+El algoritmo de búsqueda lineal tiene un comportamiento \emph{proporcional a la
 longitud de la lista involucrada}, o que es un algoritmo \emph{lineal}.
+\end{observacion}
 
 En la próxima sección veremos cómo probar esta hipótesis.
 
-\section{Buscar sobre una lista ordenada}
+\section{Búsqueda sobre listas ordenadas}
 
-Por supuesto que si la lista está ordenada podemos hacer lo mismo que antes,
-con algunas modificaciones que den cuenta de la condición de ordenada de la
-lista.
+Si podemos suponer que la lista está previamente ordenada,
+¿podemos encontrar una manera más eficiente de buscar elementos sobre ella?
+
+En principio hay una modificación muy simple que podemos hacer sobre el
+algoritmo de búsqueda lineal: si estamos buscando el elemento $x$ en una
+lista que está ordenada de menor a mayor, en cuanto encontremos algún elemento
+mayor a $x$ podemos estar seguros de que $x$ no está en la lista, por lo que no
+es necesario continuar recorriendo el resto.
 
 \ejercicioc{Modificar la búsqueda lineal para el caso de listas ordenadas.
-¿Cuál es nuestra nueva hipótesis sobre comportamiento del algoritmo?}
+En el peor caso, ¿cuál es nuestra nueva hipótesis sobre comportamiento del
+algoritmo? ¿Es realmente más eficiente?}
 
-\section{Búsqueda binaria}
+\subsection*{Búsqueda binaria}
 
 ¿Podemos hacer algo mejor? Trataremos de aprovechar el hecho de que la lista
 está ordenada y vamos a hacer algo distinto: nuestro espacio de búsqueda se
@@ -333,11 +341,12 @@ realiza aproximadamente $\log_2($\lstinline+len(lista)+$)$ comparaciones.
 
 Cuando \lstinline+len(lista)+ no es una potencia de 2 el razonamiento es menos
 prolijo, pero también vale que este programa realiza aproximadamente
-$\log_2$(\lstinline+len(lista)+$)$ comparaciones.
+$\log_2$(\lstinline+len(lista)+$)$ comparaciones. Concluimos entonces que:
 
 \begin{observacion}
-Vemos entonces que si \lstinline!lista! es una lista ordenada, la búsqueda binaria es
-{\bf muchísimo} más eficiente que la búsqueda lineal.
+Si podemos suponer que la lista está previamente ordenada, podemos utilizar el
+algoritmo de búsqueda binaria, que es {\emph muchísimo} más eficiente que la
+búsqueda lineal.
 \end{observacion}
 
 Veamos un ejemplo para entender cuánto más eficiente es la búsqueda binaria.
@@ -445,3 +454,271 @@ lista en la posición correcta y devolver esa nueva posición. (No utilizar
 \verb!lista.sort()!.)
 \end{ejercicio}
 
+
+\newpage
+\begin{subappendices}
+\section{Filtros, transformaciones y acumulaciones}
+
+Supongamos que manejamos una librería, y disponemos de una base de datos con el
+inventario. Cada entrada del inventario está compuesta por el título del libro,
+el autor, la cantidad disponible y el precio. Por ejemplo:
+
+\begin{center}
+\begin{tabular}{p{8cm} p{3cm} r r}
+{\bf Título} & {\bf Autor} & {\bf Cantidad} & {\bf Precio} \\
+\hline
+The Art of Computer Programming, Volumes 1-4 & Donald Knuth & 12 & 179.62 \\ \hline
+Concrete Mathematics: A Foundation for Computer Science & Donald Knuth & 5 & 54.77 \\ \hline
+The Pragmatic Programmer: From Journeyman to Master & Andrew Hunt and David Thomas & 3 & 33.17 \\ \hline
+Clean Code: A Handbook of Agile Software Craftsmanship & Robert C. Martin & 7 & 38.99 \\ \hline
+Code Complete: A Practical Handbook of Software Construction & Steve McConnell & 0 & 29.97 \\ \hline
+Learning Python & Mark Lutz & 4 & 40.95 \\ \hline
+\ldots \\ \hline
+\end{tabular}
+\end{center}
+
+Podemos representar nuestro inventario en Python utilizando una \emph{lista de
+tuplas}:
+
+\begin{codigo-python-sn}
+inventario = [
+    ('The Art of Computer Programming, Volumes 1-4',
+     'Donald Knuth', 12, 179.62),
+    ('Concrete Mathematics: A Foundation for Computer Science',
+     'Donald Knuth', 5, 54.77),
+    ('The Pragmatic Programmer: From Journeyman to Master',
+     'Andrew Hunt and David Thomas', 3, 33.17),
+    ...
+]
+\end{codigo-python-sn}
+
+Una vez que disponemos de nuestro inventario en una estructura de datos (en
+nuestro caso, una lista de tuplas en Python), podemos sacar todo tipo de
+reportes: la cantidad total de libros, el valor total del
+inventario, el precio promedio por libro, etc.
+
+Veamos un ejemplo simple: supongamos que queremos obtener la cantidad total de
+libros de un autor determinado. Podemos diseñar un algoritmo muy simple:
+
+\begin{codigo-python-sn}
+def total_libros_autor(inventario, autor_buscado):
+    total = 0
+    for titulo, autor, cantidad, precio in inventario:
+        if autor == autor_buscado:
+            total += cantidad
+    return total
+\end{codigo-python-sn}
+
+Otro ejemplo: queremos obtener la cantidad de títulos de los cuales no hay
+suficiente stock (menos de 5 unidades):
+
+\begin{codigo-python-sn}
+def cantidad_poco_stock(inventario):
+    total = 0
+    for titulo, autor, cantidad, precio in inventario:
+        if cantidad < 5:
+            total += 1
+    return total
+\end{codigo-python-sn}
+
+¿Y si quisiéramos obtener la lista de títulos cuyo precio supera los \$100?
+
+\begin{codigo-python-sn}
+def titulos_caros(inventario):
+    titulos = []
+    for titulo, autor, cantidad, precio in inventario:
+        if precio > 100:
+            titulos.append(titulo)
+    return titulos
+\end{codigo-python-sn}
+
+Acabamos de ``inventar'' tres algoritmos para resolver tres problemas
+diferentes\ldots\ pero ¿son realmente diferentes? ¿No tienen nada en común?
+
+Si observamos con detenimiento, los tres algoritmos comparten un mismo esquema:
+
+\begin{codigo-nohl-sn}
+def f(L):
+    inicializar acumulador
+    por cada elemento en el la lista L:
+        si se cumple alguna condicion:
+            hacer algún cálculo en base al elemento y acumular
+    devolver acumulador
+\end{codigo-nohl-sn}
+
+Y este esquema en el fondo puede pensarse como una composición de tres
+problemas más simples:
+
+\begin{enumerate}
+    \item A partir de una lista, \emph{filtrar} la lista según una condición
+        determinada y obtener una lista con los elementos que pasan la
+        condición.
+    \item A partir de una lista, aplicar una \emph{transformación} a cada elemento
+        y obtener una lista con los resultados.
+    \item A partir de una lista, \emph{acumular} los elementos según un
+        criterio determinado.
+\end{enumerate}
+
+% TODO: dibujo
+
+Por ejemplo, podemos repensar nuestro primer algoritmo, que nos permitía calcular
+la cantidad total de libros de un determinado autor, como:
+
+\begin{enumerate}
+    \item A partir del inventario, \emph{filtrar} según el autor:
+        el resultado será una lista que contiene los libros del autor buscado.
+    \item A partir de la lista obtenida, \emph{transformar} cada una de las tuplas
+        |(titulo, autor, cantidad, precio)| para descartar todo menos la
+        |cantidad|. Es decir, nos quedamos con una lista de números
+        enteros, donde cada número representa una cantidad de libros.
+    \item A partir de la lista obtenida, \emph{acumular} los elementos sumando uno
+        a uno.
+\end{enumerate}
+
+Una ventaja de pensar el algoritmo de esta manera es que Python nos provee una
+forma muy fácil de implementar filtros y transformaciones: las \emph{listas por
+comprensión}.
+
+\subsection{Listas por comprensión}
+
+Concentrémonos en el filtro según el autor propuesto en el ejemplo anterior.
+Una forma de implementarlo es:
+
+\begin{codigo-python-sn}
+def filtrar_autor(inventario, autor_buscado):
+    filtrado = []
+    for libro in inventario:
+        if libro[2] == autor_buscado:
+            filtrado.append(libro)
+    return filtrado
+\end{codigo-python-sn}
+
+En Python podemos obtener el mismo resultado utilizando una \emph{lista por
+comprensión}:
+
+\begin{codigo-python-sn}
+def filtrar_autor(inventario, autor_buscado):
+    return (@[libro for libro in inventario if libro[2] == autor_buscado]@)
+\end{codigo-python-sn}
+
+Lo que vemos aquí es una sintaxis especial, que nos permite crear una lista
+filtrando una secuencia según una condición:
+
+\begin{codigo-python-sn}
+(@[@)<variable> (@for@) <variable> (@in@) <secuencia> (@if@) <condicion>(@]@)
+\end{codigo-python-sn}
+
+Si quisiéramos transformar la lista obteniendo únicamente las cantidades:
+
+\begin{codigo-python-sn}
+def obtener_cantidades(inventario):
+    cantidades = []
+    for titulo, autor, cantidad, precio in inventario:
+        cantidades.append(cantidad)
+    return cantidades
+\end{codigo-python-sn}
+
+También podemos obtener el mismo resultado con una lista por comprensión:
+
+\begin{codigo-python-sn}
+def obtener_cantidades(inventario):
+    return (@[cantidad for titulo, autor, cantidad, precio in inventario]@)
+\end{codigo-python-sn}
+
+En este caso la sintaxis utilizada es un poco diferente:
+
+\begin{codigo-python-sn}
+(@[@)<expresion> (@for@) <variable> (@in@) <secuencia>(@]@)
+\end{codigo-python-sn}
+
+Opcionalmente podemos combinar el filtro y la transformación en una única lista
+por comprensión:
+
+\begin{codigo-python-sn}
+def cantidades_autor(inventario, autor_buscado):
+    return [
+        cantidad
+        for titulo, autor, cantidad, precio in inventario
+        if autor == autor_buscado
+    ]
+\end{codigo-python-sn}
+
+\begin{observacion}
+Es decir que la sintaxis general de las listas por comprensión es:
+\begin{codigo-python-sn}
+(@[@)<expresion> (@for@) <variable> (@in@) <secuencia> (@if@) <condicion>(@]@)
+\end{codigo-python-sn}
+\end{observacion}
+
+Si volvemos a nuestro problema inicial (obtener la cantidad total de libros del
+autor), ya tenemos una forma de filtrar y transformar, y lo único que nos falta
+es la acumulación. Pero recordemos que ya conocíamos una forma simple de
+acumular sumando elementos: ¡la función |sum|!
+
+\begin{codigo-python-sn}
+def total_libros_autor(inventario, autor_buscado):
+    return sum([
+        cantidad
+        for titulo, autor, cantidad, precio in inventario
+        if autor == autor_buscado
+    ])
+\end{codigo-python-sn}
+
+Planteemos ahora las soluciones para los otros dos problemas utilizando
+filtros, transformaciones y acumulaciones. Nuestro segundo problema era obtener
+la cantidad de títulos de los cuales no hay suficiente stock.
+
+\begin{enumerate}
+    \item Filtramos según la cantidad de stock, quedándonos con los libros
+        para los cuales |cantidad < 5|.
+    \item No es necesario aplicar una transformación.
+    \item Solo necesitamos la cantidad de títulos, y eso es simplemente la
+        cantidad de elementos de la lista producida en el paso anterior. Es
+        decir que nuestra función de acumulación es |len|.
+\end{enumerate}
+
+\begin{codigo-python-sn}
+def cantidad_poco_stock(inventario):
+    return len([libro for libro in inventario if libro[3] < 5])
+\end{codigo-python-sn}
+
+Nuestro tercer problema era obtener la lista de títulos cuyo precio supera los
+\$100.
+
+\begin{enumerate}
+    \item Filtramos según el precio, quedándonos con la lista de libros con
+        |precio > 100|.
+    \item Transformamos cada tupla quedándonos únicamente con el |titulo|.
+    \item No es necesario aplicar una acumulación.
+\end{enumerate}
+
+\begin{codigo-python-sn}
+def titulos_caros(inventario):
+    return [
+        titulo
+        for titulo, autor, cantidad, precio in inventario
+        if precio > 100
+    ]
+\end{codigo-python-sn}
+
+Comparando estas soluciones con las primeras tres soluciones
+propuestas, vemos que son dos estilos de programación diferentes:
+
+\begin{itemize}
+    \item Las primeras soluciones corresponden a un estilo más \emph{procedural} e
+        \emph{imperativo}. Cuando pensamos en este estilo nos concentramos en
+        dar órdenes para especificar \emph{cómo} queremos que la computadora
+        resuelva el problema, paso por paso.
+    \item Las soluciones planteadas utilizando filtros, transformaciones y
+        acumulaciones corresponden a un estilo más \emph{funcional} y
+        \emph{declarativo}, en el cual dividimos el problema en sub-problemas
+        más simples, y nos concentramos en especificar cómo es el flujo de datos.
+\end{itemize}
+
+La discusión acerca de si uno de los dos estilos es ``mejor'' que el otro queda
+fuera del alcance de este apunte, pero en general se considera que el uso de
+listas por comprensión es \emph{idiomático} en Python. Es decir, los
+programadores Python experimentados van a preferir leer y escribir código que
+utilice listas por comprensión en lugar de implementar los filtros y
+transformaciones a mano.
+\end{subappendices}
