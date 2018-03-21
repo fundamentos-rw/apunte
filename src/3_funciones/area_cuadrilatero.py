@@ -27,6 +27,6 @@ print('area_triangulo', area_triangulo(5, 8, -1, -2, 3, 4, -3, 3, 0))
 
 def area_cuadrilatero(x1, y1, x2, y2, x3, y3, x4, y4):
     return area_triangulo(x1, y1, 0, x2, y2, 0, x3, y3, 0) \
-        + area_triangulo(x2, y2, 0, x3, y3, 0, x4, y4, 0)
+        + area_triangulo(x1, y1, 0, x3, y3, 0, x4, y4, 0)
 
 print('area_cuadrilatero', area_cuadrilatero(4, 3, 5, 10, -2, 8, -3, -5))
