@@ -365,15 +365,11 @@ False
 \end{codigo-python-sn}
 
 Sin embargo, utilizar un diccionario para modelar un conjunto de elementos no
-es la solución más \emph{elegante}: hay una mejor forma de hacerlo, que es
+es la solución más elegante. Hay una mejor forma de hacerlo, que es
 utilizando el tipo de datos |set|\footnote{La palabra ``set'' significa
 ``conjunto'' en inglés.}.
 
-Para crear un |set| usamos la sintaxis |{<expresion>, <expresion>, ...}|\footnote{%
-Notar que la sintaxis para crear un conjunto es muy similar a la de creación de
-diccionarios. El caso especial es cuando queremos crear un conjunto vacío: la
-sintaxis {\texttt \{\}} no funcionará, ya que eso crea un diccionario vacío. Podemos
-crear un conjunto vacío con: \verb|set()|}:
+Para crear un |set| usamos la sintaxis |{<expresión>, <expresión>, ...}|:
 
 \begin{codigo-python-sn}
 >>> donantes = {12345, 23456}
@@ -407,6 +403,18 @@ entre |set|s como unión, intersección y diferencia muy fácilmente:
 {3, 4}
 >>> s1.difference(s2)
 {1, 2}
+\end{codigo-python-sn}
+
+Notar que la sintaxis para crear un conjunto es muy similar a la de creación de
+diccionarios. El caso especial es cuando queremos crear un conjunto vacío: la
+sintaxis |{}| no funcionará, ya que eso crea un diccionario vacío. Podemos
+crear un conjunto vacío con: |set()|.
+
+\begin{codigo-python-sn}
+>>> type({})
+<class 'dict'>
+>>> type(set())
+<class 'set'>
 \end{codigo-python-sn}
 
 La referencia completa del tipo de dato |set| puede verse en

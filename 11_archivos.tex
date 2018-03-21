@@ -725,7 +725,8 @@ con el formato \lstinline!clave, valor!.
 \end{ejercicio}
 
 \newpage
-\section{Apéndice}
+\begin{subappendices}
+\section{Agenda con archivos CSV}
 
 A continuación se muestra un programa de agenda que utiliza archivos
 CSV\@. Luego se muestran los cambios necesarios para que la agenda que utilice archivos
@@ -753,3 +754,4 @@ def guardar_agenda(datos, archivo):
     with open(archivo, "wb") as f:
         pickle.dump(archivo, datos)
 \end{codigo-python}
+\end{subappendices}

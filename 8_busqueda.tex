@@ -471,7 +471,7 @@ el autor, la cantidad disponible y el precio. Por ejemplo:
 \hline
 The Art of Computer Programming, Volumes 1-4 & Donald Knuth & 12 & 179.62 \\
 Concrete Mathematics: A Foundation for Computer Science & Donald Knuth & 5 & 54.77 \\
-The Pragmatic Programmer: From Journeyman to Master & Andrew Hunt and David Thomas & 3 & 33.17 \\
+The Pragmatic Programmer: From Journeyman to Master & Andrew Hunt, David Thomas & 3 & 33.17 \\
 Clean Code: A Handbook of Agile Software Craftsmanship & Robert C. Martin & 7 & 38.99 \\
 Code Complete: A Practical Handbook of Software Construction & Steve McConnell & 0 & 29.97 \\
 Learning Python & Mark Lutz & 4 & 40.95 \\
@@ -494,8 +494,8 @@ inventario = [
 ]
 \end{codigo-python-sn}
 
-Una vez que disponemos de nuestro inventario en una estructura de datos (en
-nuestro caso, una lista de tuplas en Python), podemos sacar todo tipo de
+Una vez que disponemos de nuestro inventario en una estructura de datos,
+podemos sacar todo tipo de
 reportes: la cantidad total de libros, el valor total del
 inventario, el precio promedio por libro, etc.
 
@@ -632,7 +632,7 @@ def obtener_cantidades(inventario):
 En este caso la sintaxis utilizada es un poco diferente:
 
 \begin{codigo-python-sn}
-(@[@)<expresion> (@for@) <variable> (@in@) <secuencia>(@]@)
+(@[@)<expresión> (@for@) <variable> (@in@) <secuencia>(@]@)
 \end{codigo-python-sn}
 
 Opcionalmente podemos combinar el filtro y la transformación en una única lista
@@ -650,7 +650,7 @@ def cantidades_autor(inventario, autor_buscado):
 \begin{observacion}
 Es decir que la sintaxis general de las listas por comprensión es:
 \begin{codigo-python-sn}
-(@[@)<expresion> (@for@) <variable> (@in@) <secuencia> (@if@) <condicion>(@]@)
+(@[@)<expresión> (@for@) <variable> (@in@) <secuencia> (@if@) <condicion>(@]@)
 \end{codigo-python-sn}
 \end{observacion}
 
