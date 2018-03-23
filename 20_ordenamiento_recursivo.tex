@@ -104,7 +104,7 @@ caso base, y en nuestro caso aseguramos eso porque las lista original se divide
 siempre en mitades cuando su longitud es mayor que 1.
 \end{sabias_que}
 
-\section{¿Cuánto cuesta el \emph{Merge sort}?}
+\subsection{¿Cuánto cuesta el \emph{Merge sort}?}
 Sea $N$ la longitud de la lista. Observamos lo siguiente:
 \begin{itemize}
 
@@ -228,7 +228,7 @@ Código~\ref{src:quicksort-copia}.
 \lstinputlisting{src/20_ordenamiento_recursivo/quicksort_copia.py}
 \end{codigo}
 
-\section{¿Cuánto cuesta el \emph{Quick sort}?}
+\subsection{¿Cuánto cuesta el \emph{Quick sort}?}
 
 A primera vista, la ecuación del tiempo consumido parece ser la misma que
 en el \emph{Mergesort}: Una partición que se hace en tiempo lineal más dos
@@ -251,7 +251,7 @@ Si analizamos el espacio que consume, el código mostrado en~\ref{src:quicksort-
 crea nuevas listas a cada paso, con lo cual al
 igual que el \emph{Merge sort} utiliza el doble de memoria.
 
-\section{Una versión mejorada de \emph{Quick sort}}
+\subsection{Una versión mejorada de \emph{Quick sort}}
 
 Sin embargo, es posible hacer la partición de otra forma, operando sobre la
 misma lista recibida, reubicando los elementos en su interior, de modo que
