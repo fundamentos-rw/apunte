@@ -1058,4 +1058,21 @@ Implementar la función |pedir_entero(mensaje, min, max)|, que debe imprimir el
 ingresado no es un número entero, o no es un número entre |min| y |max|
 (inclusive), se le debe avisar al usuario y pedir el ingreso de otro valor.
 Una vez que el usuario ingresa un valor válido, la función lo debe devolver.
+
+Ejemplo:
+
+\begin{verbatim}
+>>> edad = pedir_entero("¿Cuántos años tenés?", 0, 150)
+¿Cuántos años tenés? [0-150]:
+Por favor ingresa un número entre 0 y 150.
+¿Cuántos años tenés? [0-150]: hola
+Por favor ingresa un número entre 0 y 150.
+¿Cuántos años tenés? [0-150]: -3
+Por favor ingresa un número entre 0 y 150.
+¿Cuántos años tenés? [0-150]: 151
+Por favor ingresa un número entre 0 y 150.
+¿Cuántos años tenés? [0-150]: 25
+>>> edad
+25
+\end{verbatim}
 \end{ejercicio}
