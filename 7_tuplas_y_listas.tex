@@ -1155,3 +1155,166 @@ funciones?
 \end{partes}
 \end{ejercicio}
 
+\newpage
+\begin{subappendices}
+\section{Funciones de orden superior, \texttt{map} y \texttt{filter}}
+\label{map-filter}
+
+En Python, se dice que \emph{las funciones son ciudadanos de primera clase}, ya
+que una función es un valor (cuyo tipo de dato es |function|) que puede ser
+manipulado como cualquier otro valor (|int|, |str|, etc.):
+
+\begin{codigo-python-sn}
+>>> def exclamar(s):
+...     return '¡' + s + '!'
+>>> exclamar
+<function exclamar at 0x10532ef28>
+>>> type(exclamar)
+<class 'function'>
+>>> exclamar('Hola')
+'¡Hola!'
+>>> f = exclamar
+>>> f('Hola')
+'¡Hola!'
+\end{codigo-python-sn}
+
+En el ejemplo, |exclamar| (sin los paréntesis) es una referencia a un valor de
+tipo |function| (la función llamada ``exclamar''). Al hacer |f = exclamar|,
+el resultado es que ambas variables (|exclamar| y |f|) hacen referencia a
+\emph{la misma} función. Por lo tanto, podemos llamar a la función con
+|f(...)| o con |exclamar(...)|.
+
+Aprovechando esto, una función puede recibir otra función como parámetro:
+
+\begin{codigo-python-sn}
+>>> def aplicar(f, x, n):
+...     """Devuelve el resultado de f(f(...f(f(x)))), aplicando en total n
+...        veces la función f"""
+...     for i in range(n):
+...         x = f(x)
+...     return x
+>>> aplicar(exclamar, 'Hola', 5)
+'¡¡¡¡¡Hola!!!!!'
+>>> def alargar(s):
+...     return s + s[-1]
+>>> alargar('Hola')
+'Holaa'
+>>> aplicar(alargar, 'Hola', 5)
+'Holaaaaaa'
+\end{codigo-python-sn}
+
+Una función también puede devolver otra función:
+
+\begin{codigo-python-sn}
+>>> def componer(f, g):
+...     """Devuelve una función que dado x devuelve g(f(x))"""
+...     def compuesta(x):
+...         return g(f(x))
+...     return compuesta
+>>> f = componer(alargar, exclamar)
+>>> type(f)
+<class 'function'>
+>>> f('Hola')
+'¡Holaa!'
+\end{codigo-python-sn}
+
+Se dice que una función es \emph{de orden superior} cuando recibe una función
+por parámetro, o bien cuando devuelve una función. En nuestros ejemplos, |aplicar| y
+|componer| son de orden superior. Las funciones de orden superior son
+características de un estilo de programación llamado \emph{programación
+funcional}.
+
+\subsection*{Funciones anónimas}
+
+Cuando trabajamos con funciones de orden superior, suele ser conveniente
+definir funciones \emph{funciones anónimas}. En Python, si el cuerpo de una
+función es de una sola línea, puede ser definida en forma anónima usando la
+sintaxis |lambda|:
+
+\begin{itemize}
+\item |lambda x: x * 2| es ``una función que dado un número $x$ devuelve $2x$''.
+\item |lambda x, y: x + y| es ``una función que dados $x$ e $y$ devuelve la suma de ambos''.
+\end{itemize}
+
+La sintaxis general es |lambda <parámetros>: <expresión>|. El valor de retorno de una
+función definida con |lambda| es el resultado de la |<expresión>|; el |return| es
+implícito.
+
+\begin{sabias_que}
+La sintaxis |lambda| hace referencia al \emph{cálculo lambda} (un sistema
+formal introducido por Alonzo Church y Stephen Kleene en la década de 1930),
+en el que las funciones se escriben anteponiendo la letra griega $\lambda$. Por
+ejemplo, una función que eleva un número al cuadrado, en notación lambda se escribe
+$\lambda x. x^2$, mientras que en Python se escribe |lambda x: x ** 2|.
+\end{sabias_que}
+
+Las funciones |exclamar| y |alargar| podrían haber sido definidas usando la
+sintaxis |lambda|:
+
+\begin{codigo-python-sn}
+>>> exclamar = lambda s: '¡' + s + '!'
+>>> exclamar('Hola')
+'¡Hola!'
+>>> alargar = lambda s: s + s[-1]
+>>> alargar('Hola')
+'Holaa'
+\end{codigo-python-sn}
+
+Pero las funciones anónimas son especialmente útiles justamente cuando
+trabajamos con funciones de orden superior. Por ejemplo, podemos pasar un |lambda| a
+una función que recibe una función:
+
+\begin{codigo-python-sn}
+>>> aplicar(lambda x: x * 2, 1, 4)
+16
+\end{codigo-python-sn}
+
+Una función que devuelve una función también puede devolver un |lambda|:
+
+\begin{codigo-python-sn}
+>>> def componer(f, g):
+...     """Devuelve una función que dado x devuelve g(f(x))"""
+...     return lambda x: g(f(x))
+>>> gritar = componer(lambda s: s.upper(), exclamar)
+>>> gritar('hola')
+'¡HOLA!'
+\end{codigo-python-sn}
+
+\subsection*{Las funciones \texttt{map} y \texttt{filter}}
+
+Las funciones |map| y |filter| son dos ejemplos de funciones de orden superior
+disponibles en Python, que además permiten operar sobre secuencias.
+
+La función |map| recibe una función y una secuencia, y devuelve la secuencia
+resultante de aplicar la función a cada uno de los elementos de la secuencia
+original.
+
+\begin{codigo-python-sn}
+>>> map(lambda x: x * 2, [1, 2, 3, 4])
+<map object at 0x10edcba20>
+\end{codigo-python-sn}
+
+El valor de retorno de |map| es una secuencia, pero no es una tupla ni una
+lista. Por suerte, podemos convertir cualquier secuencia en una lista con la
+función |list|:
+
+\begin{codigo-python-sn}
+>>> list(map(lambda x: x * 2, [1, 2, 3, 4, 5]))
+[2, 4, 6, 8, 10]
+>>> list(map(exclamar, ['Usando', 'la', 'función', 'map']))
+['¡Usando!', '¡la!', '¡función!', '¡map!']
+>>> list(map(int, [8.3, '42', True]))
+[8, 42, 1]
+\end{codigo-python-sn}
+
+La función |filter| recibe una función |f| y una secuencia, y devuelve una secuencia
+que contiene los elementos de la secuencia original para los cuales el
+resultado de |f(x)| es |True|.
+
+\begin{codigo-python-sn}
+>>> list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4, 5]))
+[2, 4]
+>>> list(filter(lambda s: len(s) > 2, ['Usando', 'la', 'función', 'filter']))
+['Usando', 'función', 'filter']
+\end{codigo-python-sn}
+\end{subappendices}

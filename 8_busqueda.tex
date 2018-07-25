@@ -345,7 +345,7 @@ $\log_2$(\lstinline+len(lista)+$)$ comparaciones. Concluimos entonces que:
 
 \begin{observacion}
 Si podemos suponer que la lista está previamente ordenada, podemos utilizar el
-algoritmo de búsqueda binaria, que es {\emph muchísimo} más eficiente que la
+algoritmo de búsqueda binaria, que es \emph{muchísimo} más eficiente que la
 búsqueda lineal.
 \end{observacion}
 
@@ -543,7 +543,7 @@ Si observamos con detenimiento, los tres algoritmos comparten un mismo esquema:
 def f(L):
     inicializar acumulador
     por cada elemento en el la lista L:
-        si se cumple alguna condicion:
+        si se cumple alguna condición:
             hacer algún cálculo en base al elemento y acumular
     devolver acumulador
 \end{codigo-nohl-sn}
@@ -725,4 +725,10 @@ listas por comprensión es \emph{idiomático} en Python. Es decir, los
 programadores Python experimentados van a preferir leer y escribir código que
 utilice listas por comprensión en lugar de implementar los filtros y
 transformaciones a mano.
+
+Por último, observamos que las listas por comprensión ofrecen una alternativa
+sintáctica a las funciones |map| y |filter|, explicadas en el
+Apéndice~\ref{map-filter}. Dejamos como ejercicio implementar las funciones
+|total_libros_autor|, |cantidad_poco_stock| y |titulos_caros| en términos de
+|map| y |filter|.
 \end{subappendices}
