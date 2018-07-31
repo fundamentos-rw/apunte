@@ -629,3 +629,49 @@ una por línea y sin repetir.
 Modificar el programa anterior para que pueda generar fichas de un juego
 que puede tener números de 0 a $n$.
 \end{ejercicio}
+
+\newpage
+\begin{subappendices}
+\section{Calidad de software}
+
+Los programas que hemos construido hasta ahora son pequeños y simples. Existen
+proyectos de software profesionales de tamaños muy diversos, yendo desde
+programas sencillos desarrollados por una única persona hasta
+proyectos gigantescos, con millones de líneas de código y desarrollados
+durante años por miles de personas.
+
+\begin{sabias_que}
+El núcleo del sistema operativo
+Linux\footnote{\url{https://github.com/torvalds/linux}} fue publicado por
+primera vez en 1991, y aun hoy sigue en desarrollo. El código fuente es
+público, y cualquiera puede contribuir aportando mejoras: más de $15 000$
+personas participaron en el desarrollo. En total, el código
+fuente contiene más de 24 millones de líneas de código.
+\end{sabias_que}
+
+Cuanto más grande es un proyecto de software, más difícil es su construcción y
+mantenimiento, y más tenemos que prestar atención a la _calidad_ con la que
+está construido. Aquí se enumeran algunas de las propiedades que contribuyen a
+la calidad, y algunas preguntas que podemos hacer para medir cuánto
+contribuye cada factor:
+
+\begin{itemize}
+        \item {\bf Confiabilidad:} ¿El sistema resuelve el problema inicial en
+            forma correcta? ¿Lo resuelve siempre o a veces falla? ¿Cuántas
+            veces falla en un período de tiempo?
+        \item {\bf Performance:} ¿Cuánto tarda el sistema en producir un
+            resultado? ¿Cuántos recursos consume (memoria, espacio en disco,
+            etc.)?
+        \item {\bf Usabilidad:} ¿Puede un nuevo usuario aprender a utilizar el
+            sistema fácilmente? ¿Las operaciones más comunes son fáciles de
+            realizar?
+        \item {\bf Mantenibilidad:} ¿Qué tan legible y entendible es el código?
+            ¿Qué tan fácil es modificar el comportamiento del programa o
+            agregar nuevas funcionalidades?
+        \item {\bf Escalabilidad:} ¿Cómo se comporta el sistema cuando
+            se incrementa la demanda (cantidad de usuarios, cantidad de datos,
+            etc.)?
+        \item {\bf Portabilidad:} ¿El sistema puede funcionar en diferentes
+            plataformas (arquitecturas de procesador, sistemas operativos,
+            navegadores web, etc.)?
+\end{itemize}
