@@ -534,6 +534,63 @@ enuncian en la especificación?
 
 \end{itemize}
 
+\section{Calidad de software}
+
+Los programas que hemos construido hasta ahora son pequeños y simples. Existen
+proyectos de software profesionales de tamaños muy diversos, yendo desde
+programas sencillos desarrollados por una única persona hasta
+proyectos gigantescos, con millones de líneas de código y desarrollados
+durante años por miles de personas.
+
+\begin{sabias_que}
+Uno de los proyectos de código abierto más colosales es el núcleo
+del sistema operativo Linux. Fue publicado por primera vez en 1991, y aun
+hoy sigue en desarrollo activo. El código fuente es
+público\footnote{\url{https://github.com/torvalds/linux}}, y cualquiera
+puede contribuir aportando mejoras. Hasta la versión 4.13 publicada en 2017
+participaron más de $15\,000$ personas, creando en total más de 24 millones de
+líneas de código.
+\end{sabias_que}
+
+Cuanto más grande es un proyecto de software, más difícil es su construcción y
+mantenimiento, y más tenemos que prestar atención a la \emph{calidad} con la
+que está construido. Presentamos aquí una lista no completa de propiedades que
+contribuyen a la calidad, y algunas preguntas que podemos hacer para medir
+cuánto contribuye cada factor:
+
+\begin{itemize}
+        \item {\bf Confiabilidad:} ¿El sistema resuelve el problema inicial en
+            forma correcta? ¿Lo resuelve siempre o a veces falla? ¿Cuántas
+            veces falla en un período de tiempo?
+        \item {\bf Testabilidad:} ¿Qué tan fácil es probar que el sistema
+            funciona correctamente? ¿Hay algún proceso de pruebas automáticas o
+            manuales?
+        \item {\bf Performance:} ¿Cuánto tarda el sistema en producir un
+            resultado? ¿Cuántos recursos consume (memoria, espacio en disco,
+            etc.)?
+        \item {\bf Usabilidad:} ¿Puede un nuevo usuario aprender a utilizar el
+            sistema fácilmente? ¿Las operaciones más comunes son fáciles de
+            realizar?
+        \item {\bf Mantenibilidad:} ¿Qué tan legible y entendible es el código?
+            ¿Qué tan fácil es modificar el comportamiento del programa o
+            agregar nuevas funcionalidades?
+        \item {\bf Escalabilidad:} ¿Cómo se comporta el sistema cuando
+            se incrementa la demanda (cantidad de usuarios, cantidad de datos,
+            etc.)?
+        \item {\bf Portabilidad:} ¿El sistema puede funcionar en diferentes
+            plataformas (arquitecturas de procesador, sistemas operativos,
+            navegadores web, etc.)?
+        \item {\bf Seguridad:} ¿Los datos sensibles están protegidos de ataques
+            informáticos? ¿Qué tan difícil es para un atacante tomar el control,
+            desestabilizar o dañar el sistema?
+\end{itemize}
+
+Por supuesto, cada proyecto es particular y algunos de las propiedades
+mencionadas tendrán más o menos prioridad según el caso. En particular en este
+curso nos concentraremos más en que nuestros programas sean confiables y
+mantenibles, y también prestaremos atención a la performance (sobre todo al
+comparar diferentes algoritmos).
+
 \newpage
 \section{Ejercicios}
 
