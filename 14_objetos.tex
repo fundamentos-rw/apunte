@@ -1145,33 +1145,48 @@ Método especial para permitir la comparación de objetos mediante los operadore
 \section{Ejercicios}
 
 \begin{ejercicio}
+Mejorar la clase \lstinline|Rectangulo|, agregando métodos para calcular las
+dimensiones alto y ancho, y las coordenadas del punto central.
+\end{ejercicio}
+
+
+\begin{ejercicio}
 Modificar el método \lstinline!__lt__! de \lstinline!Hotel!
 para poder ordenar de menor a mayor las listas de hoteles según el criterio:
 primero por ubicación, en orden alfabético y dentro de cada ubicación por
 la relación calidad-precio.
 \end{ejercicio}
 
-\begin{ejercicio}
-Escribir una clase \lstinline!Caja! para representar cuánto
-dinero hay en una caja de un negocio, desglosado por tipo de billete (por
-ejemplo, en el quiosco de la esquina hay 5 billetes de 10 pesos, 7 monedas
-de 25 centavos y 4 monedas de 10 centavos).
 
-Se tiene que poder comparar cajas por la cantidad de dinero que
-hay en cada una, y además ordenar una lista de cajas
-de menor a mayor según la cantidad de dinero disponible.
+\extractionlabel{guia}
+\begin{ejercicio}
+\leavevmode
+\begin{partes}
+    \item Implementar la clase \lstinline|Intervalo(desde, hasta)| que
+        representa un intervalo entre dos instantes de tiempo (números enteros
+        expresados en segundos), con la condición \lstinline|desde < hasta|.
+    \item Implementar el método \lstinline|duracion| que devuelve la duración
+        en segundos del intervalo.
+    \item Implementar el método \lstinline|interseccion| que recibe otro
+        intervalo y devuelve un nuevo intervalo resultante de la intersección
+        entre ambos, o lanzar una excepción si la intersección es nula.
+    \item Implementar el método \lstinline|union| que recibe otro
+        intervalo. Si los intervalos no son adyacentes ni intersectan, debe
+        lanzar una excepción. En caso contrario devuelve un nuevo intervalo
+        resultante de la unión entre ambos.
+\end{partes}
 \end{ejercicio}
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Fracciones
+\leavevmode
 \begin{partes}
     \item Crear una clase \verb!Fraccion!, que cuente con dos atributos:
 \verb!dividendo! y \verb!divisor!, que se asignan en el constructor, y se
 imprimen como \verb!X/Y! en el método \verb!__str__!.
-    \item Crear un método \verb!sumar! que recibe otra fracción y devuelve una
+    \item Implementar el método \verb!__add__! que recibe otra fracción y devuelve una
 nueva fracción con la suma de ambas.
-    \item Crear un método \verb!multiplicar! que recibe otra fracción y
+    \item Implementar el método \verb!__mul__! que recibe otra fracción y
 devuelve una nueva fracción con el producto de ambas.
     \item Crear un método \verb!simplificar! que modifica la fracción actual de
 forma que los valores del \verb!dividendo! y \verb!divisor! sean los
@@ -1182,61 +1197,69 @@ menores posibles.
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Vectores
+\leavevmode
 \begin{partes}
     \item Crear una clase \verb!Vector!, que en su constructor reciba una lista
 de elementos que serán sus coordenadas.  En el método \verb!__str__! se
 imprime su contenido con el formato \verb![x,y,z]!
-    \item Crear un método \verb!escalar! que reciba un número y devuelva un
-nuevo vector, con los elementos multiplicados por ese número.
-    \item Crear un método \verb!sumar! que recibe otro vector, verifica si
-tienen la misma cantidad de elementos y devuelve un nuevo vector con la
+    \item Implementar el método \verb!__add__! que reciba otro vector, verifique si
+tienen la misma cantidad de elementos y devuelva un nuevo vector con la
 suma de ambos.  Si no tienen la misma cantidad de elementos debe levantar
 una excepción.
+    \item Implementar el método \verb!__mul__! que reciba un número y devuelva un
+nuevo vector, con los elementos multiplicados por ese número.
 \end{partes}
 \end{ejercicio}
 
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Botella y Sacacorchos
-\begin{partes}
-    \item Escribir una clase \emph{Corcho}, que contenga un atributo
-\emph{bodega} (cadena con el nombre de la bodega).
-    \item Escribir una clase \emph{Botella} que contenga un atributo
-\emph{corcho} con una referencia al corcho que la tapa, o \verb!None! si está
-destapada.
-    \item Escribir una clase \emph{Sacacorchos} que tenga un método
-\emph{destapar} que le reciba una botella, le saque el corcho y se guarde una
-referencia al corcho sacado.  Debe lanzar una excepción en el caso en que
-la botella ya esté destapada, o si el sacacorchos ya contiene un corcho.
-    \item Agregar un método \emph{limpiar}, que saque el corcho del sacacorchos,
-o lance una excepción en el caso en el que no haya un corcho.
-\end{partes}
+Escribir una clase \lstinline!Caja! para representar cuánto
+dinero hay en una caja de un negocio, desglosado por tipo de billete (por
+ejemplo, en el quiosco de la esquina hay 6 billetes de 500 pesos, 7 de 100
+pesos y 4 monedas de 2 pesos). Las denominaciones permitidas son 1, 2, 5,
+10, 20, 50, 100, 200, 500 y 1000 pesos. Debe comportarse según el siguiente ejemplo:
+
+\begin{lstlisting}[numbers=none]
+>>> c = Caja({500: 6, 300: 7, 2: 4})
+ValueError: Denominación "300" no permitida
+>>> c = Caja({500: 6, 100: 7, 2: 4})
+>>> str(c)
+'Caja {500: 6, 100: 7, 2: 4} total: 3708 pesos'
+>>> c.agregar({250: 2})
+ValueError: Denominación "250" no permitida
+>>> c.agregar({50: 2, 2: 1})
+>>> str(c)
+'Caja {500: 6, 100: 7, 50: 2, 2: 5} total: 3810 pesos'
+>>> c.quitar({50: 3, 100: 1})
+ValueError: No hay suficientes billetes de denominación "50"
+>>> c.quitar({50: 2, 100: 1})
+200
+>>> str(c)
+'Caja {500: 6, 100: 6, 2: 5} total: 3610 pesos'
+\end{lstlisting}
 \end{ejercicio}
 
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Modelar una clase \emph{Mate} que describa el funcionamiento de la
-conocida bebida tradicional local. La clase debe contener como miembros:
-\begin{partes}
-    \item Un atributo para la cantidad de cebadas restantes hasta que se lava
-el mate (representada por un número).
-    \item Un atributo para el estado (lleno o vacío).
-    \item El constructor debe recibir como parámetro \verb!n!, la cantidad
-máxima de cebadas en base a la cantidad de yerba vertida en el recipiente.
-    \item Un método \verb!cebar!, que llena el mate con agua. Si se intenta
-cebar con el mate lleno, se debe lanzar una excepción que imprima el
-mensaje \lstinline|'Cuidado! Te quemaste!'|
-    \item Un método \verb!beber!, que vacía el mate y le resta una cebada
-disponible. Si se intenta beber un mate vacío, se debe lanzar una excepción
-que imprima el mensaje \lstinline|'El mate está vacío!'|
-    \item Es posible seguir cebando y bebiendo el mate aunque no haya cebadas
-disponibes. En ese caso la cantidad de cebadas restantes se mantendrá
-en 0, y cada vez que se intente beber se debe imprimir un mensaje de
-aviso: \lstinline|'Advertencia: el mate está lavado.'|, pero no se debe lanzar una
-excepción.
-\end{partes}
-\end{ejercicio}
+Crear las clases |Materia| y |Carrera|, que se comporten según el siguiente
+ejemplo:
 
+\begin{lstlisting}[numbers=none]
+>>> analisis2 = Materia("61.03", "Análisis 2", 8)
+>>> fisica2 = Materia("62.01", "Física 2", 8)
+>>> algo1 = Materia("75.40", "Algoritmos 1", 6)
+>>> c = Carrera([analisis2, fisica2, algo1])
+>>> str(c)
+Créditos: 0 -- Promedio: N/A -- Materias aprobadas:
+>>> c.aprobar("95.14", 7)
+ValueError: La materia 75.14 no es parte del plan de estudios
+>>> c.aprobar("75.40", 10)
+>>> c.aprobar("62.01", 7)
+>>> str(c)
+Créditos: 14 -- Promedio: 8.5 -- Materias aprobadas:
+75.40 Algoritmos 1 (10)
+62.01 Física 2 (7)
+\end{lstlisting}
+\end{ejercicio}
