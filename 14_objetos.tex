@@ -152,7 +152,7 @@ restarlos o calcular la distancia entre ellos) se deberán tener funciones
 \emph{sueltas} para realizar las diversas operaciones.
 
 Podemos hacer algo mejor definiendo un nuevo tipo \lstinline!Punto!, que almacene
-la información relacionada con el punto, y contenga las operaciones nos
+la información relacionada con el punto, y contenga las operaciones que nos
 interese realizar sobre él.
 
 \subsection{Nuestra primera clase: Punto}
@@ -164,48 +164,64 @@ cartesianas.
 Además, existen varias operaciones que se pueden realizar sobre un punto
 del plano, e implementarlas todas podría llevar mucho tiempo.
 
-En esta primera implementación, optaremos por utilizar la representación de
-coordenadas cartesianas, e iremos implementando las operaciones a medida
-que las vayamos necesitando.
+Si representamos nuestro punto utilizando coordenadas cartesianas,
+vamos a necesitar dos atributos numéricos, |x| e |y|, para almacenar las
+coordenadas. En la Figura~\ref{fig-punto}, se muestra un diagrama simple con el
+diseño de la clase |Punto|.
 
-En primer lugar, creamos una clase \lstinline!Punto! que simplemente
-almacena las coordenadas.
+\tikzset{pics/Punto/.style n args={2}{code={
+    \node[umlattr,anchor=west] (-x) {x: #1};
+    \node[umlattr,below=of -x.south west,anchor=north west] (y) {y: #2};
+    \node[umlattrs,fit=(-x) (y)] (attrs)  {};
+    \node[umltitle,above=of attrs] (titulo) {Punto};
+    \node[umlclass,fit=(titulo) (attrs)] (-box)   {};
+    \draw[-] (titulo.south-|-box.west)--(titulo.south-|-box.east);
+}}}
+
+\begin{figure}[htb]
+\begin{tikzpicture}
+    \pic (Punto) {Punto={<número>}{<número>}};
+    \pic[right= 3cm of Punto-box] (p1) {Punto={5}{7}};
+    \pic[right=of p1-box] {Punto={-3.6}{0}};
+\end{tikzpicture}
+\caption{Diseño de la \emph{clase} \texttt{Punto}, y dos posibles \emph{instancias}}
+\label{fig-punto}
+\end{figure}
+
+Veamos cómo crear nuestra clase |Punto| en Python:
 
 \begin{codigo-python-sn}
-class Punto:
+class Punto: (~\circled{1}~)
     """Representación de un punto en el plano en
        coordenadas cartesianas (x, y)"""
 
-    def __init__(self, x, y):
+    def __init__(self, x, y): (~\circled{2}~)
         "Constructor de Punto. x e y deben ser numéricos"
-        self.x = x
+        self.x = x (~\circled{3}~)
         self.y = y
 \end{codigo-python-sn}
 
-En la primera línea de código indicamos que vamos a crear una nueva clase,
-llamada \lstinline!Punto!.
+\circled{1} En la primera línea de código indicamos que vamos a crear una nueva
+clase, llamada \lstinline!Punto!.  Por convención, en los nombres de las clases
+definidas por el programador se escribe cada palabra del nombre con la primera
+letra en mayúsculas (|Punto|, |Rectangulo|, |ListaEnlazada|,
+|Hotel|, etc.).
 
-\begin{observacion}
-Por convención, en los nombres de las clases definidas por el programador se
-escribe cada palabra del nombre con la primera letra en mayúsculas.  Ejemplos:
-\lstinline!Punto!, \lstinline!ListaEnlazada!, \lstinline!Hotel!.
-\end{observacion}
+\circled{2} Además definimos uno de los métodos especiales, \lstinline!__init__!, el
+{\bf constructor} de la clase.  Este método se llama automáticamente cada
+vez que se crea una nueva instancia de la clase.
 
-Además definimos uno de los métodos especiales, \lstinline!__init__!, el
-{\bf constructor} de la clase.  Este método se llama cada vez que se crea
-una nueva instancia de la clase.
-
-Este método, al igual que todos los métodos de cualquier clase, recibe como
+Todos los métodos de cualquier clase reciben como
 primer parámetro a la instancia sobre la que está trabajando.  Por
-convención a ese primer parámetro se lo suele llamar \lstinline!self! (que
+convención, a ese primer parámetro se lo suele llamar \lstinline!self! (que
 podríamos traducir como \emph{yo mismo}), pero puede llamarse de cualquier
 forma.
 
-En nuestro caso el constructor recibe dos parámetros más, |x| e |y|. De esta
-forma indicamos que para crear una instancia de |Punto| será necesario proveer
-el valor de ambas coordenadas.
+En nuestro caso el constructor |__init__| recibe la instancia |self| y dos
+parámetros más, |x| e |y|. De esta forma indicamos que para crear una instancia
+de |Punto| será necesario proveer el valor de ambas coordenadas.
 
-En el cuerpo del constructor se definen los atributos, utilizando la notación
+\circled{3} En el cuerpo del constructor se definen los atributos, utilizando la notación
 punto con la instancia |self|. En este caso los atributos se llamarán igual que
 los parámetros del constructor, |x| e |y|, y se inicializan con el valor de
 los parámetros.
@@ -225,7 +241,7 @@ siguiente forma:
 
 Al realizar la llamada \lstinline!Punto(5, 7)!:
 
-\begin{itemize}
+\begin{enumerate}
 \item Se crea una nueva instancia de la clase |Punto|.
 \item Se ejecuta el constructor |__init__|, con |self| $\rightarrow$ la
     instancia nueva, |x| $\rightarrow$ 5, |y| $\rightarrow$ 7.
@@ -233,8 +249,16 @@ Al realizar la llamada \lstinline!Punto(5, 7)!:
     $\rightarrow$ 7.
 \item Cuando finaliza la ejecución del constructor, se asigna |p| $\rightarrow$
     la instancia de |Punto| recién creada.
-\end{itemize}
+\end{enumerate}
 
+\begin{figure}[htb]
+\begin{tikzpicture}
+    \pic (Punto) {Punto={5}{7}};
+    \node[left=of Punto-box.west] (p) {p};
+    \draw[flecha] (p)--(Punto-box);
+\end{tikzpicture}
+\caption{Una instancia de \texttt{Punto}, referenciada con la variable \texttt{p}}
+\end{figure}
 \subsection{Agregando validaciones al constructor}
 
 Hemos creado una clase \lstinline!Punto! que permite guardar valores
@@ -259,8 +283,7 @@ sean numéricos, utilizando la función \lstinline!validar_numero!:
 
 \begin{codigo-python-sn}
 def validar_numero(valor):
-    """Si el valor es numérico, lo devuelve.
-       En caso contrario lanza TypeError."""
+    "Si el valor es numérico, lo devuelve. En caso contrario lanza TypeError."
     if not isinstance(valor, (int, float, complex)):
         raise TypeError("{:r} no es un valor numérico".format(valor))
     return valor
@@ -294,7 +317,7 @@ TypeError: 'A' no es un valor numérico^)
 
 Hasta ahora hemos creado una clase \lstinline!Punto! que permite
 construirla con un par de valores, que deben ser sí o sí numéricos, pero no
-podemos operar con esos valores.  Para apreciar la potencia de los objetos,
+podemos operar con esos valores.  Para aprovechar la ventaja de los objetos,
 tenemos que definir operaciones adicionales que vayamos a querer realizar
 sobre esos puntos.
 
@@ -350,7 +373,7 @@ se forma uniendo un punto con el origen.
 \end{codigo-python-sn}
 
 En base a estos dos métodos podemos ahora volver a escribir el método
-\lstinline!distancia! para que aproveche el código ambos:
+\lstinline!distancia! para que aproveche el código de ambos:
 
 \begin{codigo-python-sn}
     def distancia(self, otro):
@@ -574,6 +597,154 @@ Entre los lenguajes más conocidos que no soportan sobrecarga de operadores
 están C, Java, Pascal, Objective C.  Entre los lenguajes más conocidos que
 sí soportan sobrecarga de operadores están Python, C++, C\#, Ruby, PHP.
 \end{sabias_que}
+
+\section{Composición de objetos}
+
+Supongamos que queremos diseñar un objeto para representar un rectángulo en el
+plano. ¿Qué atributos tendría?
+
+Podemos hacer que nuestro |Rectangulo| tenga cuatro números: |x1, y1, x2, y2|,
+donde |x1| e |y1| son las coordenadas de la esquina superior izquierda y |x2| e
+|y2| las coordenadas de la esquina inferior derecha.
+
+Otra opción es aprovechar que ya tenemos una clase para representar un punto en
+el plano, y \emph{componer} nuestro |Rectangulo| con la clase |Punto|. En lugar
+de tener cuatro números, podemos tener dos |Punto|s que podemos llamar
+|noroeste| y |sudeste|.
+
+Y estas no son las únicas dos opciones posibles. Podemos por ejemplo
+representar nuestro |Rectangulo| con un |Punto| para la esquina superior
+izquierda, y luego dos números |ancho| y |alto|.
+
+\tikzset{pics/Rectangulo/.style n args={4}{code={
+    \node[umlattr,anchor=north west] (-atr1) {#1};
+    \node[umlattr,below=of -atr1.south west,anchor=north west] (-atr2) {#2};
+    \node[umlattr,below=of -atr2.south west,anchor=north west] (atr3) {#3};
+    \node[umlattr,below=of atr3.south west,anchor=north west] (atr4) {#4};
+    \node[umlattrs,fit=(-atr1) (-atr2) (atr3) (atr4)] (attrs)  {};
+    \node[umltitle,above=of attrs] (titulo) {Rectangulo};
+    \node[umlclass,fit=(titulo) (attrs)] (-box)   {};
+    \draw[-] (titulo.south-|-box.west)--(titulo.south-|-box.east);
+}}}
+
+\begin{figure}[htb]
+\begin{tikzpicture}
+    \pic (r1) {Rectangulo={x1: <número>}{y1: <número>}{x2: <número>}{y2: <número>}};
+    \pic[right= of r1-atr1.north east] (r2) {Rectangulo={noroeste: <Punto>}{sudeste: <Punto>}{}{}};
+    \pic[right= of r2-atr1.north east] (r3) {Rectangulo={noroeste: <Punto>}{ancho: <número>}{alto: <número>}{}};
+\end{tikzpicture}
+\caption{Tres posibles diseños para la clase \texttt{Rectangulo}}
+\end{figure}
+
+Si elegimos por ejemplo la representación utilizando dos Puntos, podemos
+implementarlo de la siguiente manera:
+
+\begin{codigo-python-sn}
+class Rectangulo:
+    "Representa un rectángulo en el plano"
+
+    def __init__(self, noroeste, sudeste):
+        """Crea un Rectangulo a partir de los Puntos correspondientes a las
+        esquinas superior izquierda e inferior derecha"""
+        self.noroeste = noroeste
+        self.sudeste = sudeste
+\end{codigo-python-sn}
+
+Y a partir de ahora podemos crear rectángulos de la siguiente manera:
+
+\begin{codigo-python-sn}
+>>> p = Punto(3, 4)
+>>> q = Punto(6, 5)
+>>> r = Rectangulo(p, q)
+\end{codigo-python-sn}
+
+\begin{figure}[htb]
+\begin{tikzpicture}
+    \pic (rect) {Rectangulo={noroeste: }{sudeste: }{}{}};
+    \pic[right=of rect-atr1.north east] (p1) {Punto={3}{4}};
+    \pic[below=2cm of p1-x.north west] (p2) {Punto={6}{5}};
+    \draw[flecha] (rect-atr1.east)--(p1-box.west);
+    \draw[flecha] (rect-atr2.east)--(p2-box.west);
+    \node[left=of rect-box.west] (r) {r};
+    \draw[flecha] (r)--(rect-box);
+    \node[right=of p1-box.east] (p) {p};
+    \draw[flecha] (p)--(p1-box);
+    \node[right=of p2-box.east] (q) {q};
+    \draw[flecha] (q)--(p2-box);
+\end{tikzpicture}
+\caption{Una instancia de \texttt{Rectangulo} compuesta de dos instancias de \texttt{Punto}}
+\label{fig-rectangulo}
+\end{figure}
+
+\section{Mutabilidad}
+
+En Python todos los objetos creados por el programador son \emph{mutables}; es
+decir que luego de ser creada una instancia podemos modificar el valor de sus
+atributos (modificando así el \emph{estado} del objeto):
+
+\begin{codigo-python-sn}
+>>> p = Punto(5, 7)
+>>> p
+Punto(5, 7)
+>>> (@p.x = 3@)
+>>> p
+Punto(3, 7)
+\end{codigo-python-sn}
+
+Si bien Python permite modificar atributos como en el ejemplo anterior, en
+muchos casos es más conveniente \emph{encapsular} el comportamiento adentro de
+un método. Por ejemplo, si queremos permitir que un |Punto| pueda ser
+desplazado en el plano, podemos agregar el método |desplazar|:
+
+\begin{codigo-python-sn}
+    def desplazar(self, dx, dy):
+        """Desplaza el punto según dx y dy."""
+        self.x += dx
+        self.y += dy
+\end{codigo-python-sn}
+
+De esta manera, podemos llamar a |desplazar| para mutar los atributos del
+punto:
+
+\begin{codigo-python-sn}
+>>> p = Punto(5, 7)
+>>> p.desplazar(-2, 0)
+>>> p
+Punto(3, 7)
+\end{codigo-python-sn}
+
+Como ya vimos en la Sección \ref{mutabilidad}, los valores mutables introducen
+complejidad adicional en un programa, ya que el comportamiento de cualquier
+línea de código pasa a depender además del \emph{estado} de cada objeto
+mutable.
+
+Tomemos por ejemplo el caso de nuestra clase |Rectangulo|:
+
+\begin{codigo-python-sn}
+>>> p = Punto(3, 4)
+>>> q = Punto(6, 5)
+>>> r = Rectangulo(p, q)
+>>> r.noroeste
+Punto(3, 4)
+>>> (@p.desplazar(1, 1)@)
+>>> r.noroeste
+Punto(4, 5)
+\end{codigo-python-sn}
+
+Al llamar a |p.desplazar(1, 1)| estamos modificando el estado del punto |p|,
+pero al mismo tiempo, inadvertidamente estamos modificando el rectángulo |r|,
+ya que su atributo |noroeste| es una referencia a \emph{la misma instancia} de
+|Punto| que acabamos de modificar (ver Figura~\ref{fig-rectangulo}).
+
+La conclusión es que al diseñar un objeto tenemos que evaluar si queremos
+que sea mutable o inmutable. Como regla general, los valores inmutables suelen favorecer la
+mantenibilidad del código, pero puede haber casos en los que la mutabilidad se
+hace necesaria para mejorar la eficiencia.
+
+En otros lenguajes orientados a objetos hay formas de declarar la mutabilidad o
+inmutabilidad de una clase; En Python, si queremos que nuestro objeto sea
+inmutable tenemos que hacerlo \emph{por convención}: decir, simplemente no
+agregamos ningún método que modifique el estado.
 
 \section{Creando clases más complejas}
 
@@ -874,7 +1045,8 @@ True
 
 \begin{itemize}
 \item Los {\bf objetos} son formas ordenadas de agrupar datos
-(\emph{atributos}) y operaciones sobre estos datos (\emph{métodos}).
+(\emph{atributos}, \emph{estado}) y operaciones sobre estos datos
+(\emph{métodos}, \emph{comportamiento}).
 
 \item Cada objeto es de una {\bf clase} o tipo, que define cuáles
 serán sus atributos y métodos. Y cuando se crea un valor a partir de una
@@ -889,6 +1061,10 @@ se crea una nueva instancia de esa clase.
 \item Es posible definir una gran variedad de métodos dentro de una
 clase, incluyendo métodos especiales que pueden utilizados para
 mostrar, sumar, comparar u ordenar los objetos.
+
+\item En Python, los objetos creados por el programador son {\bf mutables}.
+Podemos diseñar objetos inmutables por convención: simplemente no agregamos
+ningún método que modifique el estado del objeto.
 \end{itemize}
 
 \begin{referencia_python}
@@ -969,33 +1145,48 @@ Método especial para permitir la comparación de objetos mediante los operadore
 \section{Ejercicios}
 
 \begin{ejercicio}
+Mejorar la clase \lstinline|Rectangulo|, agregando métodos para calcular las
+dimensiones alto y ancho, y las coordenadas del punto central.
+\end{ejercicio}
+
+
+\begin{ejercicio}
 Modificar el método \lstinline!__lt__! de \lstinline!Hotel!
 para poder ordenar de menor a mayor las listas de hoteles según el criterio:
 primero por ubicación, en orden alfabético y dentro de cada ubicación por
 la relación calidad-precio.
 \end{ejercicio}
 
-\begin{ejercicio}
-Escribir una clase \lstinline!Caja! para representar cuánto
-dinero hay en una caja de un negocio, desglosado por tipo de billete (por
-ejemplo, en el quiosco de la esquina hay 5 billetes de 10 pesos, 7 monedas
-de 25 centavos y 4 monedas de 10 centavos).
 
-Se tiene que poder comparar cajas por la cantidad de dinero que
-hay en cada una, y además ordenar una lista de cajas
-de menor a mayor según la cantidad de dinero disponible.
+\extractionlabel{guia}
+\begin{ejercicio}
+\leavevmode
+\begin{partes}
+    \item Implementar la clase \lstinline|Intervalo(desde, hasta)| que
+        representa un intervalo entre dos instantes de tiempo (números enteros
+        expresados en segundos), con la condición \lstinline|desde < hasta|.
+    \item Implementar el método \lstinline|duracion| que devuelve la duración
+        en segundos del intervalo.
+    \item Implementar el método \lstinline|interseccion| que recibe otro
+        intervalo y devuelve un nuevo intervalo resultante de la intersección
+        entre ambos, o lanzar una excepción si la intersección es nula.
+    \item Implementar el método \lstinline|union| que recibe otro
+        intervalo. Si los intervalos no son adyacentes ni intersectan, debe
+        lanzar una excepción. En caso contrario devuelve un nuevo intervalo
+        resultante de la unión entre ambos.
+\end{partes}
 \end{ejercicio}
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Fracciones
+\leavevmode
 \begin{partes}
     \item Crear una clase \verb!Fraccion!, que cuente con dos atributos:
 \verb!dividendo! y \verb!divisor!, que se asignan en el constructor, y se
 imprimen como \verb!X/Y! en el método \verb!__str__!.
-    \item Crear un método \verb!sumar! que recibe otra fracción y devuelve una
+    \item Implementar el método \verb!__add__! que recibe otra fracción y devuelve una
 nueva fracción con la suma de ambas.
-    \item Crear un método \verb!multiplicar! que recibe otra fracción y
+    \item Implementar el método \verb!__mul__! que recibe otra fracción y
 devuelve una nueva fracción con el producto de ambas.
     \item Crear un método \verb!simplificar! que modifica la fracción actual de
 forma que los valores del \verb!dividendo! y \verb!divisor! sean los
@@ -1006,61 +1197,69 @@ menores posibles.
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Vectores
+\leavevmode
 \begin{partes}
     \item Crear una clase \verb!Vector!, que en su constructor reciba una lista
 de elementos que serán sus coordenadas.  En el método \verb!__str__! se
 imprime su contenido con el formato \verb![x,y,z]!
-    \item Crear un método \verb!escalar! que reciba un número y devuelva un
-nuevo vector, con los elementos multiplicados por ese número.
-    \item Crear un método \verb!sumar! que recibe otro vector, verifica si
-tienen la misma cantidad de elementos y devuelve un nuevo vector con la
+    \item Implementar el método \verb!__add__! que reciba otro vector, verifique si
+tienen la misma cantidad de elementos y devuelva un nuevo vector con la
 suma de ambos.  Si no tienen la misma cantidad de elementos debe levantar
 una excepción.
+    \item Implementar el método \verb!__mul__! que reciba un número y devuelva un
+nuevo vector, con los elementos multiplicados por ese número.
 \end{partes}
 \end{ejercicio}
 
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Botella y Sacacorchos
-\begin{partes}
-    \item Escribir una clase \emph{Corcho}, que contenga un atributo
-\emph{bodega} (cadena con el nombre de la bodega).
-    \item Escribir una clase \emph{Botella} que contenga un atributo
-\emph{corcho} con una referencia al corcho que la tapa, o \verb!None! si está
-destapada.
-    \item Escribir una clase \emph{Sacacorchos} que tenga un método
-\emph{destapar} que le reciba una botella, le saque el corcho y se guarde una
-referencia al corcho sacado.  Debe lanzar una excepción en el caso en que
-la botella ya esté destapada, o si el sacacorchos ya contiene un corcho.
-    \item Agregar un método \emph{limpiar}, que saque el corcho del sacacorchos,
-o lance una excepción en el caso en el que no haya un corcho.
-\end{partes}
+Escribir una clase \lstinline!Caja! para representar cuánto
+dinero hay en una caja de un negocio, desglosado por tipo de billete (por
+ejemplo, en el quiosco de la esquina hay 6 billetes de 500 pesos, 7 de 100
+pesos y 4 monedas de 2 pesos). Las denominaciones permitidas son 1, 2, 5,
+10, 20, 50, 100, 200, 500 y 1000 pesos. Debe comportarse según el siguiente ejemplo:
+
+\begin{lstlisting}[numbers=none]
+>>> c = Caja({500: 6, 300: 7, 2: 4})
+ValueError: Denominación "300" no permitida
+>>> c = Caja({500: 6, 100: 7, 2: 4})
+>>> str(c)
+'Caja {500: 6, 100: 7, 2: 4} total: 3708 pesos'
+>>> c.agregar({250: 2})
+ValueError: Denominación "250" no permitida
+>>> c.agregar({50: 2, 2: 1})
+>>> str(c)
+'Caja {500: 6, 100: 7, 50: 2, 2: 5} total: 3810 pesos'
+>>> c.quitar({50: 3, 100: 1})
+ValueError: No hay suficientes billetes de denominación "50"
+>>> c.quitar({50: 2, 100: 1})
+200
+>>> str(c)
+'Caja {500: 6, 100: 6, 2: 5} total: 3610 pesos'
+\end{lstlisting}
 \end{ejercicio}
 
 
 \extractionlabel{guia}
 \begin{ejercicio}
-Modelar una clase \emph{Mate} que describa el funcionamiento de la
-conocida bebida tradicional local. La clase debe contener como miembros:
-\begin{partes}
-    \item Un atributo para la cantidad de cebadas restantes hasta que se lava
-el mate (representada por un número).
-    \item Un atributo para el estado (lleno o vacío).
-    \item El constructor debe recibir como parámetro \verb!n!, la cantidad
-máxima de cebadas en base a la cantidad de yerba vertida en el recipiente.
-    \item Un método \verb!cebar!, que llena el mate con agua. Si se intenta
-cebar con el mate lleno, se debe lanzar una excepción que imprima el
-mensaje \lstinline|'Cuidado! Te quemaste!'|
-    \item Un método \verb!beber!, que vacía el mate y le resta una cebada
-disponible. Si se intenta beber un mate vacío, se debe lanzar una excepción
-que imprima el mensaje \lstinline|'El mate está vacío!'|
-    \item Es posible seguir cebando y bebiendo el mate aunque no haya cebadas
-disponibes. En ese caso la cantidad de cebadas restantes se mantendrá
-en 0, y cada vez que se intente beber se debe imprimir un mensaje de
-aviso: \lstinline|'Advertencia: el mate está lavado.'|, pero no se debe lanzar una
-excepción.
-\end{partes}
-\end{ejercicio}
+Crear las clases |Materia| y |Carrera|, que se comporten según el siguiente
+ejemplo:
 
+\begin{lstlisting}[numbers=none]
+>>> analisis2 = Materia("61.03", "Análisis 2", 8)
+>>> fisica2 = Materia("62.01", "Física 2", 8)
+>>> algo1 = Materia("75.40", "Algoritmos 1", 6)
+>>> c = Carrera([analisis2, fisica2, algo1])
+>>> str(c)
+Créditos: 0 -- Promedio: N/A -- Materias aprobadas:
+>>> c.aprobar("95.14", 7)
+ValueError: La materia 75.14 no es parte del plan de estudios
+>>> c.aprobar("75.40", 10)
+>>> c.aprobar("62.01", 7)
+>>> str(c)
+Créditos: 14 -- Promedio: 8.5 -- Materias aprobadas:
+75.40 Algoritmos 1 (10)
+62.01 Física 2 (7)
+\end{lstlisting}
+\end{ejercicio}
