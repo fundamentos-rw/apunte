@@ -914,6 +914,7 @@ utilizan más memoria (ya que la pila de ejecución se guarda en
 memoria) pero suelen ser más elegantes.
 
 \section{Un ejemplo de recursión elegante}
+\label{recursion_potencia}
 
 Consideremos ahora otro problema que puede ser resuelto de forma elegante
 mediante un algoritmo recursivo.
@@ -1142,13 +1143,210 @@ def fib(n):
 Vemos que el caso base es el mismo para ambos algoritmos, pero que en el
 caso iterativo se calcula el número de Fibonacci de forma incremental, de
 modo que para obtener el valor de \lstinline!fib(n)! se harán $n-1$
-iteraciones.
+iteraciones.\footnote{¿Y es la recursiva es la mejor implementación?
+Particularmente para el caso de la sucesión de Fibonacci, puede resolverse
+matemáticamente la ecuación de recurrencia para llegar a una fórmula
+cerrada. Así se obtiene $F_n = \left[ \frac{\varphi^n}{\sqrt5} \right]$, con
+$\varphi$ el número de oro igual a $\frac{1 + \sqrt5}2$ y el operador
+$\left[ \dots \right]$ como el redondeo entero.}
 
 \begin{atencion}
 En definitiva, vemos que un algoritmo recursivo {\bf no} es mejor que uno
 iterativo, ni viceversa.  En cada situación será conveniente analizar cuál
 algoritmo provee la solución al problema de forma más clara y eficiente.
 \end{atencion}
+
+\section{Diseño de algoritmos recursivos}
+
+Hasta el momento vimos que hay muchas funciones matemáticas que se definen
+o que pueden desarrollarse de forma recursiva, pero puede aplicarse recursividad
+a muchos problemas que no sean explicitamente recursivos. Diseñar un
+algoritmo recursivo es un proceso sistematizable.
+
+En general el proceso para plantear un algoritmo recursivo necesitamos
+resolver estos tres problemas:
+\begin{description}
+\item[Caso base:] Necesitamos definir uno o más casos bases de acuerdo a
+nuestro problema. Como regla general tratamos de pensar como caso base a
+las condiciones sobre las cuales es más fácil resolver nuestro problema.
+Por ejemplo, si estruviéramos trabajando sobre listas o cadenas probablemente
+sepamos la respuesta a nuestro problema si tuviéramos una secuencia vacía,
+o si estuviéramos trabajando sobre conjuntos de elementos probablemente la
+respuesta fuera evidente cuando tengamos un solo elemento.
+\item[Caso recursivo] o caso general: Este es el caso que va a efectuar
+la llamada recursiva. La idea de este caso es reducir el problema a un
+problema más sencillo, del cual se hará cargo la llamada recursiva, y luego
+poder ensamblar la solución al problema original. Ampliaremos esto más adelante.
+\item[Convergencia:] Necesitamos que la reducción que se haga en el caso
+recursivo converja hacia los casos bases, de modo que la recursión alguna
+vez termine. Esto es, si dijimos que el caso base se resolvía cuando teníamos
+una lista vacía, las operaciones del caso recursivo tienen que reducir
+reiteradamente la lista hasta que la misma quede vacía.
+\end{description}
+Si podemos hacer estas tres cosas, tendremos un algoritmo recursivo para
+nuestro problema.
+
+\section{Un primer diseño recursivo}
+
+Supongamos que queremos programar una función \lstinline!buscar(lista, elem)! que
+determine en forma recursiva si un elemento \lstinline!elem! se encuentra o no
+dentro de la secuencia \lstinline!lista!.
+
+Como caso base debemos elegir un caso sencillo de verificar. El caso más
+sencillo de verificar es uno en el que ni siquiera necesitamos fijarnos si el
+elemento está o no: Si la lista está vacía es evidente que el elemento no está en él.
+
+Nuestro caso base será algo así como:
+\begin{codigo-python-sn}
+    if len(lista) == 0:
+        return False
+\end{codigo-python-sn}
+
+Queremos converger a que dada cualquier lista de la reducción de nuestro
+problema terminemos en el caso base. Hay muchas maneras de reducir una lista
+para terminar teniendo un solo elemento pero para este caso vamos a proponer la
+más fácil, si cada llamada recursiva saca un elemento tarde o temprano
+covergeremos a una lista vacía.
+
+Nuestra llamada recursiva podría ser algo así como:
+\begin{codigo-python-sn}
+   buscar(lista[1:], elem)
+\end{codigo-python-sn}
+
+Lo más complejo ahora es pensar el caso general.
+
+Dijimos que íbamos a retirar
+un elemento de la lista por vez y hacer una llamada recursiva. Olvidémosnos por
+un momento de la recursividad e imaginemos que \emph{ya} tenemos una función
+que sabe buscar un elemento en una lista y que lo hace bien.
+
+Ahora queremos resolver otro problema: Dada la solución al problema de si un
+elemento está o no en una lista qué pasaría si la lista tuviera un elemento
+adicional. ¿Podemos resolver el problema más grande con la solución al problema
+más pequeño?
+
+Pensémoslo así, tenemos la lista ampliada \lstinline![cabeza] + lista! y hay una función
+ya implementada que nos dice si \lstinline!elem! está o no en \lstinline!lista!.
+La solución es sencilla: Si el elemento ya está en la lista entonces está en la
+lista ampliada. Ahora bien, si el elemento no estuviera en la lista la única
+manera en la que estaría en la lista ampliada es si fuera la cabeza de la lista.
+
+Es decir, la solución al problema este que planteamos sería así:
+\begin{codigo-python-sn}
+def buscar2(lista, elem):
+   """Precondición: len(lista) >= 1.
+      Devuelve: True si elem está en lista."""
+   return (lista[0] == elem) or buscar(lista[1:], elem)
+\end{codigo-python-sn}
+
+Podemos ver que si tuviéramos implementada \lstinline!buscar! entonces
+\lstinline!buscar2! funcionaría bien. Volvamos ahora a recursividad: Si sabemos
+resolver el caso general en función a la solución del caso simplificado de la
+llamada recursiva, si existen casos bases que cortan la recursión y si además
+la recursión converge hacia los casos bases tenemos resuelto el problema
+completo. La función que asumimos que funcionaba \emph{es la misma} que
+acabamos de implementar.
+
+Cuando diseñamos una función recursiva tenemos que dar este \emph{salto de fé}:
+La función del paso recursivo ya funciona, nosotros lo que vamos a implementar
+es una función que logra concatenar el resultado del subproblema y ensamblarlo con
+nuestro problema mayor. Si hacemos esto bien entonces todo funciona.
+
+Finalmente nuestra primera función recursiva quedaría:
+\begin{codigo-python-sn}
+def buscar(lista, elem):
+   """Devuelve: True si elem está en lista."""
+   if len(lista) == 0:
+       return False
+
+   return (lista[0] == elem) or buscar(lista[1:], elem)
+\end{codigo-python-sn}
+
+\section{Pasaje de la información}
+
+Dentro de los problemas recursivos no siempre es inmediato establecer cómo
+se va a propagar la información entre las llamadas recursivas, es decir, la
+reducción de la solución de los subproblemas en la solución del problema
+general.
+
+En todos los ejemplos presentados hasta el momento la información del resultado
+se propagó desde las hojas del árbol de llamadas (los casos bases) hacia las
+funciones invocantes. Por ejemplo, para resolver el resultado del factorial
+de $5$ se utilizaron los resultados computados por $F(4)$ y $F(3)$. Las funciones
+recursivas no recibieron resultados del cómputo de las funciones invocantes.
+Esto no siempre es así, en algunos problemas hace falta recibir resultados de
+las funciones invocantes.
+
+Supongamos que queremos diseñar una función recursiva que imprima las posibles
+palabras de longitud \lstinline!k! que se pueden generar con determinado
+alfabeto. Por ejemplo, para $[a, b, c]$ y $k=2$ tenemos $aa, ab, ac, ba, bb, bc, ca, cb, cc$.
+
+Como ya sabemos diseñar funciones recursivas intuimos que reduciremos el
+problema según \lstinline!k! y que tendremos una llamada recursiva para cada
+valor del diccionario. El cuerpo de nuestra función será algo así:
+\begin{codigo-python-sn}
+def combinaciones(alfabeto, k):
+    if k == 0:
+        return ???
+    for letra in alfabeto:
+        combinaciones(alfabeto, k - 1) ???
+\end{codigo-python-sn}
+Ahora bien, con esto no alcanza para resolver el problema.
+
+Nos piden imprimir, y para colmo de males ya vimos que se imprimen tantas cosas
+como llamadas a casos bases. Entonces tenemos dos opciones, o hacemos que en el
+caso base se impriman las palabras o hacemos que lo que se genera en los casos
+bases se recopile de alguna manera en las funciones invocantes y se imprima
+después. Ahora bien, estas dos
+alternativas nos van a obligar a modificar la interfaz del problema.
+
+Implementemos la alternativa en la cual la información se propaga hacia las
+hojas, que es más sencilla (se deja pensar la otra al lector):
+\begin{codigo-python-sn}
+def _combinaciones(alfabeto, k, prefijo):
+    if k == 0:
+        print(prefijo)
+        return
+    for letra in alfabeto:
+        _combinaciones(alfabeto, k - 1, prefijo + letra)
+\end{codigo-python-sn}
+Puede verse que esta función cumple con las reglas de diseño de recursividad
+que describimos antes. Con lo que no cumple esta función es con la interfaz
+natural del problema que nos pidieron. Aparece un prefijo que antes no estaba.
+
+Esto no invalida nuestra solución, pero la misma está incompleta. Lo que
+debemos hacer es implementar una función \emph{wrapper} (envoltorio) que lo
+que haga es funcionar de \emph{cara visible} para el usuario de la función que
+hace realmente el trabajo:
+\begin{codigo-python-sn}
+def combinaciones(alfabeto, k):
+   """Imprime todas las palabras de longitud k con las letras del alfabeto."""
+   _combinaciones(alfabeto, k, "")
+\end{codigo-python-sn}
+Si bien la función visible \lstinline!combinaciones! no es recursiva, sí lo
+es la función \lstinline!_combinaciones! que es la que realiza el trabajo.
+
+Además de para \emph{acomodar} los parámetros a los necesarios por la función
+recursiva, las funciones wrapper se suelen utilizar para
+simplificar las llamadas recursivas. Por ejemplo, si quisiéramos chequeos no
+querríamos que los mismos se reiteraran en cada iteración recursiva porque
+consumirían recursos innecesarios.
+
+Por ejemplo, en el capítulo~\ref{recursion_potencia} implementamos la potencia
+en forma recursiva con la restricción $n \geq 0$. Pero sabiendo que
+$b^n = \left(\frac1b\right)^{-n}$, el código implementado resuelve para todo
+$n$ entero. Podríamos modificar el código de \lstinline!potencia! para
+incluir este caso, pero se reiteraría la comprobación en cada recursión.
+Para un caso así sería más sencillo construir una función wrapper
+e incluir ahí todo lo que consideremos necesario\footnote{Y más allá de lo
+que se mencionó, ¿hace falta resolver la recursión si $b=0$, $b=1$, $b=-1$?}:
+\begin{codigo-python-sn}
+def potencia2(b, n):
+   if n < 0:
+      b = 1 / b
+      n = -n
+   return potencia(b, n)
+\end{codigo-python-sn}
 
 \section{Limitaciones}
 
