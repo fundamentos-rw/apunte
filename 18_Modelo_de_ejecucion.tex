@@ -1188,29 +1188,29 @@ nuestro problema.
 
 \section{Un primer diseño recursivo}
 
-Supongamos que queremos programar una función \lstinline!buscar(lista, elem)! que
-determine en forma recursiva si un elemento \lstinline!elem! se encuentra o no
+Supongamos que queremos programar una función \lstinline!sumar(lista)! que
+determine en forma recursiva la suma de los elementos
 dentro de la secuencia \lstinline!lista!.
 
 Como caso base debemos elegir un caso sencillo de verificar. El caso más
-sencillo de verificar es uno en el que ni siquiera necesitamos fijarnos si el
-elemento está o no: Si la lista está vacía es evidente que el elemento no está en él.
+sencillo de verificar es uno en el que ni siquiera necesitamos
+computar algo: Si la lista está vacía es evidente que la suma da cero.
 
 Nuestro caso base será algo así como:
 \begin{codigo-python-sn}
     if len(lista) == 0:
-        return False
+        return 0
 \end{codigo-python-sn}
 
 Queremos converger a que dada cualquier lista de la reducción de nuestro
 problema terminemos en el caso base. Hay muchas maneras de reducir una lista
-para terminar teniendo un solo elemento pero para este caso vamos a proponer la
+para terminar teniendo cero elementos pero para este caso vamos a proponer la
 más fácil, si cada llamada recursiva saca un elemento tarde o temprano
 covergeremos a una lista vacía.
 
 Nuestra llamada recursiva podría ser algo así como:
 \begin{codigo-python-sn}
-   buscar(lista[1:], elem)
+   sumar(lista[1:])
 \end{codigo-python-sn}
 
 Lo más complejo ahora es pensar el caso general.
@@ -1218,29 +1218,28 @@ Lo más complejo ahora es pensar el caso general.
 Dijimos que íbamos a retirar
 un elemento de la lista por vez y hacer una llamada recursiva. Olvidémonos por
 un momento de la recursividad e imaginemos que \emph{ya} tenemos una función
-que sabe buscar un elemento en una lista y que lo hace bien.
+que sabe sumar los elementos en una lista y que lo hace bien.
 
-Ahora queremos resolver otro problema: Dada la solución al problema de si un
-elemento está o no en una lista qué pasaría si la lista tuviera un elemento
+Ahora queremos resolver otro problema: Dada la solución al problema de sumar
+los elementos de una lista qué pasaría si la lista tuviera un elemento
 adicional. ¿Podemos resolver el problema más grande con la solución al problema
 más pequeño?
 
 Pensémoslo así, tenemos la lista ampliada \lstinline![cabeza] + lista! y hay una función
-ya implementada que nos dice si \lstinline!elem! está o no en \lstinline!lista!.
-La solución es sencilla: Si el elemento ya está en la lista entonces está en la
-lista ampliada. Ahora bien, si el elemento no estuviera en la lista la única
-manera en la que estaría en la lista ampliada es si fuera la cabeza de la lista.
+\lstinline!sumar2! ya implementada que nos dice la suma de los elementos de \lstinline!lista!.
+La solución es sencilla: La suma de la lista ampliada será la suma de la lista
+más la cabeza.
 
 Es decir, la solución al problema este que planteamos sería así:
 \begin{codigo-python-sn}
-def buscar2(lista, elem):
+def sumar(lista):
    """Precondición: len(lista) >= 1.
-      Devuelve: True si elem está en lista."""
-   return (lista[0] == elem) or buscar(lista[1:], elem)
+      Devuelve: La suma de los elementos en la lista."""
+   return sumar2(lista[1:]) + lista[0]
 \end{codigo-python-sn}
 
-Podemos ver que si tuviéramos implementada \lstinline!buscar! entonces
-\lstinline!buscar2! funcionaría bien. Volvamos ahora a recursividad: Si sabemos
+Podemos ver que si tuviéramos implementada \lstinline!buscar2! entonces
+\lstinline!buscar! funcionaría bien. Volvamos ahora a recursividad: Si sabemos
 resolver el caso general en función a la solución del caso simplificado de la
 llamada recursiva, si existen casos bases que cortan la recursión y si además
 la recursión converge hacia los casos bases tenemos resuelto el problema
@@ -1254,12 +1253,12 @@ nuestro problema mayor. Si hacemos esto bien entonces todo funciona.
 
 Finalmente nuestra primera función recursiva quedaría:
 \begin{codigo-python-sn}
-def buscar(lista, elem):
-   """Devuelve: True si elem está en lista."""
+def sumar(lista):
+   """Devuelve: La suma de los elementos en la lista."""
    if len(lista) == 0:
-       return False
+       return 0
 
-   return (lista[0] == elem) or buscar(lista[1:], elem)
+   return sumar(lista[1:]) + lista[0]
 \end{codigo-python-sn}
 
 \section{Pasaje de la información}
