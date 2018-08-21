@@ -1282,18 +1282,23 @@ alfabeto. Por ejemplo, para $[a, b, c]$ y $k=2$ tenemos $aa, ab, ac, ba, bb, bc,
 
 Como ya sabemos diseñar funciones recursivas intuimos que reduciremos el
 problema según \lstinline!k! y que tendremos una llamada recursiva para cada
-valor del diccionario. El cuerpo de nuestra función será algo así:
+valor del alfabeto. El cuerpo de nuestra función será algo así:
 \begin{codigo-python-sn}
 def combinaciones(alfabeto, k):
     if k == 0:
-        return ???
+        ???
+        return
     for letra in alfabeto:
-        combinaciones(alfabeto, k - 1) ???
+        ???
+        combinaciones(alfabeto, k - 1)
 \end{codigo-python-sn}
 Ahora bien, con esto no alcanza para resolver el problema.
 
-Nos piden imprimir, y para colmo de males ya vimos que se imprimen tantas cosas
-como llamadas a casos bases. Entonces tenemos dos opciones, o hacemos que en el
+En primer lugar, según el problema que estamos resolviendo, tenemos que
+\emph{imprimir}, no \emph{devolver}. En total tenemos que imprimir
+$len(alfabeto)^k$ combinaciones, que no es otra cosa que la cantidad de veces
+que se va a ejecutar el caso base.
+Entonces tenemos dos opciones, o hacemos que en el
 caso base se impriman las palabras o hacemos que lo que se genera en los casos
 bases se recopile de alguna manera en las funciones invocantes y se imprima
 después. Ahora bien, estas dos
