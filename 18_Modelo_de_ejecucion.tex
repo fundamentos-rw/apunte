@@ -1554,6 +1554,12 @@ replicar([1, 3, 3, 7], 2) -> ([1, 1, 3, 3, 3, 3, 7, 7])
 
 \extractionlabel{guia}
 \begin{ejercicio}
+Escribir una funcion recursiva que dada una cadena determine si en la misma
+hay más letras A o letras E.
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
 El triángulo de Pascal es un arreglo triangular de números que se define de la
 siguiente manera: Las filas se enumeran desde $n = 0$, de arriba hacia
 abajo. Los valores de cada fila se enumeran desde $k = 0$ (de izquierda a
@@ -1576,4 +1582,19 @@ $n=6$ &1&&6&&15&&20&&15&&6&&1
 Escribir la función recursiva \verb|pascal(n, k)| que calcula el valor que se
 encuentra en la fila \verb|n| y la columna \verb|k|. Ejemplo:
 \verb|pascal(5, 2) -> 10|
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Ya sabemos que la implementación recursiva del cálculo del número de Fibonacci
+($F_n = F_{n-1} + F_{n-2}$, $F_0 = 0$, $F_1 = 1$)
+es ineficiente porque muchas de las ramas calculan reiteradamente los mismos
+valores.
+
+Escribir una función \lstinline!fibonacci(n)! que calcule el enésimo número
+de Fibonacci de forma recursiva pero que utilice un diccionario para almacenar
+los valores ya computados y no computarlos más de una vez.
+
+{\bf Nota}: Será necesario implementar una función wrapper para cumplir con la
+interfaz pedida.
 \end{ejercicio}
