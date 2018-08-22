@@ -1313,10 +1313,7 @@ def sumar(lista):
         lista, suma = lista[1:], suma + lista[0]
 \end{codigo-python-sn}
 tan solo reemplazando la recursión por una iteración y actualizando las
-variables según los parámetros de la llamada recursiva. Algunos lenguajes
-de programación (no Python) identifican la recursividad de cola y directamente
-ejecutan la versión iterativa, esto se conoce como \emph{optimización de
-recursividad de cola}.
+variables según los parámetros de la llamada recursiva.
 
 \section{Modificación de la interfaz}
 
@@ -1435,16 +1432,14 @@ Existen algunos lenguajes \emph{funcionales}, como Haskell, ML, o Scheme, en
 los cuales la recursión es la única forma de realizar un ciclo.  Es
 decir, no existen construcciones |while| ni |for|.
 
-Estos lenguajes cuentan con una optimización especial, llamada
-\emph{optimización de recursión por cola} (\emph{tail recursion optimization}),
-que permite que cuando una función realiza su llamada recursiva como
-\emph{última} acción antes de terminar, no se apile el estado de la función
+Estos lenguajes cuentan con optimización de recursión de cola,
+una optimización que cuando se identifica que la recursión es de cola,
+no se apile el estado de la función
 innecesariamente, evitando el consumo adicional de memoria mencionado
 anteriormente.
 
-La función \lstinline!factorial! vista en esta unidad es un ejemplo de
-\emph{recursión por cola} cuya ejecución podría ser optimizada por el compilador o
-intérprete del lenguaje.
+La ejecución de todas las funciones con recursión de cola vistas en esta
+unidad podrían ser optimizada por el compilador o intérprete del lenguaje.
 \end{sabias_que}
 
 \section{Resumen}
