@@ -914,6 +914,7 @@ utilizan más memoria (ya que la pila de ejecución se guarda en
 memoria) pero suelen ser más elegantes.
 
 \section{Un ejemplo de recursión elegante}
+\label{recursion_potencia}
 
 Consideremos ahora otro problema que puede ser resuelto de forma elegante
 mediante un algoritmo recursivo.
@@ -1142,13 +1143,255 @@ def fib(n):
 Vemos que el caso base es el mismo para ambos algoritmos, pero que en el
 caso iterativo se calcula el número de Fibonacci de forma incremental, de
 modo que para obtener el valor de \lstinline!fib(n)! se harán $n-1$
-iteraciones.
+iteraciones.\footnote{¿Y es la iterativa la mejor implementación?
+Particularmente para el caso de la sucesión de Fibonacci, puede resolverse
+matemáticamente la ecuación de recurrencia para llegar a una fórmula
+cerrada. Así se obtiene $F_n = \left[ \frac{\varphi^n}{\sqrt5} \right]$, con
+$\varphi = \frac{1 + \sqrt5}2$ el número de oro y el operador
+$\left[ \dots \right]$ como el redondeo entero.}
 
 \begin{atencion}
 En definitiva, vemos que un algoritmo recursivo {\bf no} es mejor que uno
 iterativo, ni viceversa.  En cada situación será conveniente analizar cuál
 algoritmo provee la solución al problema de forma más clara y eficiente.
 \end{atencion}
+
+\section{Diseño de algoritmos recursivos}
+
+Hasta el momento vimos que hay muchas funciones matemáticas que se definen
+o que pueden desarrollarse de forma recursiva, pero puede aplicarse recursividad
+a muchos problemas que no sean explicitamente recursivos. Diseñar un
+algoritmo recursivo es un proceso sistematizable.
+
+En general el proceso para plantear un algoritmo recursivo necesitamos
+resolver estos tres problemas:
+\begin{description}
+\item[Caso base:] Necesitamos definir uno o más casos bases de acuerdo a
+nuestro problema. Como regla general tratamos de pensar como caso base a
+las condiciones sobre las cuales es más fácil resolver nuestro problema.
+Por ejemplo, si estruviéramos trabajando sobre listas o cadenas probablemente
+sepamos la respuesta a nuestro problema si tuviéramos una secuencia vacía,
+o si estuviéramos trabajando sobre conjuntos de elementos probablemente la
+respuesta fuera evidente cuando tengamos un solo elemento.
+\item[Caso recursivo] o caso general: Este es el caso que va a efectuar
+la llamada recursiva. La idea de este caso es reducir el problema a un
+problema más sencillo, del cual se hará cargo la llamada recursiva, y luego
+poder ensamblar la solución al problema original. Ampliaremos esto más adelante.
+\item[Convergencia:] Necesitamos que la reducción que se haga en el caso
+recursivo converja hacia los casos bases, de modo que la recursión alguna
+vez termine. Esto es, si dijimos que el caso base se resolvía cuando teníamos
+una lista vacía, las operaciones del caso recursivo tienen que reducir
+reiteradamente la lista hasta que la misma quede vacía.
+\end{description}
+Si podemos hacer estas tres cosas, tendremos un algoritmo recursivo para
+nuestro problema.
+
+\section{Un primer diseño recursivo}
+
+Supongamos que queremos programar una función \lstinline!sumar(lista)! que
+determine en forma recursiva la suma de una secuencia \lstinline!lista! de
+números.
+
+Como caso base debemos elegir un caso sencillo de verificar. El caso más
+sencillo de verificar es uno en el que ni siquiera necesitamos
+computar algo: Si la lista está vacía es evidente que la suma da cero.
+
+Nuestro caso base será algo así como:
+\begin{codigo-python-sn}
+    if len(lista) == 0:
+        return 0
+\end{codigo-python-sn}
+
+Queremos converger a que dada cualquier lista de la reducción de nuestro
+problema terminemos en el caso base. Hay muchas maneras de reducir una lista
+para terminar teniendo cero elementos pero para este caso vamos a proponer la
+más fácil, si cada llamada recursiva saca un elemento tarde o temprano
+covergeremos a una lista vacía.
+
+Nuestra llamada recursiva podría ser algo así como:
+\begin{codigo-python-sn}
+   sumar(lista[1:])
+\end{codigo-python-sn}
+
+Lo más complejo ahora es pensar el caso general.
+
+Dijimos que íbamos a retirar
+un elemento de la lista por vez y hacer una llamada recursiva. Olvidémonos por
+un momento de la recursividad e imaginemos que \emph{ya} tenemos una función
+que sabe sumar los elementos en una lista y que lo hace bien.
+
+Ahora queremos resolver otro problema: Dada la solución al problema de sumar
+los elementos de una lista qué pasaría si la lista tuviera un elemento
+adicional. ¿Podemos resolver el problema más grande con la solución al problema
+más pequeño?
+
+Pensémoslo así, tenemos la lista ampliada \lstinline![cabeza] + lista! y hay una función
+\lstinline!sumar2! ya implementada que nos dice la suma de los elementos de \lstinline!lista!.
+La solución es sencilla: La suma de la lista ampliada será la suma de la lista
+más la cabeza.
+
+Es decir, la solución al problema este que planteamos sería así:
+\begin{codigo-python-sn}
+def sumar(lista):
+   """Precondición: len(lista) >= 1.
+      Devuelve: La suma de los elementos en la lista."""
+   return sumar2(lista[1:]) + lista[0]
+\end{codigo-python-sn}
+
+Podemos ver que si tuviéramos implementada \lstinline!buscar2! entonces
+\lstinline!buscar! funcionaría bien. Volvamos ahora a recursividad: Si sabemos
+resolver el caso general en función a la solución del caso simplificado de la
+llamada recursiva, si existen casos bases que cortan la recursión y si además
+la recursión converge hacia los casos bases tenemos resuelto el problema
+completo. La función que asumimos que funcionaba \emph{es la misma} que
+acabamos de implementar.
+
+Cuando diseñamos una función recursiva tenemos que dar este \emph{salto de fé}:
+La función del paso recursivo ya funciona, nosotros lo que vamos a implementar
+es una función que logra concatenar el resultado del subproblema y ensamblarlo con
+nuestro problema mayor. Si hacemos esto bien entonces todo funciona.
+
+Finalmente nuestra primera función recursiva quedaría:
+\begin{codigo-python-sn}
+def sumar(lista):
+   """Devuelve la suma de los elementos en la lista."""
+   if len(lista) == 0:
+       return 0
+
+   return sumar(lista[1:]) + lista[0]
+\end{codigo-python-sn}
+
+\section{Pasaje de la información}
+
+Dentro de los problemas recursivos no siempre es inmediato establecer cómo
+se va a propagar la información entre las llamadas recursivas, es decir, la
+reducción de la solución de los subproblemas en la solución del problema
+general.
+
+En todos los ejemplos presentados hasta el momento la información del resultado
+se propagó desde las hojas del árbol de llamadas (los casos bases) hacia las
+funciones invocantes. Por ejemplo, para resolver el resultado de Fibonacci
+$F_5$ se utilizaron los resultados computados por $F_4$ y $F_3$. Las funciones
+recursivas no recibieron resultados del cómputo de las funciones invocantes.
+Esto no siempre es así, en algunos problemas sí hace falta recibirlos.
+
+A veces, si bien no es necesario, puede tener ventajas adicionales propagar la
+información hacia abajo. Por ejemplo, podríamos reescribir la función
+\lstinline!sumar! de esta forma:
+\begin{codigo-python-sn}
+def sumar(lista, suma=0):
+    """Devuelve la suma de los elementos en la lista."""
+    if len(lista) == 0:
+        return suma
+
+    return sumar(lista[1:], suma + lista[0])
+\end{codigo-python-sn}
+Puede observarse que en esta implementación en vez de \emph{esperar} a que se
+resuelva el cómputo de la parte recursiva para ensamblar la solución e ir
+resolviendo los cálculos parciales desde el final de la lista hacia el
+principio, le \emph{pasamos} la solución parcial a las llamadas recursivas.
+Finalmente el caso base devuelve la suma de los cálculos que se realizaron
+de principio a final y cada llamada recursiva devuelve este resultado.
+
+No profundizaremos más en el tema, pero la particularidad de que lo último
+que se realice en el caso general sea la llamada recursiva (sin realizar
+ninguna operación adicional sobre esta llamada) se conoce como
+\emph{recursividad de cola}. La recursividad de cola es de interés porque
+implica muy poco esfuerzo reescribir una versión iterativa y no recursiva
+del algoritmo. Esto es inmediato: como lo último que se hace es la llamada
+recursiva entonces no hace falta seguir \emph{recordando} el contexto de la
+llamada anterior cuando se hace la siguiente, entonces no es necesario utilizar
+la pila de ejecución. El código anterior puede reescribirse como
+\begin{codigo-python-sn}
+def sumar(lista):
+    """Devuelve la suma de los elementos en la lista."""
+    suma = 0
+    while True:
+        if len(lista) == 0:
+            return suma
+
+        lista, suma = lista[1:], suma + lista[0]
+\end{codigo-python-sn}
+tan solo reemplazando la recursión por una iteración y actualizando las
+variables según los parámetros de la llamada recursiva.
+
+\section{Modificación de la interfaz}
+
+En el ejemplo de \lstinline!sumar! implementada con recursividad de cola nos
+vimos obligados a modificar la interfaz de la función agregando la variable
+\lstinline!suma! que no formaba parte del problema inicial. Pudimos hacerlo
+elegantemente utilizando un valor por omisión, pero la interfaz de todos modos
+quedó confusa. Hay veces en la que no podemos salvar un cambio en la interfaz.
+
+Supongamos que queremos diseñar una función recursiva que calcule el promedio
+de una secuencia de números.
+
+Como ya sabemos diseñar funciones recursivas intuimos que el caso base será
+cuando la lista esté vacía y que la reduciremos sacando de a un elemento por
+vez. El cuerpo de nuestra función será algo así:
+\begin{codigo-python-sn}
+def promediar(lista):
+    if len(lista) == 0:
+        return ???
+    promediar(lista[1:]) ???
+\end{codigo-python-sn}
+Ahora bien, con esto no alcanza para resolver el problema.
+
+Para calcular un promedio necesitamos computar tanto una suma como contar
+la cantidad de elementos. Las funciones van a estar computando dos valores
+cuando el resultado del problema es evidentemente uno solo. Si bien puede
+elaborarse una solución similar a la que ya ensayamos con \lstinline!sumar!
+complicaría innecesariamente el código. Es preferible modificar la interfaz
+del problema.
+
+Implementemos el problema resolviendo primero la llamada recursiva y luego
+ensamblando:
+\begin{codigo-python-sn}
+def _promediar(lista):
+    if len(lista) == 0:
+        return 0, 0
+    suma, cantidad = _promediar(lista[1:])
+    return suma + lista[0], cantidad + 1
+\end{codigo-python-sn}
+Puede verse que esta función cumple con las reglas de diseño de recursividad
+que describimos antes. Con lo que no cumple esta función es con la interfaz
+natural del problema que nos pidieron. Se devuelven dos cosas en vez de una.
+
+Esto no invalida nuestra solución, pero la misma está incompleta. Lo que
+debemos hacer es implementar una función \emph{wrapper} (envoltorio) que lo
+que haga es funcionar de \emph{cara visible} para el usuario de la función que
+hace realmente el trabajo:
+\begin{codigo-python-sn}
+def promediar(lista):
+   """Devuelve el promedio de los elementos de una lista de números."""
+   suma, cantidad = _promediar(lista)
+   return suma / cantidad
+\end{codigo-python-sn}
+Si bien la función visible \lstinline!promediar! no es recursiva, sí lo
+es la función \lstinline!_promediar! que es la que realiza el trabajo, por
+lo que el conjunto se considera recursivo.
+
+Además de para adaptar la interfaz (parámetros y valor de retorno) entre el
+usuario y la función recursiva, las funciones wrapper se suelen utilizar para
+simplificar el código de las funciones recursivas. Por ejemplo, si quisiéramos hacer comprobaciones no
+querríamos que las mismas se reiteraran en cada iteración recursiva porque
+consumirían recursos innecesarios. Entonces las resolvemos antes de empezar la recursión.
+
+Por ejemplo, en el capítulo~\ref{recursion_potencia} implementamos la potencia
+en forma recursiva con la restricción $n \geq 0$. Pero dado que
+$b^n = \left(\frac1b\right)^{-n}$ podemos aprovechar el código implementado para
+resolver para cualquier $n$ entero. Podríamos modificar el código de \lstinline!potencia! para
+incluir este caso, pero se reiteraría la comprobación en cada recursión.
+Para un caso así sería más sencillo construir una función wrapper
+e incluir ahí todo lo que consideremos necesario\footnote{Y más allá de lo
+que se mencionó, ¿hace falta resolver la recursión si $b=0$, $b=1$, $b=-1$?}:
+\begin{codigo-python-sn}
+def potencia2(b, n):
+   if n < 0:
+      b = 1 / b
+      n = -n
+   return potencia(b, n)
+\end{codigo-python-sn}
 
 \section{Limitaciones}
 
@@ -1189,16 +1432,14 @@ Existen algunos lenguajes \emph{funcionales}, como Haskell, ML, o Scheme, en
 los cuales la recursión es la única forma de realizar un ciclo.  Es
 decir, no existen construcciones |while| ni |for|.
 
-Estos lenguajes cuentan con una optimización especial, llamada
-\emph{optimización de recursión por cola} (\emph{tail recursion optimization}),
-que permite que cuando una función realiza su llamada recursiva como
-\emph{última} acción antes de terminar, no se apile el estado de la función
+Estos lenguajes cuentan con optimización de recursión de cola,
+una optimización para que cuando se identifique que la recursión es de cola,
+no se apile el estado de la función
 innecesariamente, evitando el consumo adicional de memoria mencionado
 anteriormente.
 
-La función \lstinline!factorial! vista en esta unidad es un ejemplo de
-\emph{recursión por cola} cuya ejecución podría ser optimizada por el compilador o
-intérprete del lenguaje.
+La ejecución de todas las funciones con recursión de cola vistas en esta
+unidad podrían ser optimizada por el compilador o intérprete del lenguaje.
 \end{sabias_que}
 
 \section{Resumen}
@@ -1313,6 +1554,12 @@ replicar([1, 3, 3, 7], 2) -> ([1, 1, 3, 3, 3, 3, 7, 7])
 
 \extractionlabel{guia}
 \begin{ejercicio}
+Escribir una funcion recursiva que dada una cadena determine si en la misma
+hay más letras A o letras E.
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
 El triángulo de Pascal es un arreglo triangular de números que se define de la
 siguiente manera: Las filas se enumeran desde $n = 0$, de arriba hacia
 abajo. Los valores de cada fila se enumeran desde $k = 0$ (de izquierda a
@@ -1335,4 +1582,19 @@ $n=6$ &1&&6&&15&&20&&15&&6&&1
 Escribir la función recursiva \verb|pascal(n, k)| que calcula el valor que se
 encuentra en la fila \verb|n| y la columna \verb|k|. Ejemplo:
 \verb|pascal(5, 2) -> 10|
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Ya sabemos que la implementación recursiva del cálculo del número de Fibonacci
+($F_n = F_{n-1} + F_{n-2}$, $F_0 = 0$, $F_1 = 1$)
+es ineficiente porque muchas de las ramas calculan reiteradamente los mismos
+valores.
+
+Escribir una función \lstinline!fibonacci(n)! que calcule el enésimo número
+de Fibonacci de forma recursiva pero que utilice un diccionario para almacenar
+los valores ya computados y no computarlos más de una vez.
+
+{\bf Nota}: Será necesario implementar una función wrapper para cumplir con la
+interfaz pedida.
 \end{ejercicio}
