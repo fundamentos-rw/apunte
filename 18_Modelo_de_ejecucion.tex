@@ -1189,8 +1189,8 @@ nuestro problema.
 \section{Un primer diseño recursivo}
 
 Supongamos que queremos programar una función \lstinline!sumar(lista)! que
-determine en forma recursiva la suma de los elementos
-dentro de la secuencia \lstinline!lista!.
+determine en forma recursiva la suma de una secuencia \lstinline!lista! de
+números.
 
 Como caso base debemos elegir un caso sencillo de verificar. El caso más
 sencillo de verificar es uno en el que ni siquiera necesitamos
@@ -1254,7 +1254,7 @@ nuestro problema mayor. Si hacemos esto bien entonces todo funciona.
 Finalmente nuestra primera función recursiva quedaría:
 \begin{codigo-python-sn}
 def sumar(lista):
-   """Devuelve: La suma de los elementos en la lista."""
+   """Devuelve la suma de los elementos en la lista."""
    if len(lista) == 0:
        return 0
 
@@ -1275,57 +1275,103 @@ $F_5$ se utilizaron los resultados computados por $F_4$ y $F_3$. Las funciones
 recursivas no recibieron resultados del cómputo de las funciones invocantes.
 Esto no siempre es así, en algunos problemas sí hace falta recibirlos.
 
-Supongamos que queremos diseñar una función recursiva que imprima las posibles
-palabras de longitud \lstinline!k! que se pueden generar con determinado
-alfabeto. Por ejemplo, para $[a, b, c]$ y $k=2$ tenemos $aa, ab, ac, ba, bb, bc, ca, cb, cc$.
-
-Como ya sabemos diseñar funciones recursivas intuimos que reduciremos el
-problema según \lstinline!k! y que tendremos una llamada recursiva para cada
-valor del alfabeto. El cuerpo de nuestra función será algo así:
+A veces, si bien no es necesario, puede tener ventajas adicionales propagar la
+información hacia abajo. Por ejemplo, podríamos reescribir la función
+\lstinline!sumar! de esta forma:
 \begin{codigo-python-sn}
-def combinaciones(alfabeto, k):
-    if k == 0:
+def sumar(lista, suma=0):
+    """Devuelve la suma de los elementos en la lista."""
+    if len(lista) == 0:
+        return suma
+
+    return sumar(lista[1:], suma + lista[0])
+\end{codigo-python-sn}
+Puede observarse que en esta implementación en vez de \emph{esperar} a que se
+resuelva el cómputo de la parte recursiva para ensamblar la solución e ir
+resolviendo los cálculos parciales desde el final de la lista hacia el
+principio, le \emph{pasamos} la solución parcial a las llamadas recursivas.
+Finalmente el caso base devuelve la suma de los cálculos que se realizaron
+de principio a final y cada llamada recursiva devuelve este resultado.
+
+No profundizaremos más en el tema, pero la particularidad de que lo último
+que se realice en el caso general sea la llamada recursiva (sin realizar
+ninguna operación adicional sobre esta llamada) se conoce como
+\emph{recursividad de cola}. La recursividad de cola es de interés porque
+implica muy poco esfuerzo reescribir una versión iterativa y no recursiva
+del algoritmo. Esto es inmediato: como lo último que se hace es la llamada
+recursiva entonces no hace falta seguir \emph{recordando} el contexto de la
+llamada anterior cuando se hace la siguiente, entonces no es necesario utilizar
+la pila de ejecución. El código anterior puede reescribirse como
+\begin{codigo-python-sn}
+def sumar(lista):
+    """Devuelve la suma de los elementos en la lista."""
+    suma = 0
+    while True:
+        if len(lista) == 0:
+            return suma
+
+        lista, suma = lista[1:], suma + lista[0]
+\end{codigo-python-sn}
+tan solo reemplazando la recursión por una iteración y actualizando las
+variables según los parámetros de la llamada recursiva. Algunos lenguajes
+de programación (no Python) identifican la recursividad de cola y directamente
+ejecutan la versión iterativa, esto se conoce como \emph{optimización de
+recursividad de cola}.
+
+\section{Modificación de la interfaz}
+
+En el ejemplo de \lstinline!sumar! implementada con recursividad de cola nos
+vimos obligados a modificar la interfaz de la función agregando la variable
+\lstinline!suma! que no formaba parte del problema inicial. Pudimos hacerlo
+elegantemente utilizando un valor por omisión, pero la interfaz de todos modos
+quedó confusa. Hay veces en la que no podemos salvar un cambio en la interfaz.
+
+Supongamos que queremos diseñar una función recursiva que calcule el promedio
+de una secuencia de números.
+
+Como ya sabemos diseñar funciones recursivas intuimos que el caso base será
+cuando la lista esté vacía y que la reduciremos sacando de a un elemento por
+vez. El cuerpo de nuestra función será algo así:
+\begin{codigo-python-sn}
+def promediar(lista):
+    if len(lista) == 0:
         return ???
-    for letra in alfabeto:
-        combinaciones(alfabeto, k - 1) ???
+    promediar(lista[1:]) ???
 \end{codigo-python-sn}
 Ahora bien, con esto no alcanza para resolver el problema.
 
-En primer lugar, según el problema que estamos resolviendo, tenemos que
-\emph{imprimir}, no \emph{devolver}. En total tenemos que imprimir
-$len(alfabeto)^k$ combinaciones, que no es otra cosa que la cantidad de veces
-que se va a ejecutar el caso base.
-Entonces tenemos dos opciones, o hacemos que en el
-caso base se impriman las palabras o hacemos que lo que se genera en los casos
-bases se recopile de alguna manera en las funciones invocantes y se imprima
-después. Ahora bien, estas dos
-alternativas nos van a obligar a modificar la interfaz del problema.
+Para calcular un promedio necesitamos computar tanto una suma como contar
+la cantidad de elementos. Las funciones van a estar computando dos valores
+cuando el resultado del problema es evidentemente uno solo. Si bien puede
+elaborarse una solución similar a la que ya ensayamos con \lstinline!sumar!
+complicaría innecesariamente el código. Es preferible modificar la interfaz
+del problema.
 
-Implementemos la alternativa en la cual la información se propaga hacia las
-hojas, que es más sencilla (se deja pensar la otra al lector):
+Implementemos el problema resolviendo primero la llamada recursiva y luego
+ensamblando:
 \begin{codigo-python-sn}
-def _combinaciones(alfabeto, k, prefijo):
-    if k == 0:
-        print(prefijo)
-        return
-    for letra in alfabeto:
-        _combinaciones(alfabeto, k - 1, prefijo + letra)
+def _promediar(lista):
+    if len(lista) == 0:
+        return 0, 0
+    suma, cantidad = _promediar(lista[1:])
+    return suma + lista[0], cantidad + 1
 \end{codigo-python-sn}
 Puede verse que esta función cumple con las reglas de diseño de recursividad
 que describimos antes. Con lo que no cumple esta función es con la interfaz
-natural del problema que nos pidieron. Aparece un prefijo que antes no estaba.
+natural del problema que nos pidieron. Se devuelven dos cosas en vez de una.
 
 Esto no invalida nuestra solución, pero la misma está incompleta. Lo que
 debemos hacer es implementar una función \emph{wrapper} (envoltorio) que lo
 que haga es funcionar de \emph{cara visible} para el usuario de la función que
 hace realmente el trabajo:
 \begin{codigo-python-sn}
-def combinaciones(alfabeto, k):
-   """Imprime todas las palabras de longitud k con las letras del alfabeto."""
-   _combinaciones(alfabeto, k, "")
+def promediar(lista):
+   """Devuelve el promedio de los elementos de una lista de números."""
+   suma, cantidad = _promediar(lista)
+   return suma / cantidad
 \end{codigo-python-sn}
-Si bien la función visible \lstinline!combinaciones! no es recursiva, sí lo
-es la función \lstinline!_combinaciones! que es la que realiza el trabajo, por
+Si bien la función visible \lstinline!promediar! no es recursiva, sí lo
+es la función \lstinline!_promediar! que es la que realiza el trabajo, por
 lo que el conjunto se considera recursivo.
 
 Además de para \emph{acomodar} los parámetros a los necesarios para realizar
