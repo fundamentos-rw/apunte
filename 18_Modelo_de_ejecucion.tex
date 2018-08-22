@@ -1371,8 +1371,8 @@ Si bien la función visible \lstinline!promediar! no es recursiva, sí lo
 es la función \lstinline!_promediar! que es la que realiza el trabajo, por
 lo que el conjunto se considera recursivo.
 
-Además de para \emph{acomodar} los parámetros a los necesarios para realizar
-la primera llamada a la función recursiva, las funciones wrapper se suelen utilizar para
+Además de para adaptar la interfaz (parámetros y valor de retorno) entre el
+usuario y la función recursiva, las funciones wrapper se suelen utilizar para
 simplificar el código de las funciones recursivas. Por ejemplo, si quisiéramos hacer comprobaciones no
 querríamos que las mismas se reiteraran en cada iteración recursiva porque
 consumirían recursos innecesarios. Entonces las resolvemos antes de empezar la recursión.
@@ -1433,7 +1433,7 @@ los cuales la recursión es la única forma de realizar un ciclo.  Es
 decir, no existen construcciones |while| ni |for|.
 
 Estos lenguajes cuentan con optimización de recursión de cola,
-una optimización que cuando se identifica que la recursión es de cola,
+una optimización para que cuando se identifique que la recursión es de cola,
 no se apile el estado de la función
 innecesariamente, evitando el consumo adicional de memoria mencionado
 anteriormente.
