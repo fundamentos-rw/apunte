@@ -1147,7 +1147,7 @@ iteraciones.\footnote{¿Y es la iterativa la mejor implementación?
 Particularmente para el caso de la sucesión de Fibonacci, puede resolverse
 matemáticamente la ecuación de recurrencia para llegar a una fórmula
 cerrada. Así se obtiene $F_n = \left[ \frac{\varphi^n}{\sqrt5} \right]$, con
-$\varphi = \frac{1 + \sqrt5}2$ el número de oro y el operador
+$\varphi = \frac{1 + \sqrt5}2$ el ``número de oro'' y el operador
 $\left[ \dots \right]$ como el redondeo entero.}
 
 \begin{atencion}
@@ -1163,8 +1163,9 @@ o que pueden desarrollarse de forma recursiva, pero puede aplicarse recursividad
 a muchos problemas que no sean explicitamente recursivos. Diseñar un
 algoritmo recursivo es un proceso sistematizable.
 
-En general el proceso para plantear un algoritmo recursivo necesitamos
+En general en el proceso para plantear un algoritmo recursivo necesitamos
 resolver estos tres problemas:
+
 \begin{description}
 \item[Caso base:] Necesitamos definir uno o más casos bases de acuerdo a
 nuestro problema. Como regla general tratamos de pensar como caso base a
@@ -1183,6 +1184,7 @@ vez termine. Esto es, si dijimos que el caso base se resolvía cuando teníamos
 una lista vacía, las operaciones del caso recursivo tienen que reducir
 reiteradamente la lista hasta que la misma quede vacía.
 \end{description}
+
 Si podemos hacer estas tres cosas, tendremos un algoritmo recursivo para
 nuestro problema.
 
@@ -1197,6 +1199,7 @@ sencillo de verificar es uno en el que ni siquiera necesitamos
 computar algo: Si la lista está vacía es evidente que la suma da cero.
 
 Nuestro caso base será algo así como:
+
 \begin{codigo-python-sn}
     if len(lista) == 0:
         return 0
@@ -1205,41 +1208,37 @@ Nuestro caso base será algo así como:
 Queremos converger a que dada cualquier lista de la reducción de nuestro
 problema terminemos en el caso base. Hay muchas maneras de reducir una lista
 para terminar teniendo cero elementos pero para este caso vamos a proponer la
-más fácil, si cada llamada recursiva saca un elemento tarde o temprano
+más fácil: si cada llamada recursiva saca un elemento, tarde o temprano
 covergeremos a una lista vacía.
 
 Nuestra llamada recursiva podría ser algo así como:
+
 \begin{codigo-python-sn}
    sumar(lista[1:])
 \end{codigo-python-sn}
 
 Lo más complejo ahora es pensar el caso general.
 
-Dijimos que íbamos a retirar
-un elemento de la lista por vez y hacer una llamada recursiva. Olvidémonos por
-un momento de la recursividad e imaginemos que \emph{ya} tenemos una función
-que sabe sumar los elementos en una lista y que lo hace bien.
-
-Ahora queremos resolver otro problema: Dada la solución al problema de sumar
-los elementos de una lista qué pasaría si la lista tuviera un elemento
-adicional. ¿Podemos resolver el problema más grande con la solución al problema
-más pequeño?
-
-Pensémoslo así, tenemos la lista ampliada \lstinline![cabeza] + lista! y hay una función
-\lstinline!sumar2! ya implementada que nos dice la suma de los elementos de \lstinline!lista!.
-La solución es sencilla: La suma de la lista ampliada será la suma de la lista
-más la cabeza.
+Dijimos que íbamos a retirar un elemento de la lista por vez y hacer una
+llamada recursiva. Olvidémonos por un momento de la recursividad e imaginemos
+que \emph{ya} tenemos una función |sumar2| que sabe sumar los elementos de una
+|lista| y que lo hace bien.  Intentemos resolver el problema inverso: si
+agregamos un elemento |x| al principio de la lista (obteniendo |[x] + lista|),
+¿podemos calcular la suma de la nueva lista?  ¿Podemos resolver el problema más
+grande con la solución al problema más pequeño? La solución es sencilla: La
+suma de la lista ampliada será |x| más la suma de la lista original (que podemos
+calcular como |sumar2(lista)|).
 
 Es decir, la solución al problema este que planteamos sería así:
 \begin{codigo-python-sn}
 def sumar(lista):
    """Precondición: len(lista) >= 1.
       Devuelve: La suma de los elementos en la lista."""
-   return sumar2(lista[1:]) + lista[0]
+   return lista[0] + sumar2(lista[1:])
 \end{codigo-python-sn}
 
-Podemos ver que si tuviéramos implementada \lstinline!buscar2! entonces
-\lstinline!buscar! funcionaría bien. Volvamos ahora a recursividad: Si sabemos
+Podemos ver que si tuviéramos implementada \lstinline!sumar2! entonces
+\lstinline!sumar! funcionaría bien. Volvamos ahora a recursividad: Si sabemos
 resolver el caso general en función a la solución del caso simplificado de la
 llamada recursiva, si existen casos bases que cortan la recursión y si además
 la recursión converge hacia los casos bases tenemos resuelto el problema
@@ -1247,7 +1246,7 @@ completo. La función que asumimos que funcionaba \emph{es la misma} que
 acabamos de implementar.
 
 Cuando diseñamos una función recursiva tenemos que dar este \emph{salto de fé}:
-La función del paso recursivo ya funciona, nosotros lo que vamos a implementar
+asumir que la función del paso recursivo ya funciona; nosotros lo que vamos a implementar
 es una función que logra concatenar el resultado del subproblema y ensamblarlo con
 nuestro problema mayor. Si hacemos esto bien entonces todo funciona.
 
@@ -1257,8 +1256,7 @@ def sumar(lista):
    """Devuelve la suma de los elementos en la lista."""
    if len(lista) == 0:
        return 0
-
-   return sumar(lista[1:]) + lista[0]
+   return lista[0] + sumar(lista[1:])
 \end{codigo-python-sn}
 
 \section{Pasaje de la información}
@@ -1270,32 +1268,32 @@ general.
 
 En todos los ejemplos presentados hasta el momento la información del resultado
 se propagó desde las hojas del árbol de llamadas (los casos bases) hacia las
-funciones invocantes. Por ejemplo, para resolver el resultado de Fibonacci
-$F_5$ se utilizaron los resultados computados por $F_4$ y $F_3$. Las funciones
-recursivas no recibieron resultados del cómputo de las funciones invocantes.
-Esto no siempre es así, en algunos problemas sí hace falta recibirlos.
+funciones invocantes (mediante la instrucción |return|). Por ejemplo, para
+resolver el resultado de Fibonacci $F_5$ se utilizan únicamente los resultados
+computados por $F_4$ y $F_3$, y no se recibe ningún dato adicional de la función
+invocante (más allá del parámetro |n=5|).
+Esto no siempre es así, en algunos problemas sí se hace necesario propagar
+información ``hacia abajo``. Y en otros casos, si bien no es necesario,
+puede tener ventajas adicionales.
 
-A veces, si bien no es necesario, puede tener ventajas adicionales propagar la
-información hacia abajo. Por ejemplo, podríamos reescribir la función
-\lstinline!sumar! de esta forma:
+Por ejemplo, podríamos reescribir la función |sumar| de esta forma:
 \begin{codigo-python-sn}
 def sumar(lista, suma=0):
     """Devuelve la suma de los elementos en la lista."""
     if len(lista) == 0:
         return suma
-
-    return sumar(lista[1:], suma + lista[0])
+    return sumar(lista[1:], lista[0] + suma)
 \end{codigo-python-sn}
 Puede observarse que en esta implementación en vez de \emph{esperar} a que se
 resuelva el cómputo de la parte recursiva para ensamblar la solución e ir
 resolviendo los cálculos parciales desde el final de la lista hacia el
-principio, le \emph{pasamos} la solución parcial a las llamadas recursivas.
+principio, le \emph{pasamos} la solución parcial a la llamada recursiva.
 Finalmente el caso base devuelve la suma de los cálculos que se realizaron
 de principio a final y cada llamada recursiva devuelve este resultado.
 
 No profundizaremos más en el tema, pero la particularidad de que lo último
 que se realice en el caso general sea la llamada recursiva (sin realizar
-ninguna operación adicional sobre esta llamada) se conoce como
+ninguna operación adicional sobre el resultado de esta llamada) se conoce como
 \emph{recursividad de cola}. La recursividad de cola es de interés porque
 implica muy poco esfuerzo reescribir una versión iterativa y no recursiva
 del algoritmo. Esto es inmediato: como lo último que se hace es la llamada
@@ -1309,21 +1307,29 @@ def sumar(lista):
     while True:
         if len(lista) == 0:
             return suma
-
         lista, suma = lista[1:], suma + lista[0]
 \end{codigo-python-sn}
-tan solo reemplazando la recursión por una iteración y actualizando las
+tan solo reemplazando la recursión por un bucle y actualizando las
 variables según los parámetros de la llamada recursiva.
 
 \section{Modificación de la interfaz}
 
-En el ejemplo de \lstinline!sumar! implementada con recursividad de cola nos
-vimos obligados a modificar la interfaz de la función agregando la variable
-\lstinline!suma! que no formaba parte del problema inicial. Pudimos hacerlo
-elegantemente utilizando un valor por omisión, pero la interfaz de todos modos
-quedó confusa. Hay veces en la que no podemos salvar un cambio en la interfaz.
+La \emph{interfaz} o \emph{firma} de una función es su nombre, más los
+parámetros que recibe, más los valores que devuelve. Para invocar una función
+cualquiera, es suficiente con saber cómo es su interfaz, y no es necesario saber
+cómo es la implementación interna. Ahora bien, si cambiamos la lista
+de parámetros o el tipo de dato del valor de retorno de la función, estamos
+cambiando su interfaz, y eso nos obliga a cambiar cualquier lugar del código
+que contenga alguna llamada a la función.
 
-Supongamos que queremos diseñar una función recursiva que calcule el promedio
+En el ejemplo de \lstinline!sumar! implementada con recursividad de cola nos
+vimos obligados a modificar la interfaz de la función agregando el parámetro
+\lstinline!suma! que no formaba parte del problema inicial. Pudimos hacerlo
+elegantemente utilizando un valor por omisión (|suma=0|), pero la interfaz de
+todos modos quedó confusa.
+
+Hay casos en los que no podemos salvar un cambio en la interfaz.  Por ejemplo,
+supongamos que queremos diseñar una función recursiva que calcule el promedio
 de una secuencia de números.
 
 Como ya sabemos diseñar funciones recursivas intuimos que el caso base será
@@ -1342,10 +1348,10 @@ la cantidad de elementos. Las funciones van a estar computando dos valores
 cuando el resultado del problema es evidentemente uno solo. Si bien puede
 elaborarse una solución similar a la que ya ensayamos con \lstinline!sumar!
 complicaría innecesariamente el código. Es preferible modificar la interfaz
-del problema.
+de la función.
 
-Implementemos el problema resolviendo primero la llamada recursiva y luego
-ensamblando:
+Implementemos el problema resolviendo primero la llamada recursiva (en una
+función diferente que llamaremos |_promediar| y luego ensamblando:
 \begin{codigo-python-sn}
 def _promediar(lista):
     if len(lista) == 0:
@@ -1355,42 +1361,51 @@ def _promediar(lista):
 \end{codigo-python-sn}
 Puede verse que esta función cumple con las reglas de diseño de recursividad
 que describimos antes. Con lo que no cumple esta función es con la interfaz
-natural del problema que nos pidieron. Se devuelven dos cosas en vez de una.
+natural de la función |promediar| que queríamos diseñar, ya que |_promediar|
+devuelve dos cosas y no una.
 
 Esto no invalida nuestra solución, pero la misma está incompleta. Lo que
 debemos hacer es implementar una función \emph{wrapper} (envoltorio) que lo
-que haga es funcionar de \emph{cara visible} para el usuario de la función que
-hace realmente el trabajo:
+que haga es operar como \emph{cara visible} para el usuario de la función que
+hace realmente el trabajo. A esta función sí la vamos a llamar |promediar|, ya
+que va a cumplir con la interfaz deseada:
+
 \begin{codigo-python-sn}
 def promediar(lista):
    """Devuelve el promedio de los elementos de una lista de números."""
    suma, cantidad = _promediar(lista)
    return suma / cantidad
 \end{codigo-python-sn}
-Si bien la función visible \lstinline!promediar! no es recursiva, sí lo
+
+Notar que si bien la función visible \lstinline!promediar! no es recursiva, sí lo
 es la función \lstinline!_promediar! que es la que realiza el trabajo, por
 lo que el conjunto se considera recursivo.
 
 Además de para adaptar la interfaz (parámetros y valor de retorno) entre el
 usuario y la función recursiva, las funciones wrapper se suelen utilizar para
-simplificar el código de las funciones recursivas. Por ejemplo, si quisiéramos hacer comprobaciones no
+simplificar el código de las funciones recursivas. Por ejemplo, si quisiéramos
+hacer validaciones de los parámetros, no
 querríamos que las mismas se reiteraran en cada iteración recursiva porque
-consumirían recursos innecesarios. Entonces las resolvemos antes de empezar la recursión.
+consumirían recursos innecesarios. Entonces las podemos resolver en la función
+wrapper, antes de empezar la recursión.
 
-Por ejemplo, en el capítulo~\ref{recursion_potencia} implementamos la potencia
+Por ejemplo, en la sección~\ref{recursion_potencia} implementamos la potencia
 en forma recursiva con la restricción $n \geq 0$. Pero dado que
 $b^n = \left(\frac1b\right)^{-n}$ podemos aprovechar el código implementado para
 resolver para cualquier $n$ entero. Podríamos modificar el código de \lstinline!potencia! para
 incluir este caso, pero se reiteraría la comprobación en cada recursión.
 Para un caso así sería más sencillo construir una función wrapper
 e incluir ahí todo lo que consideremos necesario\footnote{Y más allá de lo
-que se mencionó, ¿hace falta resolver la recursión si $b=0$, $b=1$, $b=-1$?}:
+que se mencionó, ¿hace falta resolver la recursión si $b=0$, $b=1$, $b=-1$?}.
+Habiendo renombrado la función original como |_potencia|, nuestro wrapper sería:
 \begin{codigo-python-sn}
-def potencia2(b, n):
+def potencia(b, n):
+    """Precondición: n es entero
+       Devuelve: b^n."""
    if n < 0:
       b = 1 / b
       n = -n
-   return potencia(b, n)
+   return _potencia(b, n)
 \end{codigo-python-sn}
 
 \section{Limitaciones}
@@ -1464,6 +1479,10 @@ sin caso base es equivalente a un bucle infinito.
 a resolver puede ser conveniente utilizar una solución recursiva o una
 iterativa.  Para elegir una o la otra será necesario analizar las
 características de elegancia y eficiencia.
+
+\item Al diseñar funciones recursivas muchas veces puede ser útil
+implementar una función {\bf wrapper}, por ejemplo para adaptar
+la interfaz, validar parámetros, inicializar datos o manejar excepciones.
 
 \end{itemize}
 
