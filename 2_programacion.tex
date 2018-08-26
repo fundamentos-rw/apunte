@@ -202,15 +202,14 @@ documentación completa del proceso lo constituye todo lo escrito
 en esta sección.
 
 \section {Piezas de un programa Python}
-Para poder empezar a programar en Python es necesario conocer los elementos
-que constituyen un programa en dicho lenguaje y las reglas para construirlos.
-
-\begin{observacion}
 Cuando empezamos a hablar en un idioma extranjero es posible que nos entiendan
 pese a que cometamos errores. No sucede lo mismo con los lenguajes de
 programación: la computadora no nos entenderá si nos desviamos un poco de
 alguna de las reglas.
-\end{observacion}
+
+Por eso es que para poder empezar a programar en Python es necesario conocer los elementos
+que constituyen un programa en dicho lenguaje y las reglas para construirlos.
+
 
 \subsection{Nombres}
 Ya hemos visto que se usan nombres para denominar a los programas
@@ -227,7 +226,7 @@ Los espacios no están permitidos dentro de los identificadores.
 
 Los siguientes son todos identificadores válidos de Python:
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
 \item \lstinline!hola!
 \item \lstinline!hola12t!
 \item \lstinline!_hola!
@@ -243,7 +242,7 @@ Por convención, no usaremos identificadores que empiezan con mayúscula.
 
 Los siguientes son todos identificadores inválidos de Python:
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
 \item \lstinline!hola a12t!
 \item \lstinline!8hola!
 \item \lstinline!hola\%!
@@ -313,20 +312,20 @@ cocientes:
     \emph{resto de la división entera} entre 6 y 4.
 \end{itemize}
 
-\begin{observacion}
-Los números pueden ser tanto enteros (\lstinline!111!, \lstinline!-24!), como
-reales (\lstinline!12.5!, \lstinline!12.0!, \lstinline!-12.5!). Dentro de la
-computadora se representan de manera diferente, y se comportan de manera
-diferente frente a las operaciones. En Python, los números enteros se denominan
-|int| (de \emph{integer}), y los números reales |float| (de \emph{floating
-point}).
-\end{observacion}
+Como vimos en la sección \ref{punto-flotante}, los números pueden ser tanto
+enteros (|0|, |111|, |-24|, almacenados internamente en forma exacta),
+como reales (|0.0|, |12.5|, |-12.5|, representados internamente en
+forma aproximada como números \emph{de punto flotante}). Dado que los
+números enteros y reales se representan de manera diferente, se
+comportan de manera diferente frente a las operaciones. En Python, los
+números enteros se denominan |int| (de \emph{integer}), y los números
+reales |float| (de \emph{floating point}).
 
 \end{itemize}
 
 \item Una expresión puede ser una \emph{llamada a una función}: si |f| es una
     función que recibe un parámetro, y |x| es una variable, la expresión |f(x)|
-    produce el valor que devuelve la función |f| al llamarla pasándole el valor
+    produce el valor que devuelve la función |f| al invocarla pasándole el valor
     de |x| por parámetro.
 
     Algunos ejemplos:
@@ -372,24 +371,35 @@ Recordemos el programa que se usó para saludar a muchos amigos:
 
 Para invocar a ese programa y hacer que saludara a Ana había que
 escribir \lstinline!hola("Ana")!.
-
 La variable \lstinline!alguien! en dicha invocación queda ligada a un
 valor que es una \emph{cadena de caracteres} (letras, dígitos, símbolos,
 etc.), en este caso, \lstinline!"Ana"!.
-
-En Python se puede usar también una notación con comillas simples para
-referirse a las cadenas de caracteres: \lstinline!'Ana'!.
 
 Como en la sección anterior, veremos las reglas de qué constituyen
 expresiones con caracteres:
 
 \begin{itemize}
 \item Una expresión puede ser simplemente una cadena de texto.  El resultado de
-    la expresión \lstinline!'Ana'! es precisamente el valor \lstinline!'Ana'!.
+    la expresión literal \lstinline!'Ana'! es precisamente el valor \lstinline!'Ana'!.
 
 \item Una variable puede estar asociada a una cadena de texto: si
     \lstinline!amiga! $\ra$ \lstinline!'Ana'! en el estado, entonces el
     resultado de la expresión \lstinline!amiga! es el valor \lstinline!'Ana'!.
+
+\item Se puede usar comillas simples o dobles para representar cadenas simples:
+    |'Ana'| y |"Ana"| son equivalentes.
+
+\item Se puede usar tres comillas (simples o dobles) para representar cadenas
+    que incluyen más de una línea de texto:
+
+\begin{codigo-python-sn}
+martin_fierro = """Aquí me pongo a cantar
+al compás de la vigüela,
+que al hombre que lo desvela
+una pena estraordinaria,
+como el ave solitaria
+con el cantar se consuela."""
+\end{codigo-python-sn}
 
 \item Usamos operaciones para combinar expresiones y construir
 expresiones más complejas, pero atención con qué operaciones están
@@ -484,12 +494,10 @@ La secuencia de valores se puede indicar como:
 \lstinline![n1, n1+1, ..., n2-1]!.
 
 \item Se puede definir a mano una secuencia entre corchetes. Por ejemplo,
-
 \begin{codigo-python-sn}
 for x in [1, 3, 9, 27]:
     print(x * x)
 \end{codigo-python-sn}
-
 imprimirá los cuadrados de los números 1, 3, 9 y 27.
 
 \end{itemize}
