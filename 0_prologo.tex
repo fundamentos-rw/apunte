@@ -39,7 +39,6 @@ curva de aprendizaje, de modo tal que este primer encuentro le resulte a los est
 y exitoso, sin que los detalles del lenguaje los distraiga del verdadero objetivo del curso: la resolución
 de problemas mediante computadoras.
 
-\section*{Agradecimientos}
 
 Queremos agradecer a la Facultad de Ingeniería (en particular a su Comisión de Publicaciones) y a
 Eudeba por la publicación de este libro. Pero también a todos los que apoyaron desde un primer momento
@@ -47,42 +46,98 @@ la escritura y mejora continua de lo que fueron durante varios años las notas d
 Algoritmos y Programación I: a la Comisión Curricular de la Licenciatura en Análisis de Sistemas y al
 Departamento de Computación (y a su director, Gustavo López) por apoyar la iniciativa de dar este curso
 como piloto, a quienes leyeron y discutieron los manuscritos desde sus primeras versiones y colaboraron
-con el curso (Melisa Halsband, Alberto Bertogli, Sebastián Santisi, Pablo Antonio, Pablo Najt,
+con el curso (Melisa Halsband, Alberto Bertogli, Sebastián Santisi, Pablo Antonio, Pablo Najt, Diego Essaya,
 Leandro Ferrigno, Martín Albarracín, Gastón Kleiman, Matías Gavinowich), a quienes fueron primero alumnos y
-luego colaboradores de esta experiencia educativa
-(Agustín Santiago,
+luego colaboradores de esta experiencia educativa (Bruno Merlo Schurmann, Damian Schenkelman, Débora Martín,
+Ezequiel Genender, Fabricio Pontes Harsich, Fabrizio Graffe, Federico Barrios, Federico López, Gaston
+Martinez, Gaston Goncalves, Ignacio Garay, Javier Choque, Jennifer Woites, Manuel Soldini, Martín Buchwald,
+Pablo Musumeci), a los amigos que, como Pablo Jacovkis, Elena García y Alejandro Tiraboschi se ofrecieron a
+revisar manuscritos y a hacer sugerencias, y a todos los alumnos de nuestro curso de Algoritmos y
+Programación I de la FIUBA que, desde 2009, han usado este texto y nos han ayudado a mejorarlo permanentemente.
+De todos modos, por supuesto, los errores son nuestra responsabilidad.
+
+\vspace{1cm}
+\hfill Buenos Aires, diciembre de 2012.
+
+\section*{Segunda edición}
+
+Habiendo dictado el curso de Algoritmos y Programación I durante
+varios años ya, podemos felizmente decir que el curso ya no es más ``piloto'',
+y conseguimos en el camino una buena cantidad de logros.
+
+Al final de cada cuatrimestre presentamos a los alumnos una encuesta de
+satisfacción, en la que tanto el curso como el apunte recibieron
+mayoritariamente buenas
+críticas\footnote{Los resultados de las encuestas están publicados en
+\url{https://algoritmos1rw.ddns.net/encuestas}}. A continuación se muestra el
+resultado de dos de las preguntas incluidas en las encuestas.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+ybar,
+axis x line={bottom},
+axis y line={left},
+axis line style={-,gray},
+enlarge x limits=0.15,
+enlarge y limits={0.15,upper},
+legend style={draw=none,at={(0.3,0.8)},font=\scriptsize,anchor={west}},
+legend cell align={left},
+ylabel={Cantidad de respuestas},
+ylabel style={font=\scriptsize},
+symbolic x coords={Muy bueno,Bueno,Regular,Malo,Muy malo},
+xtick=data,
+x tick label style={rotate=30,anchor=east,font=\scriptsize},
+y tick label style={font=\scriptsize},
+width=0.6\textwidth,
+height=5cm,
+]
+\addplot[black,fill=black] coordinates {(Muy bueno,295) (Bueno,110) (Regular,8) (Malo,0) (Muy malo,0)};
+\addplot[black,fill=black!25] coordinates {(Muy bueno,293) (Bueno,81) (Regular,12) (Malo,0) (Muy malo,1)};
+\legend{¿Qué te pareció el curso en general?,¿Qué opinás del apunte provisto por la cátedra?}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Debido a la buena aceptación que tuvo el curso, en 2014 se dio el reconocimiento
+de que la Comisión Curricular de la Licenciatura en Sistemas adoptara el temario
+desarrollado por el curso como programa del plan de estudios oficial,
+actualización que aprobó el Consejo Superior ese mismo año.  También en 2014
+se comenzaron a dictar cursos de Introducción a la Programación en Python que
+utilizan la planificación del curso, aprobados por el Consejo Directivo.
+
+En paralelo con todo esto fuimos mejorando el apunte: arreglando erratas,
+mejorando redacciones, y agregando y actualizando temas. El cambio más
+importante fue la actualización a la versión 3 de Python, que decidimos hacer
+entre otras razones porque Python 2 será discontinuado en 2020. Entre los
+temas adicionados figuran: diseño de funciones recursivas, composición y mutabilidad
+de objetos, funciones de orden superior, listas por comprensión, la instrucción
+|import|, conjuntos. Además se mejoró la redacción general de todos los capítulos,
+y se reorganizó la guía de ejercicios. Todas estas mejoras se incluyen en esta
+Segunda Edición.
+
+Por último, extendemos la lista de agradecimientos a todos aquellos que
+fueron alumnos y luego colaboradores del curso a lo largo de los últimos años:
+Agustín Santiago,
 Agustina Mendez,
 Alan Rinaldi,
 Alejandro Levinas,
 Ana Czarnitzki,
 Ariel Vergara,
 Ayelén Bibiloni Lombardi,
-Bruno Merlo Schurmann,
 Carlos Talavara,
 Constanza Gonzalez,
-Damián Schenkelman,
 Daniela Riesgo,
 Daniela Soto,
-Débora Martín,
 Diego Alfonso,
 Emiliano Sorbello,
 Eugenia Mariotti,
-Ezequiel Genender,
-Fabricio Pontes Harsich,
-Fabrizio Graffe,
-Federico Barrios,
 Federico Esteban,
-Federico López,
 Florencia Álvarez Etcheverry,
 Florencia Rodriguez,
 Franco Di María,
-Gastón Goncalves,
-Gastón Martínez,
 Gianmarco Cafferatta,
-Ignacio Garay,
 Ignacio Sueiro,
-Javier Choque,
-Jennifer Woites,
 Joel Saidman,
 Juan Costamagna,
 Juan Ignacio Kristal,
@@ -93,9 +148,7 @@ Lucas Perea,
 Luciano Sportelli Castro,
 Manuel Battan,
 Manuel Porto,
-Manuel Soldini,
 Manuel Sturla,
-Martín Buchwald,
 Martín Coll,
 Martín Dabat,
 Matías Scacosky,
@@ -104,18 +157,12 @@ Maximiliano Yung,
 Miguel Alfaro,
 Milena Farotto,
 Nicolás Poncet,
-Pablo Musumeci,
 Ramiro Santos,
 Robinson Fang,
 Rodrigo Velez,
 Sebastián Gonzalez,
 Sofía Morseletto,
-Tomás Rocchi),
-a los amigos que, como Pablo Jacovkis, Elena García y Alejandro Tiraboschi se ofrecieron a
-revisar manuscritos y a hacer sugerencias, y a todos los alumnos de nuestro curso de Algoritmos y
-Programación I de la FIUBA que, desde 2009, han usado este texto y nos han ayudado a mejorarlo permanentemente.
-De todos modos, por supuesto, los errores son nuestra responsabilidad.
+Tomás Rocchi.
 
-
-\hfill Buenos Aires, diciembre de 2012.
-
+\vspace{1cm}
+\hfill Buenos Aires, agosto de 2018

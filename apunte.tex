@@ -177,6 +177,7 @@
 \definecolor{amarillo}{rgb}{1.00,1.00,0.75}
 
 \usepackage[framemethod=tikz]{mdframed}
+\usepackage{pgfplots}
 
 \newmdenv[
     font=\small,
@@ -326,11 +327,11 @@
 
 \begin{document}
 
-\AddToShipoutPictureBG*{%
-  \AtPageLowerLeft{%
-    \hspace{\baselineskip}%
-    \raisebox{\baselineskip}{%
-      \makebox[0pt][l]{Última revisión: \today}}}}
+%\AddToShipoutPictureBG*{%
+%  \AtPageLowerLeft{%
+%    \hspace{\baselineskip}%
+%    \raisebox{\baselineskip}{%
+%      \makebox[0pt][l]{Última revisión: \today}}}}
 
 \begin{extract*}
 \lstMakeShortInline[style=inlinecode]|
@@ -365,9 +366,8 @@
 \date{2\textsuperscript{da} edición}
 \maketitle
 
-\tableofcontents
-
 \include{0_prologo}
+\tableofcontents
 \include{1_conceptos}
 \include{2_programacion}
 \include{3_funciones}
