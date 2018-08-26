@@ -30,10 +30,10 @@ En general, las funciones pueden recibir ninguno, uno o más parámetros
 (separados por comas), y pueden o no devolver un resultado.
 
 \begin{figure}[ht]
-\caption{Una función recibe parámetros y devuelve un resultado.}
 \begin{center}
 \input{graficos/funcion}
 \end{center}
+\caption{Una función recibe parámetros y devuelve un resultado.}
 \end{figure}
 
 \section{Documentación de funciones}
@@ -45,9 +45,13 @@ extremadamente importante documentar en cada función cuál es la tarea que
 realiza, cuáles son los parámetros que recibe y qué es lo que devuelve, para
 que a la hora de utilizarla sea lo pueda hacer correctamente.
 
-La documentación de una función se coloca luego del encabezado de la función,
-en un párrafo encerrado entre \lstinline!"""!.  Así, para la función vista en
-el ejemplo anterior:
+Por convención, la documentación de una función se coloca en la primera línea
+del cuerpo de la misma, como una cadena de caracteres (que, como vimos en la
+sección \ref{instruccion-expresion}, es una instrucción que no tiene ningún
+efecto). Dado que la documentación suele ocupar más de una línea de texto,
+se acostumbra encerrarla entre tres pares de comillas.
+
+Así, para la función vista en el ejemplo anterior:
 
 \begin{codigo-python-sn}
 def hola(alguien):
@@ -134,16 +138,14 @@ def imprimir_segundos(horas, minutos, segundos):
 \end{codigo-python-sn}
 
 Contar con funciones es de gran utilidad, ya que nos permite ir armando una
-biblioteca de instrucciones con problemas que vamos resolviendo, y que se
-pueden reutilizar en la resolución de nuevos problemas (como partes de un
-problema más grande, por ejemplo) tal como lo sugiere Thompson en ``How to
+biblioteca de soluciones a problemas simples, que se pueden reutilizar en la
+resolución de problemas más complejos, tal como lo sugiere Thompson en ``How to
 program it''.
 
-Sin embargo, más útil que tener una biblioteca donde los resultados
+En este sentido, más útil que tener una biblioteca donde los resultados
 se imprimen por pantalla, es contar con una biblioteca donde los
-resultados se devuelven, para que la gente que usa esas funciones manipule
-esos resultados a voluntad: los imprima, los use para realizar cálculos
-más complejos, etc.
+resultados se devuelven, para poder manipular los resultados de esas funciones
+a voluntad: imprimirlos, usarlos para realizar cálculos más complejos, etc.
 
 \begin{observacion}
 En general, una función es más reutilizable si devuelve un resultado
@@ -174,9 +176,10 @@ Invocarla con distintos valores de \lstinline+n+ y de \lstinline+saludo+.}
 
 \section{Cómo usar una función en un programa}
 
-Una función es útil porque nos permite repetir la misma
-instrucción (puede que con argumentos distintos) todas las veces
-que las necesitemos en un programa.
+Las funciones son útiles porque nos permiten repetir la misma operación (puede
+que con argumentos distintos) todas las veces que las necesitemos en un
+programa, sin tener que reescribir la lista de pasos para realizar la operación
+cada vez.
 
 Supongamos que necesitamos un programa que permita transformar tres duraciones
 de tiempo en segundos:
@@ -316,6 +319,7 @@ unidad~\ref{chapter:conceptos}:
 ...     for x in range(1, n + 1):
 ...         suma = suma + cuadrado(x)
 ...     return suma
+>>> y = suma_cuadrados(5)
 \end{codigo-python-sn}
 
 ¿Qué pasa si intentamos utilizar la variable |suma| fuera de la función?
@@ -341,7 +345,7 @@ instrucción:
 >>> y = suma_cuadrados(5)
 \end{codigo-python-sn}
 
-\begin{itemize}
+\begin{enumerate}
 \item Se invoca a |suma_cuadrados| con el argumento 5, y se ejecuta
     el cuerpo de la función con la variable local |n| $\ra$ 5.
 \item La función declara una variable local |suma| $\ra$ 0.
@@ -351,10 +355,11 @@ instrucción:
     variables locales: |n| y |suma|.
 \item Se declara la variable |y| $\ra$ 55, que es el valor que devolvió la
     función.
-\end{itemize}
+\end{enumerate}
 
 Si la función no devolviera ningún valor, la variable |y| no quedaría asociada
-a ningún valor.
+a ningún valor\footnote{Técnicamente, quedaría asociada con un valor especial
+llamado \texttt{None}.}.
 
 \section{Un ejemplo completo}
 
@@ -719,8 +724,8 @@ def funcion(param1, param2, param3):
 \end{sintaxis}
 
 \begin{sintaxis}{Documentación de funciones}
-Si en la primera línea de la función se ingresa un comentario
-encerrado entre comillas, este comentario pasa a ser la documentación
+Si en la primera línea de la función se ingresa una cadena de
+caracteres, la misma por convención pasa a ser la documentación
 de la función, que puede ser accedida mendiante el comando
 \lstinline!help(funcion)!.
 \begin{codigo-python-sn}
@@ -733,10 +738,8 @@ def funcion():
 \begin{sintaxis}{\lstinline!return valor!}
 Dentro de una función se utiliza la instrucción \lstinline!return!
 para indicar el valor que la función debe devolver.
-
 Una vez que se ejecuta esta instrucción, se termina la ejecución de la
 función, sin importar si es la última línea o no.
-
 Si la función no contiene esta instrucción, no devuelve nada.
 \end{sintaxis}
 
