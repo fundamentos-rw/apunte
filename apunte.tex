@@ -309,7 +309,7 @@
 \usepackage{menukeys}
 
 \usepackage{tikz}
-\usetikzlibrary{calc,arrows,babel,trees,fit,positioning}
+\usetikzlibrary{calc,shapes,arrows,babel,trees,fit,positioning}
 \newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
 
 \tikzset{
@@ -318,6 +318,10 @@
     umlattrs/.style={draw=none,fill=none,inner sep=0pt},
     umlclass/.style={draw,fill=none,inner sep=0pt},
     flecha/.style={draw,->,>=latex},
+    decision/.style={diamond,draw,aspect=2},
+    bloque/.style={rectangle,draw},
+    start/.style={circle,draw},
+    end/.style={circle,draw,fill},
 }
 
 \newcommand*\circled[1]{\tikz[]{

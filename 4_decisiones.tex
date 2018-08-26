@@ -26,19 +26,17 @@ diseño.
 
 Para resolver este problema introducimos una nueva instrucción que
 llamaremos \emph{condicional} y tiene la siguiente forma:
-
 \begin{codigo-python-sn}
-if <condición>:
-    <hacer algo si se da la condición>
+if <expresión>:
+    <cuerpo>
 \end{codigo-python-sn}
+donde \lstinline+if+ es una palabra reservada, la |<expresión>| es una
+\emph{condición} y el |<cuerpo>| se ejecuta solo si la condición se cumple.
 
-Donde \lstinline+if+ es una palabra reservada.
-
-¿Qué es la condición que aparece luego de la palabra reservada \lstinline+if+?
-Antes de seguir adelante con la construcción debemos introducir
-un nuevo tipo de expresión que nos indicará si se da una cierta situación o no.
-Hasta ahora las expresiones con las que trabajamos fueron de tipo numérica y de tipo texto.
-Pero ahora la respuesta que buscamos es de tipo \emph{sí} o \emph{no}.
+Antes de seguir adelante explicando la instrucción |if|, debemos introducir
+un nuevo tipo de dato que nos indicará si se da una cierta situación o no.
+Hasta ahora las expresiones con las que trabajamos fueron de tipo numérica y de
+tipo texto; pero ahora la respuesta que buscamos es de tipo \emph{sí} o \emph{no}.
 
 \section{Expresiones booleanas}
 
@@ -188,17 +186,35 @@ número es positivo, debemos escribir en pantalla el mensaje
  \lstinline!"Número positivo"!.
 
 Recordemos la instrucción \lstinline!if! que acabamos de introducir y que sirve
-para tomar decisiones simples. Dijimos que su formato más sencillo es:
-
+para tomar decisiones simples. Dijimos que su formato general es:
 \begin{codigo-python-sn}
-if <condición>:
-    <hacer algo si se da la condición>
+if <expresión>:
+    <cuerpo>
 \end{codigo-python-sn}
+cuyo efecto es el siguiente:
+\begin{enumerate}
+\item Se evalúa la |<expresión>| (que debe ser una expresión lógica).
+\item Si el resultado de la expresión es |True| (verdadero), se ejecuta el |<cuerpo>|.
+\end{enumerate}
+Esto se puede representar en un \emph{diagrama de flujo}, como el de la Figura
+\ref{flujo-if}.
 
-cuyo significado es el siguiente:
-se evalúa |<condición>| (que debe ser una expresión lógica), y si el resultado
-es |True| (verdadero) se ejecutan las acciones indicadas como
-|<hacer algo si se da la condición>|.
+\begin{figure}[hbt]
+\begin{tikzpicture}[
+    every node/.style={node font=\ttfamily},
+]
+    \node [start] (init) {};
+    \node [right=of init,decision] (exp) {<expresión>};
+    \node [right=2cm of exp,bloque] (cuerpo) {<cuerpo>};
+    \node [right=2cm of cuerpo,end] (end) {};
+    \path [flecha] (init) -- (exp);
+    \path [flecha] (exp) -- node[above,near start] {True} (cuerpo);
+    \path [flecha] (exp) -- node[right,near start] {False} ++(0,-1.5) -| (end);
+    \path [flecha] (cuerpo) -- (end);
+\end{tikzpicture}
+\caption{Diagrama de flujo para la instrucción \texttt{if}.}
+\label{flujo-if}
+\end{figure}
 
 Como ahora ya sabemos también cómo construir condiciones de comparación,
 estamos en condiciones de implementar nuestra solución. Escribimos la
@@ -210,7 +226,6 @@ def positivo():
     if x > 0:
         print("Número positivo")
 \end{codigo-python-sn}
-
 y la probamos:
 
 \begin{codigo-python-sn}
@@ -266,24 +281,22 @@ Sin embargo hay algo que nos preocupa: si ya averiguamos una vez, en
 \circled{1}, si \lstinline!x > 0!, ¿Es realmente necesario volver a
 preguntarlo en \circled{2}?.
 
-Existe una construcción alternativa para la estructura de decisión:
-
-{\bf Si se da la condición C, hacer S, de lo contrario, hacer T}. Esta estructura tiene la forma:
-
+Existe una construcción alternativa para la estructura de decisión, que tiene
+la forma:
 \begin{codigo-python-sn}
-if <condición>:
-    <hacer algo si se da la condición>
+if <expresión>:
+    <cuerpo1>
 else:
-    <hacer otra cosa si no se da la condición>
+    <cuerpo2>
 \end{codigo-python-sn}
+donde \lstinline!if! y \lstinline!else! son palabras reservadas.
+Su efecto es el siguiente:
 
-Donde \lstinline!if! y \lstinline!else! son palabras reservadas.
-
-Su significado es el siguiente: se evalúa |<condición>|, si el
-resultado es |True| se ejecutan las acciones
-indicadas como |<hacer algo si se da la condición|, y si el
-resultado es |False| se ejecutan las acciones indicadas
-como |<hacer otra cosa si no se da la condición>|.
+\begin{enumerate}
+\item Se evalúa la |<expresión>|.
+\item Si el resultado es |True|, se ejecuta el |<cuerpo1>|. En caso contrario,
+    se ejecuta el |<cuerpo2>|.
+\end{enumerate}
 
 Volvemos a nuestro diseño:
 
@@ -292,6 +305,28 @@ Volvemos a nuestro diseño:
 \item Si $x > 0$, imprimir \lstinline!"Número positivo"!
 \item En caso contrario, imprimir \lstinline!"Número no positivo"!
 \end{enumerate}
+
+En la Figura \ref{flujo-if-else} se muestra el diagrama de flujo para la
+estructura |if-else|.
+
+\begin{figure}[hbt]
+\begin{tikzpicture}[
+    every node/.style={node font=\ttfamily},
+]
+    \node [start] (init) {};
+    \node [right=of init,decision] (exp) {<expresión>};
+    \node [right=2cm of exp,bloque] (cuerpo1) {<cuerpo1>};
+    \node [below= of cuerpo1,bloque] (cuerpo2) {<cuerpo2>};
+    \node [right=2cm of cuerpo1,end] (end) {};
+    \path [flecha] (init) -- (exp);
+    \path [flecha] (exp) -- node[above,near start] {True} (cuerpo1);
+    \path [flecha] (exp) |- node[right,near start] {False} (cuerpo2);
+    \path [flecha] (cuerpo1) -- (end);
+    \path [flecha] (cuerpo2) -| (end);
+\end{tikzpicture}
+\caption{Diagrama de flujo para la estructura \texttt{if-else}.}
+\label{flujo-if-else}
+\end{figure}
 
 Este diseño se implementa como:
 
@@ -412,24 +447,21 @@ de una de las ramas de la alternativa (en este caso la rama del
 Pero ésta no es la única forma de implementarlo. Existe otra construcción,
 equivalente a la anterior pero que no exige sangrías cada vez mayores en el texto.
 Se trata de la estructura de \emph{alternativas encadenadas}, que tiene la forma
-
 \begin{codigo-python-sn}
-if <condición_1>:
-    <hacer algo_1 si se da la condición_1>
-elif <condición_2>:
-    <hacer algo_2 si se da la condición_2>
+if <expresión_1>:
+    <cuerpo_1>
+elif <expresión_2>:
+    <cuerpo_2>
 ...
 ...
-elif <condición_n>:
-    <hacer algo_n si se da la condición_n>
+elif <expresión_n>:
+    <cuerpo_n>
 else:
-    <hacer otra cosa si no se da ninguna de las condiciones anteriores>
+    <cuerpo_else>
 \end{codigo-python-sn}
-
-Donde \lstinline!if!, \lstinline!elif! y \lstinline!else! son palabras reservadas.
+donde \lstinline!if!, \lstinline!elif! y \lstinline!else! son palabras reservadas.
 
 En nuestro ejemplo:
-
 \begin{codigo-python-sn}
 def pos_cero_o_neg():
     x = int(input("Ingrese un número: "))
@@ -441,17 +473,41 @@ def pos_cero_o_neg():
        print("Número negativo")
 \end{codigo-python-sn}
 
-Se evalúa la primera alternativa, si es verdadera se ejecuta su cuerpo.  De
-lo contrario se evalúa la segunda alternativa, si es verdadera se ejecuta
-su cuerpo, etc.  Finalmente, si todas las alternativas anteriores fallaron,
-se ejecuta el cuerpo del \lstinline!else!.
+El efecto de la estructura |if-elif-else| en este ejemplo se muestra en la
+Figura \ref{flujo-if-elif-else}.
+
+\begin{figure}[hbt]
+\begin{tikzpicture}[
+    every node/.style={node font=\ttfamily},
+]
+    \node [start]                    (init) {};
+    \node [right=of init,decision]   (exp1) {x > 0};
+    \path [flecha] (init) -- (exp1);
+    \node [right=2cm of exp1,bloque] (cuerpo1) {Número positivo};
+    \path [flecha] (exp1) -- node[above,near start] {True} (cuerpo1);
+    \node [right=2cm of cuerpo1,end] (end) {};
+    \path [flecha] (cuerpo1) -- (end);
+
+    \node [below=of exp1,decision]   (exp2) {x == 0};
+    \path [flecha] (exp1) -- node[right,near start] {False} (exp2);
+    \node [right= 2cm of exp2,bloque] (cuerpo2) {Igual a 0};
+    \path [flecha] (exp2) -- node[above,near start] {True} (cuerpo2);
+    \path [flecha] (cuerpo2) -| (end);
+
+    \node [below= of cuerpo2,bloque] (else) {Número negativo};
+    \path [flecha] (exp2) |- node[right,near start] {False} (else);
+    \path [flecha] (else) -| (end);
+\end{tikzpicture}
+\caption{Diagrama de flujo para una estructura \texttt{if-elif-else}.}
+\label{flujo-if-elif-else}
+\end{figure}
 
 \begin{sabias_que}
 No sólo mediante los operadores vistos (como \lstinline!>! o \lstinline!==!)
 es posible obtener expresiones booleanas.  En Python, se consideran
 \textit{verdaderos} los valores numéricos distintos de 0, las cadenas de
 caracteres que no son vacías, y en general cualquier valor que no sea 0 o
-vacío.  Mientras que los valores nulos o vacíos se consideran \textit{falsos}.
+vacío.  Los valores nulos o vacíos se consideran \textit{falsos}.
 
 Así, en el ejemplo anterior la línea
 
@@ -480,6 +536,7 @@ if not v:
 \end{codigo-python-sn}
 \end{sabias_que}
 
+\newpage
 
 \section{Ejercicios}
 
