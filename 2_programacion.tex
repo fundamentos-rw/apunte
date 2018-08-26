@@ -448,41 +448,57 @@ TypeError: can't multiply sequence by non-int of type 'str'^)
 
 \subsection{Instrucciones}
 
-Las \emph{instrucciones} son las órdenes que entiende Python. Ya
-hemos usado varias instrucciones:
+Las \emph{instrucciones} son las órdenes que entiende Python.  En general cada
+línea de un programa Python corresponde a una instrucción.  Algunos ejemplos de
+instrucciones que ya hemos utilizado:
 
 \begin{itemize}
-\item hemos retornado valores de una función mediante la
-instrucción \lstinline!return!,
+\item La instrucción de asignación |<nombre> = <valor>|.
 
-\item hemos asociado valores con variables,
+\item La instrucción |return <expresión>|, que provoca que una función devuelva
+    el valor resultante de evaluar la expresión.
 
-\item hemos usado un ciclo |for| para repetir un cálculo.
+\item La instrucción más simple que hemos utilizado es la que contiene una
+    única |<expresión>|, y el efecto de dicha instrucción es que Python evalúa
+    la expresión y descarta su resultado. El siguiente es un programa válido
+    en el que todas las instrucciones son del tipo |<expresión>|:
+
+\begin{codigo-python-sn}
+0
+23.9
+abs(-10)
+"Este programa no hace nada útil :("
+\end{codigo-python-sn}
+
 \end{itemize}
 
 \subsection{Ciclos definidos}
-\label{ciclosdef}
-Hemos ya usado la instrucción \lstinline!for! en el programa que calcula
-cuadrados de enteros en un rango.
+Algunas instrucciones son compuestas, como por ejemplo la instrucción |for|,
+que indica a Python que queremos inicializar un \emph{ciclo definido}:
 
 \begin{codigo-python-sn}
 for x in range(n1, n2):
     print(x * x)
 \end{codigo-python-sn}
 
-Este ciclo se llama definido porque de entrada, y una vez leídos
-\lstinline!n1! y \lstinline!n2!, se sabe exactamente cuántas veces se ejecutará
-el cuerpo y qué valores tomará \lstinline!x!.
-
 Un ciclo definido es de la forma
-
 \begin{codigo-python-sn}
-for <variable> in <secuencia de valores>:
+for <nombre> in <expresión>:
     <cuerpo>
 \end{codigo-python-sn}
 
-En nuestro ejemplo la secuencia de valores es el intervalo de
-enteros \lstinline![n1, n1+1, ..., n2-1]! y la variable es \lstinline!x!.
+El ciclo |for| es una instrucción compuesta ya que incluye una línea de
+inicialización y un |<cuerpo>|, que a su vez está formado por una o más
+instrucciones.
+
+Decimos que el ciclo es definido porque una vez evaluada la |<expresión>|
+(cuyo resultado debe ser una \emph{secuencia de valores}),
+se sabe exactamente cuántas veces se ejecutará
+el |<cuerpo>| y qué valores tomará la variable |<nombre>|.
+
+En nuestro ejemplo la secuencia de valores resultante de la expresión
+|range(n1, n2)| es el intervalo de enteros |[n1, n1+1, ..., n2-1]| y la variable
+es |x|.
 
 La secuencia de valores se puede indicar como:
 
@@ -499,7 +515,6 @@ for x in [1, 3, 9, 27]:
     print(x * x)
 \end{codigo-python-sn}
 imprimirá los cuadrados de los números 1, 3, 9 y 27.
-
 \end{itemize}
 
 \section{Una guía para el diseño}
