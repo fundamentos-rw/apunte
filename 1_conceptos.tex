@@ -202,17 +202,18 @@ diferentes algoritmos para la actualización y la consulta.
 
 \begin{sabias_que}
 Python fue creado a finales de los años 80 por un programador holandés
-llamado Guido van Rossum, quien sigue siendo aún hoy el líder del
-desarrollo del lenguaje.
+llamado Guido van Rossum, quien se desempeñó como líder del
+desarrollo del lenguaje hasta 2018.
 
 La versión 2.0, lanzada en 2000, fue un paso muy importante para el
 lenguaje ya que era mucho más madura, incluyendo un \textit{recolector de
 basura}.  La versión 2.2, lanzada en diciembre de 2001, fue también un hito
 importante ya que mejoró la orientación a objetos.  La última versión de
-esta línea es la 2.7 que fue lanzada en noviembre de 2010 y aún está vigente.
+esta línea es la 2.7 que fue lanzada en noviembre de 2010 y estará vigente
+hasta 2020.
 
-En diciembre de 2008 se lanzó la rama 3.0, cuya versión actual es la 3.6, de
-diciembre de 2016, y es la que utilizamos en este libro. Python 3 fue diseñado
+En diciembre de 2008 se lanzó la rama 3.0 (en este libro utilizamos la versión
+3.7, de junio de 2018). Python 3 fue diseñado
 para corregir algunos defectos de diseño en el lenguaje, y muchos de los
 cambios introducidos son incompatibles con las versiones anteriores. Por esta
 razón, las ramas 2.x y 3.x coexisten con distintos grados de adopción.
@@ -282,21 +283,23 @@ paréntesis para modificar el orden de asociación natural de las operaciones
 En Python tenemos dos tipos de datos numéricos: los \emph{números enteros} y los
 \emph{números de punto flotante}. Los números enteros representan el valor entero exacto que
 ingresemos. Los números flotantes son parecidos a la notación científica,
-almacenan una cierta cantidad de dígitos significativos y un exponente. Según
+almacenan una cantidad limitada de dígitos significativos y un exponente, por
+lo que sirven para representar magnitudes en forma aproximada. Según
 los operandos y las operaciones que hagamos usaremos la aritmética de los
 enteros o de los flotantes.
 
 Vamos a elegir enteros cada vez que necesitemos recordar un valor exacto:
 la cantidad de alumnos, cuántas veces repito una operación, un número de
-documento, la plata en una cuenta bancaria\footnote{¿Pero la moneda no tiene
-decimales?, ¡sí!, pero puedo almacenar los centavos y eso es entero, ¿no es
-más importante recordar la suma exacta que hay en la cuenta?}. En cambio
-vamos a elegir flotantes cuando nos interese más la magnitud, lo cual suele
-ser típico en la física y la ingeniería: la temperatura, el seno de un
+documento, el dinero en una cuenta bancaria\footnote{¿Pero la moneda no tiene
+decimales?, ¡sí!, pero conviene representar el saldo como la cantidad total de
+centavos, que es un número entero, ya que es muy importante almacenar la suma exacta
+que hay en la cuenta.}. En cambio
+vamos a elegir flotantes cuando nos interese más la magnitud y no tanto la
+exactitud, lo cual suele ser típico en la física y la ingeniería: la temperatura, el seno de un
 ángulo, la distancia recorrida, el número de Avogadro, el factorial de un número\footnote{¿Pero
-el factorial no es entero?, ¡sí!, pero si lo necesito, por ejemplo, para
-calcular un polinomio de Taylor y ahí está dividiendo me importa más su
-magnitud que su valor exacto.}.
+el factorial no es entero?, ¡sí!, pero si lo necesitamos, por ejemplo, para
+calcular un polinomio de Taylor, el factorial figura como denominador y ahí nos
+importa más su magnitud que su valor exacto.}.
 
 Además de efectuar operaciones matemáticas, Python nos permite trabajar con
 porciones de texto, que llamaremos \emph{cadenas}, y que se introducen entre
@@ -364,16 +367,16 @@ operación y devuelve un \emph{resultado}.  Por ejemplo, la función |abs| recib
 un parámetro (un número) y su resultado es el valor absoluto del número.
 
 \begin{figure}[ht]
-\caption{Una función recibe parámetros y devuelve un resultado.}
 \begin{center}
 \input{graficos/funcion}
 \end{center}
+\caption{Una función recibe parámetros y devuelve un resultado.}
 \end{figure}
 
 Python viene equipado con muchas funciones, pero ya hemos dicho que, como
 programadores, debíamos ser capaces de escribir nuevas instrucciones para la
-computadora. Los programas de correo electrónico, navegación por Internet,
-chat, juegos, escritura de textos o predicción de las condiciones
+computadora. Los programas de correo electrónico, navegación web,
+chat, juegos, procesamiento de texto o predicción de las condiciones
 meteorológicas de los próximos días no son más que grandes programas
 implementados introduciendo nuevas funciones a la máquina, escritas por uno o
 muchos programadores.
@@ -776,10 +779,11 @@ resolver el problema?
 
 En un programa Python podemos operar con cadenas de texto o con números.  Las
 representaciones dentro de la computadora de un número y una cadena son muy
-distintas. Por ejemplo, el número |12345678| se almacena en forma binaria y
-típicamente ocupa 4 bytes, mientras que la cadena |"12345678"| es una sucesión
-de caracteres en la que cada dígito se almacena de forma separada y ocupa (cada
-uno) un byte.
+distintas. Por ejemplo, los números |0|, |42| y |12345678| se almacenan
+como números binarios ocupando todos la misma cantidad de memoria (típicamente
+4 u 8 bytes), mientras que las cadenas |"0"|, |"42"| y |"12345678"| son
+secuencias de caracteres, en las que cada dígito se representa como un
+caracter y cada caracter ocupa típicamente 1 byte.
 
 La función |input| interpreta cualquier valor que el usuario ingresa mediante
 el teclado como una cadena de caracteres. Es decir, |input| siempre devuelve
