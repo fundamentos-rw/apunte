@@ -2,7 +2,7 @@ import random
 
 def mastermind():
     """Funcion principal del juego Mastermind"""
-    print("Bienvenido/a al Mastermind!")
+    print("Bienvenid@ al Mastermind!")
     print("Tienes que adivinar un numero de cuatro cifras distintas")
 
     codigo = elegir_codigo()

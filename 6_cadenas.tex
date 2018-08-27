@@ -4,7 +4,7 @@ Una cadena es una secuencia de caracteres. Ya las hemos usado para mostrar
 mensajes, pero sus usos son mucho más amplios que sólo ése: los textos que
 manipulamos mediante los editores de texto, los textos de Internet que
 analizan los buscadores, los mensajes enviados mediante correo electrónico,
-son todos ejemplos de cadenas de caracteres. Pero para poder programar este
+son todos ejemplos de cadenas de caracteres. Para poder programar este
 tipo de aplicaciones debemos aprender a manipularlas. Comenzaremos a ver
 ahora cómo hacer cálculos con cadenas.
 
@@ -132,30 +132,30 @@ Trataremos de averiguar con qué letra empieza una cadena.
 'e'
 \end{codigo-python-sn}
 
-Algo falló: ¡\lstinline+s[1]+ nos muestra la segunda letra, no la
-primera! Lo que sucede es que en Python las posiciones se cuentan
-desde 0.
+\lstinline+s[1]+ nos muestra la segunda letra, no la primera. ¿Algo falló? No,
+lo que sucede es que en Python las posiciones se cuentan desde 0.
 
 \begin{codigo-python-sn}
 >>> s[0]
 'V'
 \end{codigo-python-sn}
 
-Ahora sí hemos conseguido averiguar en Python cuál es el primer carácter de
-\lstinline!s!.
-
-\begin{atencion}
+\begin{observacion}
 Las distintas posiciones de una cadena \lstinline!s! se llaman
 \emph{índices}. Los índices son números enteros que pueden tomar
 valores entre \lstinline!-len(s)! y \lstinline!len(s) - 1!.
 
-Los índices entre \lstinline!0! y \lstinline!len(s) - 1! son lo que ya
-vimos: los caracteres de la cadena del primero al útimo. Los índices
-negativos proveen una notación que hace más fácil indicar cuál es el último
+\begin{itemize}
+\item Los índices positivos (entre \lstinline!0! y \lstinline!len(s) - 1!) son lo que
+ya vimos: los caracteres de la cadena del primero al útimo.
+
+\item Los índices negativos (entre |-len(s)| y |-1|) proveen una notación que hace
+más fácil indicar cuál es el último
 carácter de la cadena: \lstinline!s[-1]! es el último carácter de
 \lstinline!s!, \lstinline!s[-2]! es el penúltimo carácter de \lstinline!s!,
 \lstinline!s[-len(s)]! es el primer carácter de \lstinline!s!.
-\end{atencion}
+\end{itemize}
+\end{observacion}
 
 Algunos ejemplos de acceso a distintas posiciones en una cadena.
 
@@ -238,9 +238,9 @@ Sin embargo \lstinline+s[0:0]+ no da error. ¿Por qué?
 ''
 \end{codigo-python-sn}
 
-\ejercicioc{Investigar qué significa la notación \lstinline+s[:]+.}
+\ejercicioc{Investigar cuál es el resultado de \lstinline+s[:]+.}
 
-\ejercicioc{Investigar qué significan las notaciones
+\ejercicioc{Investigar cuál es el resultado de
 \lstinline+s[:j]+ y  \lstinline+s[j:]+ si \lstinline!j! es un número negativo.}
 
 \section{Las cadenas son inmutables}
@@ -473,52 +473,45 @@ vean de una manera en particular. Además, separar el formato del texto de los
 datos a mostrar nos permite enfocarnos en la presentación cuando eso es lo que
 queremos.
 
-Por ejemplo, para incluir un número en medio de un mensaje, podemos usar la
-siguiente cadena de formato:
+Por ejemplo, si queremos saludar al usuario y mostrarle la
+cantidad de mensajes sin leer, y en el estado tenemos |nombre| $\rightarrow$ |'Veronika'| y
+|no_leidos| $\rightarrow$ |8|, podemos hacer algo como:
 
 \begin{codigo-python-sn}
->>> no_leidos = 8
->>> "Hay {} mensajes sin leer".format(no_leidos)
-'Hay 8 mensajes sin leer'
+>>> "Hola, " + nombre + ", tenés " + str(no_leidos) + " mensajes sin leer"
+'Hola Veronika, tenés 8 mensajes sin leer'
 \end{codigo-python-sn}
 
-Equivalente a:
+Pero también podemos obtener el mismo resultado utilizando una \emph{cadena de
+formato} y la función |format|:
 
 \begin{codigo-python-sn}
->>> "Hay " + str(no_leidos) + " mensajes sin leer"
-'Hay 8 mensajes sin leer'
+>>> "Hola {}, tenés {} mensajes sin leer".format(nombre, no_leidos)
+'Hola Veronika, tenés 8 mensajes sin leer'
 \end{codigo-python-sn}
 
-La función |format| devuelve una cadena en donde se reemplazan todas las marcas
-|{}| por los valores indicados, que automáticamente se convierten a cadenas de
-texto.
-
-Al usar la cadenas de formato de
-esta manera, podemos ver claramente cuál es el contenido del mensaje, evitando
-errores con respecto a espacios de más o de menos, interrupciones en el texto
-que complican su lectura, etc.
+La función |format| devuelve la cadena resultante de reemplazar en la cadena de
+formato todas las marcas |{}| por los valores indicados, convirtiendo los
+valores automáticamente a cadenas de texto.
 
 \begin{sabias_que}
 La función |format| se utiliza con una sintaxis que hasta ahora no habíamos
-visto: |cadena.format(valor)| en lugar de la notación usual
-|format(cadena, valor)|.
+visto: |cadena.format(v1, v2)| en lugar de la notación usual
+|format(cadena, v1, v2)|.
 
-Por ahora es suficiente con entender que en la llamada |cadena.format(valor)|,
-es como si la función |format| recibiera dos parámetros, |cadena| y |valor|.
+Por ahora es suficiente con entender que en la llamada
+|cadena.format(v1, v2)|,
+es como si la función |format| recibiera tres parámetros: |cadena|,
+|v1| y |v2|.
 
 Esta notación es propia de la \emph{orientación a objetos}. Aprenderemos más
 sobre objetos en la unidad~\ref{objetos}.
 \end{sabias_que}
 
-Otro ejemplo, utilizando varios valores, en este caso cadenas:
-\begin{codigo-python-sn}
->>> "Artista: {}. Disco: {}.".format(artista, disco)
-\end{codigo-python-sn}
-
-Equivalente a:
-\begin{codigo-python-sn}
->>> "Artista: " + artista + ". Disco: " + disco + "."
-\end{codigo-python-sn}
+Al usar una cadena de formato de
+esta manera, podemos ver claramente cuál es el contenido del mensaje, evitando
+errores con respecto a espacios de más o de menos, interrupciones en el texto
+que complican su lectura, etc.
 
 En el caso de los valores numéricos, es posible modificar la forma en la que el
 número es presentado. Por ejemplo, si se trata de un monto monetario, usualmente
@@ -538,9 +531,27 @@ decimal.
 
 \begin{codigo-python-sn}
 >>> rojos = 4640000
->>> 'Glóbulos rojos: {:.1e}/uL'
+>>> 'Glóbulos rojos: {:.1e}/uL'.format(rojos)
 'Glóbulos rojos: 4.6e+06/uL'
 \end{codigo-python-sn}
+
+\begin{sabias_que}
+En la versión 3.7 de Python se introdujo una sintaxis nueva para generar
+cadenas de formato, anteponiendo la cadena con la letra |f|. Las tres
+siguientes expresiones son equivalentes a los ejemplos mostrados con la
+función |format|:
+
+\begin{codigo-python-sn}
+>>> f"Hola {nombre}, tenés {no_leidos} mensajes sin leer"
+'Hola Veronika, tenés 8 mensajes sin leer'
+>>> f'Sin IVA: ${precio:.2}. Con IVA: ${precio * 1.21:.2}'
+'Sin IVA: $205.50. Con IVA: $248.66'
+>>> f'Glóbulos rojos: {rojos:.1e}/uL'
+'Glóbulos rojos: 4.6e+06/uL'
+\end{codigo-python-sn}
+\end{sabias_que}
+
+
 
 \section{Nuestro primer juego}
 
@@ -823,7 +834,7 @@ aplicar las mejoras.
 
 \ejercicioc{En el punto~\ref{str:mant} (Mantenimiento) usamos una variable que
 guardara el valor de la cantidad de dígitos para no tener que cambiarlo todas
-las veces. ¿Cómo harían para evitar esta variable usando la función
+las veces. ¿Cómo podemos hacer para evitar esta variable usando la función
 \lstinline!len(cadena)!?}
 
 \ejercicioc{Modificar el programa para permitir repeticiones de dígitos.
