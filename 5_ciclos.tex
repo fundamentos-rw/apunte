@@ -56,19 +56,17 @@ todos.
 Para poder resolver este problema sin averiguar primero la cantidad de números
 a procesar, debemos introducir una instrucción que nos permita construir ciclos
 que no requieran que se informe de antemano la cantidad de veces que se
-repetirá el cálculo del cuerpo.  Se trata de \emph{ciclos indefinidos} en los
-cuales se repite el cálculo del cuerpo mientras una cierta condición es
+repetirá el cálculo del cuerpo.  Se trata de los \emph{ciclos indefinidos},
+en los cuales se repite el cálculo del cuerpo mientras una cierta condición es
 verdadera.
 
 Un ciclo indefinido es de la forma
-
 \begin{codigo-python-sn}
-while <condición>:
-    <hacer algo>
+while <expresión>:
+    <cuerpo>
 \end{codigo-python-sn}
-
-Donde \lstinline+while+ es una palabra reservada, y la condición es una expresión
-booleana, igual que en las instrucciones \lstinline!if!. El cuerpo es, como
+donde \lstinline+while+ es una palabra reservada, y la |<expresión>| debe ser
+booleana, igual que en las instrucciones \lstinline!if!. El |<cuerpo>| es, como
 siempre, una o más instrucciones de Python.
 
 El funcionamiento de esta instrucción es el siguiente:
@@ -79,6 +77,26 @@ El funcionamiento de esta instrucción es el siguiente:
 \item Si la condición es verdadera, ejecutar el cuerpo.
 \item Volver a 1.
 \end{enumerate}
+
+En la Figura \ref{flujo-while} se muestra el diagrama de flujo correspondiente
+al ciclo indefinido |while|.
+
+\begin{figure}[hbt]
+\begin{tikzpicture}[
+    every node/.style={node font=\ttfamily},
+]
+    \node [start] (init) {};
+    \node [right=of init,decision] (exp) {<expresión>};
+    \node [below=of exp,bloque] (cuerpo) {<cuerpo>};
+    \node [right=2cm of exp,end] (end) {};
+    \path [flecha] (init) -- (exp);
+    \path [flecha] (exp) -- node[right,near start] {True} (cuerpo);
+    \path [flecha] (cuerpo) -- ++(-2,0) -| ++(0,2);
+    \path [flecha] (exp) -- node[above,near start] {False} (end);
+\end{tikzpicture}
+\caption{Diagrama de flujo para el ciclo indefinido \texttt{while}.}
+\label{flujo-while}
+\end{figure}
 
 \section{Ciclo interactivo}
 
@@ -303,11 +321,10 @@ sea que nunca va a terminar). ¡Pero eso es gravísimo! ¡Nuestros programas
 tienen que terminar!
 
 Afortunadamente hay una instrucción de Python, \lstinline!break!, que nos
-permite salir de adentro de un ciclo (tanto sea \lstinline!for! como
+permite salir de adentro de un ciclo (\lstinline!for! o
 \lstinline!while!) en medio de su ejecución.
 
 En esta construcción
-
 \begin{codigo-python-sn}
 while <condicion_while>:
     <hacer algo_1>
@@ -315,8 +332,7 @@ while <condicion_while>:
         break
     <hacer algo_2>
 \end{codigo-python-sn}
-
-El funcionamiento de la instrucción \lstinline!break! es el siguiente:
+el funcionamiento de la instrucción \lstinline!break! es el siguiente:
 
 \begin{enumerate}
 \item Se evalúa la |<condicion_while>| y si es falsa se sale del ciclo.
@@ -472,6 +488,8 @@ def buscar_impar(x):
     return x
 \end{codigo-python-sn}
 \end{sabias_que}
+
+\newpage
 
 \section{Ejercicios}
 
