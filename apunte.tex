@@ -1,5 +1,5 @@
 \documentclass[11pt,spanish,a4paper,twoside,openany]{book}
-
+\raggedbottom
 % descomentar para debuggear overfull warnings:
 % \overfullrule=1mm
 
@@ -97,6 +97,9 @@
 
 \usepackage{array}            % Permite alinear los párrafos en las celdas verticalmente
 \usepackage{enumitem}
+\setlist{labelindent=\parindent, leftmargin=*, align=left, topsep=1.25\parsep,
+itemsep=0.5\parsep}
+
 \end{extract*}
 
 % Resto del preámbulo de ejercicios.tex

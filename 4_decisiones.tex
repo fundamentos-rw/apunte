@@ -510,13 +510,10 @@ caracteres que no son vacías, y en general cualquier valor que no sea 0 o
 vacío.  Los valores nulos o vacíos se consideran \textit{falsos}.
 
 Así, en el ejemplo anterior la línea
-
 \begin{codigo-python-sn}
 elif x == 0:
 \end{codigo-python-sn}
-
 también podría escribirse de la siguiente manera:
-
 \begin{codigo-python-sn}
 elif not x:
 \end{codigo-python-sn}
@@ -524,13 +521,11 @@ elif not x:
 Además, en Python existe un valor especial llamado |None| que se utiliza
 comúnmente para representar la ausencia de un valor. Podemos preguntar si una
 variable |v| es |None| simplemente con:
-
 \begin{codigo-python-sn}
 if v is None:
 \end{codigo-python-sn}
 
 O, como |None| también es considerado un valor nulo,
-
 \begin{codigo-python-sn}
 if not v:
 \end{codigo-python-sn}
