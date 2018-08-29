@@ -7,19 +7,21 @@ se quiere agrupar elementos.
 
 \section{Tuplas}
 
-En la conversión de un tiempo a horas, minutos y segundos, en la
-sección~\ref{fun:multiple_return}, usamos n-uplas (o \emph{tuplas}) como una
-construcción que nos permitía que una función devolviera múltiples valores.
+Al diseñar algoritmos, es muy común que queramos describir un agrupamiento de
+datos de distintos tipos.
 
-En programación, en general, al querer modelar objetos de la vida real, es
-muy común que queramos describir un objeto como un agrupamiento de datos
-de distintos tipos. Veamos algunos ejemplos:
+Esto es algo que ya hicimos anteriormente: en la conversión de un tiempo a
+horas, minutos y segundos (sección~\ref{fun:multiple_return}) y también en el
+juego Mastermind (sección \ref{mastermind}), usamos n-uplas, que en Python se
+llaman \emph{tuplas}, y sirven para representar agrupaciones de datos ordenados.
+
+Veamos más ejemplos:
 
 \begin{itemize}
 
 \item Una fecha la podemos querer representar como la terna día (un número
 entero), mes (una cadena de caracteres), y año (un número entero), y
-tendremos por ejemplo: \lstinline!(25, "Mayo", 1810)!.
+tendremos por ejemplo la tupla \lstinline!(25, "Mayo", 1810)!.
 
 \item Como datos de los alumnos queremos guardar número de padrón, nombre y
 apellido, como por ejemplo \lstinline!(89766, "Alicia", "Hacker")!.
@@ -34,7 +36,8 @@ como por ejemplo: \\
 En Python el tipo de dato asociado a las tuplas se llama |tuple|:
 
 \begin{codigo-python-sn}
->>> type((25, "Mayo", 1810))
+>>> fecha = (25, "Mayo", 1810)
+>>> type(fecha)
 <class 'tuple'>
 \end{codigo-python-sn}
 \end{observacion}
@@ -43,21 +46,14 @@ En Python el tipo de dato asociado a las tuplas se llama |tuple|:
 
 Las tuplas son \emph{secuencias}, igual que las cadenas, y se puede utilizar la
 misma notación de índices que en las cadenas para obtener cada una de sus
-componentes.
-
-\begin{itemize}
-\item El primer elemento de \lstinline!(25, "Mayo", 1810)! es 25.
-\item El segundo elemento de \lstinline!(25, "Mayo", 1810)! es ``Mayo''.
-\item El tercer elemento de \lstinline!(25, "Mayo", 1810)! es 1810.
-\end{itemize}
-
+componentes:
 \begin{codigo-python-sn}
->>> t = (25, "Mayo", 1810)
->>> t[0]
+>>> fecha = (25, "Mayo", 1810)
+>>> fecha[0]
 25
->>> t[1]
+>>> fecha[1]
 'Mayo'
->>> t[2]
+>>> fecha[2]
 1810
 \end{codigo-python-sn}
 
@@ -65,9 +61,8 @@ componentes.
 Todas las secuencias en Python comienzan a numerarse desde 0.  Es por eso
 que se produce un error si se quiere acceder al n-ésimo elemento de un
 tupla:
-
 \begin{codigo-python-sn}
->>> t[3]
+>>> fecha[3]
 (^Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 IndexError: tuple index out of range^)
@@ -80,11 +75,11 @@ en el ejemplo de la fecha queremos quedarnos con un par que sólo contenga
 día y mes podremos tomar el rango |[:2]| de la misma:
 
 \begin{codigo-python-sn}
->>> t[:2]
+>>> fecha[:2]
 (25, 'Mayo')
 \end{codigo-python-sn}
 
-\ejercicioc{¿Cuál es el cuarto elemento de la tupla
+\ejercicioc{¿Cuál es el resultado de obtener el cuarto elemento de la tupla
 \lstinline!(89766, "Alicia", "Hacker", (9, "Julio", 1988))!?}
 
 \subsection{Las tuplas son inmutables}
@@ -93,7 +88,7 @@ Al igual que con las cadenas, las componentes de las tuplas no pueden ser
 modificadas:
 
 \begin{codigo-python-sn}
->>> t[2] = 2008
+>>> fecha[2] = 2018
 (^Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 TypeError: 'tuple' object does not support item assignment^)
@@ -106,7 +101,7 @@ para calcular su longitud. El valor de esta función aplicada a
 una tupla nos indica cuántas componentes tiene esa tupla.
 
 \begin{codigo-python-sn}
->>> len(t)
+>>> len(fecha)
 3
 \end{codigo-python-sn}
 
@@ -128,9 +123,9 @@ IndexError: tuple index out of range^)
 \end{codigo-python-sn}
 
 \item Una \emph{tupla unitaria} es una tupla con una componente. Para
-distinguir la tupla unitaria de la componente que contiene, Python exige
+distinguir la tupla unitaria de la componente que contiene, la sintaxis de Python exige
 que a la componente no sólo se la encierre entre paréntesis sino que se le
-ponga una coma a continuación del valor de la componente (así
+ponga una coma a continuación del valor de la componente (así,
 \lstinline+(1810)+ es un número, pero \lstinline+(1810,)+ es la tupla
 unitaria cuya única componente vale 1810).
 
@@ -367,11 +362,8 @@ la tercera posición de \lstinline+padrones+.
 [78455, 79211, 54988, 66540, 45750, 47890]
 \end{codigo-python-sn}
 
-\begin{observacion}
-Las listas no controlan si se insertan elementos repetidos. Si necesitamos
+\item Las listas no controlan si se insertan elementos repetidos. Si necesitamos
 exigir unicidad, debemos hacerlo mediante el código de nuestros programas.
-\end{observacion}
-
 \begin{codigo-python-sn}
 >>> padrones.insert(1,78455)
 >>> padrones
@@ -801,11 +793,9 @@ componente vacía:
 
 La ``casi''--inversa de \lstinline!split! es una función \lstinline!join!
 que tiene la siguiente sintaxis:
-
 \begin{codigo-python-sn}
 <separador>.join(<lista de componentes a unir>)
 \end{codigo-python-sn}
-
 y que devuelve la cadena que resulta de unir todas las componentes
 separadas entre sí por medio del \emph{separador}:
 
