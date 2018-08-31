@@ -163,17 +163,22 @@ cualquier lista |L| con $N$ elementos se cumple que |L[i]| es una operación de
 \emph{tiempo constante}, sin importar el valor de $N$ o de |i|.
 
 Los diccionarios en Python tienen la misma propiedad: para cualquier
-diccionario |D| con $N$ pares clave-valor, la operación |D[k]| es de tiempo
-constante.
+diccionario |D| con $N$ pares clave-valor, y para cualquier clave |k|, la
+operación |D[k]| es de tiempo constante.
 
 Dado que las claves pueden ser de cualquier tipo (a diferencia de las listas, en
-las que los índices son números enteros entre 0 y $N-1$), el algoritmo
-utilizado para almacenar los datos en el diccionario es más sofisticado que el
-utilizado para las listas.
+las que los índices son números enteros entre 0 y $N-1$), para garantizar esta
+propiedad, el algoritmo utilizado para almacenar los datos en el diccionario
+debe ser más sofisticado que el utilizado para las listas.
 
-Los diccionarios de Python uilizan un algoritmo llamado \emph{hash},
-que se basa en realizar un cálculo numérico sobre la clave del elemento (y es
-el que impone la restricción de que las claves deben ser inmutables).
+Los diccionarios de Python están implementados usando una estructura de datos
+llamada \emph{tabla de hash}. Para cada clave se calcula un valor numérico
+mediante un algoritmo llamado \emph{código de hash}, que produce valores
+muy dispares dependiendo de la clave.  Por ejemplo, el hash de la cadena
+|"Python"| es -539294296 mientras que el de |"python"|, una cadena que
+difiere en un caracter, es 1142331976. Los pares clave-valor del diccionario
+se guardan internamente en una lista, y el código de hash de la clave se
+utiliza para determinar el índice en la lista donde se ubicará cada par.
 \end{sabias_que}
 
 \section{Algunos usos de diccionarios}
