@@ -51,8 +51,8 @@ tipo puede ser el valor: listas, cadenas, tuplas, otros diccionarios,
 etc.
 
 \begin{sabias_que}
-En otros lenguajes, a los diccionarios se los llama \emph{arreglos asociativos},
-\emph{mapas}, \emph{tablas} o también \emph{tablas de hash}.
+En otros lenguajes de programación, a los diccionarios se los llama \emph{arreglos asociativos},
+\emph{mapas} o \emph{tablas}.
 \end{sabias_que}
 
 \section{Utilizando diccionarios en Python}
@@ -153,27 +153,28 @@ pueden realizar sobre los diccionarios, que permiten manipular la información
 según sean nuestras necesidades. Algunos de estos métodos pueden verse en
 la referencia al final de la unidad.
 
-\begin{sabias_que}
-El algoritmo que usa Python internamente para buscar un elemento en un
-diccionario es muy distinto que el que utiliza para buscar en listas.
-
-Para buscar en las listas, se utiliza un algoritmos de comparación que
-tarda cada vez más a medida que la lista se hace más larga.  En cambio,
-para buscar en diccionarios se utiliza un algoritmo llamado \emph{hash},
-que se basa en realizar un cálculo numérico sobre la clave del elemento,
-y tiene una propiedad muy interesante: sin importar cuántos elementos
-tenga el diccionario, el tiempo de búsqueda es siempre aproximadamente
-igual.
-
-Este algoritmo de \emph{hash} es también la razón por la cual las claves de
-los diccionarios deben ser inmutables, ya que la operación hecha sobre las
-claves debe dar siempre el mismo resultado, y si se utilizara un valor
-mutable esto no sería posible.
-\end{sabias_que}
-
 No es posible obtener porciones de un diccionario usando \lstinline![:]!,
 ya que al no tener un orden determinado para los elementos, no sería
 posible tomarlos en orden.
+
+\begin{sabias_que}
+En la sección \ref{lookup-listas} mencionamos que Python garantiza que para
+cualquier lista |L| con $N$ elementos se cumple que |L[i]| es una operación de
+\emph{tiempo constante}, sin importar el valor de $N$ o de |i|.
+
+Los diccionarios en Python tienen la misma propiedad: para cualquier
+diccionario |D| con $N$ pares clave-valor, la operación |D[k]| es de tiempo
+constante.
+
+Dado que las claves pueden ser de cualquier tipo (a diferencia de las listas, en
+las que los índices son números enteros entre 0 y $N-1$), el algoritmo
+utilizado para almacenar los datos en el diccionario es más sofisticado que el
+utilizado para las listas.
+
+Los diccionarios de Python uilizan un algoritmo llamado \emph{hash},
+que se basa en realizar un cálculo numérico sobre la clave del elemento (y es
+el que impone la restricción de que las claves deben ser inmutables).
+\end{sabias_que}
 
 \section{Algunos usos de diccionarios}
 
@@ -202,8 +203,7 @@ resultados poco satisfactorios.
 \section{Resumen}
 
 \begin{itemize}
-\item Los diccionarios (también llamados \emph{arreglos asociativos},
-\emph{mapas} o \emph{tablas de hash} en otros lenguajes), son una estructura de datos
+\item Los diccionarios son una estructura de datos
 muy poderosa, que permite almacenar un conjunto de pares $clave \rightarrow valor$.
 \item Las claves deben ser inmutables y únicas.
 \item Los valores pueden ser de cualquier tipo, y pueden no ser únicos.
