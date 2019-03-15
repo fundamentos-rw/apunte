@@ -36,9 +36,13 @@ una clave ya existente, se reemplaza el valor anterior.
 No hay una forma directa de acceder a una clave a través de su valor, y
 nada impide que un mismo valor se encuentre asignado a distintas claves.
 
-La informacion almacenada en los diccionarios no tiene un orden
-particular.  Ni por clave ni por valor, ni tampoco por el orden en
-que han sido agregados al diccionario.
+Si bien las claves almacenadas en los diccionarios respetan el orden
+de inserción como generalmente no sabremos cuál fuel el mismo y como no
+hay forma de insertar claves en un lugar particular, en la práctica los
+utilizaremos sin hacer asunciones al respecto del orden de dichas claves.
+Cabe señalar que dos diccionarios con el mismo contenido e idénticos en
+la comparación pueden tener las claves en diferente orden dado que la
+historia de los mismos puede ser distinta.
 
 Al igual que las listas, los diccionarios son mutables. Esto significa que
 podemos agregar, quitar y modificar los elementos de un diccionario
@@ -154,8 +158,7 @@ según sean nuestras necesidades. Algunos de estos métodos pueden verse en
 la referencia al final de la unidad.
 
 No es posible obtener porciones de un diccionario usando \lstinline![:]!,
-ya que al no tener un orden determinado para los elementos, no sería
-posible tomarlos en orden.
+dado que el orden de las claves no es relevante para su uso.
 
 \begin{sabias_que}
 En la sección \ref{lookup-listas} mencionamos que Python garantiza que para
@@ -212,8 +215,9 @@ resultados poco satisfactorios.
 muy poderosa, que permite almacenar un conjunto de pares $clave \rightarrow valor$.
 \item Las claves deben ser inmutables y únicas.
 \item Los valores pueden ser de cualquier tipo, y pueden no ser únicos.
-\item Los diccionarios no están ordenados.  Si bien se los puede recorrer,
-el orden en el que se tomarán los elementos no está determinado.
+\item El orden de las claves no es relevante. Si bien se los puede recorrer y las
+claves vendrán en orden de inserción generalmente no es posible controlar ese orden
+durante la vida útil de la estructura.
 \end{itemize}
 
 \begin{referencia_python}
