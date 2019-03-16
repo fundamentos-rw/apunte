@@ -15,19 +15,42 @@ proporciona su significado, etimología, ortografía y, en el caso
 de ciertas lenguas fija su pronunciación y separación silábica.''
 
 
-Al igual que los diccionarios a los que se refiere Wikipedia, y
-que usamos habitualmente en la vida diaria, los diccionarios de
-Python son una lista de consulta de términos de los cuales se
-proporcionan valores asociados. A diferencia de los diccionarios a
-los que se refiere Wikipedia, los diccionarios de Python no están
-ordenados.
+Al igual que los diccionarios a los que se refiere Wikipedia,
+los diccionarios de Python son una colección de términos (llamados
+\emph{claves}) asociados a un \emph{valor} determinado. A diferencia de los
+diccionarios a los que se refiere Wikipedia, el orden en los diccionarios de
+Python no es relevante.
 
+Dicho de otra manera, un diccionario es una colección de pares $(clave,
+valor)$. A diferencia de las listas y tuplas, en lugar de acceder a un valor
+mediante un índice numérico, el acceso será a través de su clave, que en puede
+ser de diversos tipos.
 
-En Python, un diccionario es una colección no-ordenada de valores
-que son accedidos a traves de una clave.  Es decir, en lugar de
-acceder a la información mediante el índice numérico, como es el
-caso de las listas y tuplas, es posible acceder a los valores a
-través de sus claves, que pueden ser de diversos tipos.
+\begin{figure}[hbt]
+\begin{tikzpicture}[
+    every node/.style={node font=\ttfamily},
+]
+    \node [] (k1) {"ar"};
+    \node [below=0.5em of k1] (k2) {"es"};
+    \node [below=0.5em of k2] (k3) {"tv"};
+    \node [right=of k1] (v1) {"Argentina"};
+    \node [right=of k2] (v2) {"España"};
+    \node [right=of k3] (v3) {"Tuvalu"};
+    \path [flecha] (k1) -- (v1);
+    \path [flecha] (k2) -- (v2);
+    \path [flecha] (k3) -- (v3);
+
+    \node [fit=(k1) (k2) (k3)] (claves) {};
+    \node [above=0cm of claves.north,anchor=south] (lclaves) {$claves$};
+
+    \node [fit=(v1) (v2) (v3)] (valores) {};
+    \node [above=0cm of valores.north,anchor=south] (lvalores) {$valores$};
+
+    \node [bloque,fit=(claves) (lclaves) (valores) (lvalores)] (caja) {};
+\end{tikzpicture}
+\caption{Un diccionario cuyas claves son dominios de Internet (\emph{top level
+    domains}) y cuyos valores son los países correspondientes.}
+\end{figure}
 
 Las claves son únicas dentro de un diccionario, es decir que no puede haber
 un diccionario que tenga dos veces la misma clave. Si se asigna un valor a
@@ -36,13 +59,9 @@ una clave ya existente, se reemplaza el valor anterior.
 No hay una forma directa de acceder a una clave a través de su valor, y
 nada impide que un mismo valor se encuentre asignado a distintas claves.
 
-Si bien las claves almacenadas en los diccionarios respetan el orden
-de inserción, como generalmente no sabremos cuál fuel el mismo y como no
-hay forma de insertar claves en un lugar particular en la práctica los
-utilizaremos sin hacer asunciones al respecto del orden de dichas claves.
-Cabe señalar que dos diccionarios con el mismo contenido e idénticos en
-la comparación pueden tener las claves en diferente orden dado que la
-historia de los mismos puede ser distinta.
+Dado que el orden en los diccionarios no es relevante, dos diccionarios
+se consideran iguales si contienen las mismas claves asociadas a los mismos
+valores, incluso aunque los elementos hayan sido agregados en diferente orden.
 
 Al igual que las listas, los diccionarios son mutables. Esto significa que
 podemos agregar, quitar y modificar los elementos de un diccionario
@@ -70,7 +89,7 @@ listado de valores entre llaves, las parejas de clave y valor se separan
 con comas, y la clave y el valor se separan con ':'.
 
 \begin{codigo-python-sn}
-punto = {'x': 2, 'y': 1, 'z': 4}
+dominios = {'ar': 'Argentina', 'es': 'España', 'tv': 'Tuvalu'}
 \end{codigo-python-sn}
 
 \begin{observacion}
@@ -136,8 +155,8 @@ $k$, en caso de existir, o el valor $v$ en caso contrario.
 []
 \end{codigo-python-sn}
 
-Existen diversas formas de recorrer un diccionario.  Es posible recorrer
-sus claves y usar esas claves para acceder a los valores.
+Existen diversas formas de iterar los elementos de un diccionario. Por ejemplo,
+es posible iterar pos sus claves y usar esas claves para acceder a los valores:
 
 \begin{codigo-python-sn}
 for dia in materias:
@@ -152,13 +171,18 @@ for dia, codigos in materias.items():
     print("El {} tengo que cursar {}".format(dia, codigos)
 \end{codigo-python-sn}
 
+Recordar que el orden de los elementos no es relevante; por lo tanto no podemos
+asumir que el resultado de la iteración saldrá en ningún orden
+particular\footnote{En versiones recientes de Python el orden de iteración
+corresponde al orden en que los elementos fueron añadidos al diccionario; en
+las versiones anteriores no se daba ninguna garantía acerca del orden de
+iteración.}. Además, no es posible obtener porciones de un diccionario
+usando \lstinline![:]!.
+
 Hay muchas otras operaciones que se
 pueden realizar sobre los diccionarios, que permiten manipular la información
 según sean nuestras necesidades. Algunos de estos métodos pueden verse en
 la referencia al final de la unidad.
-
-No es posible obtener porciones de un diccionario usando \lstinline![:]!,
-dado que el orden de las claves no es relevante para su uso.
 
 \begin{sabias_que}
 En la sección \ref{lookup-listas} mencionamos que Python garantiza que para
@@ -215,9 +239,7 @@ resultados poco satisfactorios.
 muy poderosa, que permite almacenar un conjunto de pares $clave \rightarrow valor$.
 \item Las claves deben ser inmutables y únicas.
 \item Los valores pueden ser de cualquier tipo, y pueden no ser únicos.
-\item El orden de las claves no es relevante. Si bien se los puede recorrer y las
-claves vendrán en orden de inserción generalmente no es posible controlar ese orden
-durante la vida útil de la estructura.
+\item El orden de los elementos no es relevante.
 \end{itemize}
 
 \begin{referencia_python}
@@ -248,17 +270,17 @@ el diccionario.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline{diccionario.keys()}}
-Devuelve una secuencia desordenada, con todas las claves que se hayan ingresado
-al diccionario
+Devuelve una secuencia con todas las claves que se hayan ingresado
+al diccionario.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline{diccionario.values()}}
-Devuelve una secuencia desordenada, con todos los valores que se hayan
+Devuelve una secuencia con todos los valores que se hayan
 ingresado al diccionario.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline{diccionario.items()}}
-Devuelve una secuencia desordenada con tuplas de dos elementos, en las que el
+Devuelve una secuencia con tuplas de dos elementos, en las que el
 primer elemento es la clave y el segundo el valor.
 \end{sintaxis}
 
