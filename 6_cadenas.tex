@@ -1073,17 +1073,17 @@ Una vez que el usuario ingresa un valor válido, la función lo debe devolver.
 Ejemplo:
 
 \begin{verbatim}
->>> edad = pedir_entero("¿Cuántos años tenés?", 0, 150)
-¿Cuántos años tenés? [0-150]:
-Por favor ingresa un número entre 0 y 150.
-¿Cuántos años tenés? [0-150]: hola
-Por favor ingresa un número entre 0 y 150.
-¿Cuántos años tenés? [0-150]: -3
-Por favor ingresa un número entre 0 y 150.
-¿Cuántos años tenés? [0-150]: 151
-Por favor ingresa un número entre 0 y 150.
-¿Cuántos años tenés? [0-150]: 25
->>> edad
-25
+>>> z = pedir_entero("¿Cuál es tu número favorito?", -50, 50)
+¿Cuál es tu número favorito? [-50..50]:
+Por favor ingresa un número entre -50 y 50.
+¿Cuál es tu número favorito? [-50..50]: hola
+Por favor ingresa un número entre -50 y 50.
+¿Cuál es tu número favorito? [-50..50]: -60
+Por favor ingresa un número entre -50 y 50.
+¿Cuál es tu número favorito? [-50..50]: 51
+Por favor ingresa un número entre -50 y 50.
+¿Cuál es tu número favorito? [-50..50]: -16
+>>> z
+-16
 \end{verbatim}
 \end{ejercicio}
