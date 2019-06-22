@@ -16,42 +16,43 @@ Cuando hablamos de \textit{contratos} o \textit{programación por
 contratos}, nos referimos a la necesidad de estipular tanto lo que necesita
 como lo que devuelve nuestro código.
 
-Las condiciones que deben estar dadas para que el código funcione las llamamos
-\emph{precondiciones} y las condiciones sobre el estado en que quedan las
-variables y él o los valores de retorno, las llamamos \emph{postcondiciones}.
+Este concepto es similar al ya mencionado con respecto a la
+\emph{documentación} de funciones; de hecho el contrato suele ser incluido en
+la documentación, y su finalidad es asegurar que otros programadores sepan
+cuál es la forma correcta de utilizar la función.
 
-En definitiva, este concepto es similar al ya mencionado con respecto a la
-documentación de funciones, es decir que se debe \emph{documentar cómo deben
-ser los parámetros recibidos, cómo va a ser lo que se devuelve, y qué
-sucede con los parámetros en caso de ser modificados}.
+Algunos ejemplos de cosas que deben ser estipuladas como parte del contrato
+son: cómo deben ser los parámetros recibidos, cómo va a ser lo que se devuelve,
+y si la función provoca algún efecto secundario (como por ejemplo modificar
+alguno de los parámetros recibidos o imprimir algo en la consola).
 
-Esta estipulación es mayormente para que la utilicen otros programadores,
-por lo que es particularmente útil cuando se encuentra dentro de la
-documentación. En ciertos casos, además, puede quererse que el programa
-revise si las condiciones realmente se cumplen y de no ser así, actúe en
-consecuencia.
-
-Existen herramientas en algunos lenguajes de programación que facilitan estas
-acciones, en el caso de Python, es posible utilizar la instrucción
-\lstinline!assert!.
+Algunas de estas condiciones deben estar dadas antes de ejecutar el código o
+función; a estas condiciones las llamamos \emph{precondiciones}. Si se cumplen
+las precondiciones, habrá un conjunto de condiciones sobre el estado en que
+quedan las variables y el o los valores de retorno una vez finalizada la
+ejecución, que llamamos \emph{postcondiciones}.
 
 \subsection{Precondiciones}
 
-Las precondiciones son las condiciones que deben cumplir los parámetros que
-una función recibe, para que esta se comporte correctamente.
+Las precondiciones de una función son las condiciones que deben cumplirse antes
+de ejecutarla, para que se comporte correctamente: cómo deben ser los
+parámetros que recibe, cómo debe ser el estado global, etc.
 
-Por ejemplo, en una función división las precondiciones son que los parámetros
-son números, y que el divisor sea distinto de 0. Tener una precondición
-permite asumir desde el código que no es necesario lidiar con los casos en que
-las precondiciones no se cumplen.
+Por ejemplo, en una función que divide dos números, las precondiciones son que los parámetros
+son números, y que el divisor es distinto de 0.
+
+Si estipulamos las precondiciones como parte de la documentación, en el cuerpo
+de la función podremos asumir que son ciertas, y no será necesario escribir
+código para lidiar con los casos en los que no se cumplen.
 
 \subsection{Postcondiciones}
 
-Las postcodiciones son las condiciones que cumplirá el valor de retorno, y
-los parámetros recibidos, en caso de que hayan sido alterados,
-siempre que se hayan cumplido las precondiciones.
+Las postcodiciones son las condiciones que se cumplirán una vez finalizada la
+ejecución de la función (asumiendo que se cumplen las precondiciones): cómo
+será el valor de retorno, si los parámetros recibidos o variables globales son
+alteradas, si se imprimen cosas, si se modifican archivos, etc.
 
-En el ejemplo anterior, la función división con las precondiciones asignadas,
+En el ejemplo anterior, la función división, dadas las precondiciones
 puede asegurar que devolverá un número correspondiente al cociente solicitado.
 
 \subsection{Aseveraciones}
@@ -61,9 +62,9 @@ Tanto las precondiciones como las postcondiciones son \textit{aseveraciones}
 particular de la ejecución sobre el estado computacional. Si llegaran a ser
 falsas significaría que hay algún error en el diseño o utilización del algoritmo.
 
-Para comprobar estas afirmaciones desde el código en algunos casos podemos
-utilizar la instrucción \lstinline!assert!. Esta instrucción recibe una
-condición a verificar (o sea, una expresión booleana)
+En algunos casos puede ser útil comprobar estas afirmaciones desde el código, y
+para ello podemos utilizar la instrucción \lstinline!assert!. Esta instrucción
+recibe una condición a verificar (o sea, una expresión booleana).
 Si la condición es |True|, la instrucción no hace nada; en caso contrario se
 produce un error.
 
