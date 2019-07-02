@@ -1,4 +1,4 @@
-\chapter{Contratos y Mutabilidad}
+\chapter{Documentación, contratos y mutabilidad}
 
 En esta unidad se le dará cierta formalización a algunos temas que habían sido
 presentados informalmente, como por ejemplo la documentación de las funciones.
@@ -10,16 +10,185 @@ condiciones.
 También se verá una forma de modelar el espacio donde \textit{viven} las
 variables.
 
-\section{Pre y Postcondiciones}
+\section{Documentación}
+
+Comenzamos formalizando un poco más acerca de la documentación, cuál es su
+objetivo y las distintas formas de documentar.
+
+\subsection{Comentarios vs documentación}
+
+En Python tenemos dos convenciones diferentes para documentar nuestro código:
+la \emph{documentación} propiamente dicha (lo que ponemos entre \verb|"| o
+\verb|"""| al principio de cada función o módulo), y los \emph{comentarios}
+(\verb|#|).  En la mayoría de los lenguajes de programación hay convenciones
+similares. ¿Por qué tenemos dos formas diferentes de documentar?
+
+La \emph{documentación} tiene como objetivo explicar \emph{qué} hace el código.
+La documentación está dirigida a cualquier persona que desee utilizar la
+función o módulo, para que pueda entender cómo usarla sin necesidad de leer el
+código fuente.  Esto es útil incluso cuando quien implementó la función es la
+misma persona que la va a utilizar, ya que permite separar responsabilidades.
+
+Los \emph{comentarios} tienen como objetivo explicar \emph{cómo} funciona el
+código, y \emph{por qué} se decidió implementarlo de esa manera. Los comentarios
+están dirigidos a quien esté leyendo el código fuente.
+
+Podemos ver la diferencia entre la documentación y los comentarios en la
+función |elegir_codigo| de nuestra implementacion del juego Mastermind
+(Código~\ref{cod:mastermind}):
+
+\begin{codigo-python-sn}
+def elegir_codigo():
+    """Devuelve un codigo de 4 digitos elegido al azar"""
+    digitos = ('0','1','2','3','4','5','6','7','8','9')
+    codigo = ''
+    for i in range(4):
+        candidato = random.choice(digitos)
+        # Debemos asegurarnos de no repetir digitos
+        while candidato in codigo:
+            candidato = random.choice(digitos)
+        codigo = codigo + candidato
+    return codigo
+\end{codigo-python-sn}
+
+\subsection{¿Por qué documentamos?}
+
+Seamos sinceros: nadie quiere escribir documentación. ¿Para qué repetir con
+palabras lo que ya está estipulado en el código? La documentación es algo que
+muy a menudo se deja \emph{para después}, y cuando llega el tan angustioso
+momento de escribirla, lo que se termina haciendo es escribir lo más
+escueto posible que pueda pasar como ``documentación''.
+
+Incluso es muy frecuente que durante el desarrollo de un proyecto el código
+evolucione con el tiempo, pero que nos olvidemos de actualizar la documentación
+para reflejar los cambios. En este caso no solamente tenemos documentación de
+mala calidad, ¡sino que además es incorrecta!
+
+Pese a todo esto, la realidad sigue siendo que una buena documentación es
+componente esencial de cualquier proyecto exitoso. Esto en parte se debe a que
+el código fuente transmite en detalle las operaciones individuales que componen
+un algoritmo o programa, pero no suele transmitir en forma transparente cosas
+como la \emph{intención} del programa, el \emph{diseño} de alto nivel, las
+\emph{razones} por las que se decidió utilizar un algoritmo u otro, etc.
+
+\subsection{Código autodocumentado}
+
+En teoría, si nestro código pudiera transmitir en forma eficiente todos esos
+conceptos, la documentación no sería necesaria. De hecho, existe una técnica de
+programación llamada \emph{código autodocumentado}, en la que la idea principal
+es elegir los nombres de funciones y variables de forma tal que la
+documentación sea innecesaria.
+
+Tomemos como ejemplo el siguiente código:
+
+\begin{codigo-python-sn}
+a = 9.81
+b = 5
+c = 0.5 * a * b**2
+\end{codigo-python-sn}
+
+Leyendo esas tres líneas de código podemos razonar cuál será el valor final de
+las variables |a|, |b| y |c|, pero no hay nada que nos indique qué representan
+esas variables, o cuál es la intención del código. Una opción para mejorarlo sería
+utilizar comentarios para aclarar la intención:
+
+\begin{codigo-python-sn}
+a = 9.81   # Valor de la constante G (aceleración gravitacional), en m/s²
+b = 5      # Tiempo en segundos
+c = 0.5 * a * b**2  # Desplazamiento (en metros)
+\end{codigo-python-sn}
+
+Otra opción, según la técnica de código autodocumentado, es simplemente asignar
+nombres descriptivos a las variables:
+
+\begin{codigo-python-sn}
+aceleracionGravitacional = 9.81
+tiempoEnSegundos = 5
+desplazamientoMetros = 0.5 * aceleracionGravitacional * tiempoEnSegundos ** 2
+\end{codigo-python-sn}
+
+De esta manera logramos que no sea necesario ningún comentario ni documentación
+adicional, ya que la intención del código es mucho más descriptiva.
+
+La técnica de código autodocumentado presenta varias limitaciones. Entre ellas:
+
+\begin{itemize}
+    \item Elegir buenos nombres es una tarea difícil, que
+        requiere que tener en cuenta cosas como: qué tan descriptivo es el nombre
+        (cuanto más, mejor), la longitud del identificador
+        (cuanto más corto mejor), el alcance del identificador (cuánto más
+        grande, más descriptivo debe ser el nombre), y convenciones (|i| para
+        índices, |c| para caracteres, etc).
+    \item La documentación de todas formas termina siendo necesaria, ya que por
+        muy bien que elijamos los nombres, muchas veces la única forma de
+        explicar la intención del código y todos sus detalles es en lenguaje
+        coloquial.
+    \item Sigue siendo deseable que quien quiera utilizar nuestra función o
+        módulo pueda entender su funcionamiento sin necesidad de leer el código
+        fuente.
+\end{itemize}
+
+\subsection{Un error común: la sobredocumentación}
+
+Si bien la ausencia de documentación suele ser perjudicial, el otro extremo
+también lo es: la \emph{sobredocumentación}. Después de todo, en la vida
+diaria no necesitamos carteles que nos recuerden cosas como ``esta es la
+puerta'', ``este es el picaporte'' y ``empujar hacia abajo para abrir''. De
+la misma manera, podríamos decir que el siguiente código peca de ser sobredocumentado:
+
+\begin{codigo-python-sn}
+def buscarElemento(listaDeNumeros, numero):
+    """Esta función devuelve el índice (contando desde 0) en el que se
+       encuentra el número `numero` en la lista `listaDeNumeros`. Si el elemento
+       no está en la lista devuelve -1.
+    """
+    # Recorremos todos los índices de la lista, desde 0 (inclusive) hasta N
+    # (no inclusive)
+    for indice in range(len(listaDeNumeros)):
+        # Si el elemento en la posicion `indice` es el buscado
+        if listaDeNumeros[indice] == numero:
+            # Devolvemos sl índice en el que está el elememto
+            return indice
+    # No lo encontramos, devolvemos -1
+    return -1
+\end{codigo-python-sn}
+
+Algunas cosas que podemos mejorar:
+
+\begin{itemize}
+\item En la firma de la función los nombres |buscarElemento|,
+    |listaDeNumeros| y |numero| se pueden simplificar a |buscar|, |secuencia| y
+    |elemento|. Cambiamos |listaDeNumeros| por |secuencia|, ya que la función
+    puede recibir secuencias de cualquier tipo, con elementos de cualquier
+    tipo, y no hay ninguna razón para limitar a que sea una lista de números.
+\item Las variable interna |indice| también se pueden simplificar:
+    por convención podemos usar |i|.
+\item ``Esta función'' es redundante: cuando alguien lea la documentación ya va
+    a saber que se trata de una función.
+\item ``contando desde 0'' es redundante: en Python siempre contamos desde 0.
+\item Los comentarios son excesivos: la función es suficientemente simple y
+    cualquier persona que sepa programación básica podrá entender el algoritmo.
+\end{itemize}
+
+Corrigiendo todos estos detalles resulta:
+
+\begin{codigo-python-sn}
+def buscar(lista, elemento):
+    """Devuelve el índice en el que se encuentra el `elemento` en la `lista`,
+       o -1 si no está.
+    """
+    for i in range(len(lista)):
+        if lista[i] == elemento:
+            return i
+    return -1
+\end{codigo-python-sn}
+
+\section{Contratos: pre y Postcondiciones}
 
 Cuando hablamos de \textit{contratos} o \textit{programación por
 contratos}, nos referimos a la necesidad de estipular tanto lo que necesita
-como lo que devuelve nuestro código.
-
-Este concepto es similar al ya mencionado con respecto a la
-\emph{documentación} de funciones; de hecho el contrato suele ser incluido en
-la documentación, y su finalidad es asegurar que otros programadores sepan
-cuál es la forma correcta de utilizar la función.
+como lo que devuelve nuestro código. El contrato de una función suele ser
+incluido en su documentación.
 
 Algunos ejemplos de cosas que deben ser estipuladas como parte del contrato
 son: cómo deben ser los parámetros recibidos, cómo va a ser lo que se devuelve,
@@ -148,14 +317,9 @@ def sumatoria(inicial, final, f):
 Realizar la implementación correspondiente a la función \lstinline!sumatoria!.
 \end{ejercicio}
 
-En definitiva, la documentación de pre y postcondiciones dentro de la documentación
-de las funciones es una forma de especificar claramente el comportamiento del
-código de forma que quienes lo vayan a utilizar no requieran conocer cómo está
-implementado para poder aprovecharlo.
-
-Esto es útil incluso en los casos en los que el programador de las funciones
-es el mismo que el que las va a utilizar, ya que permite separar
-responsabilidades. Las pre y postcondiciones son, en efecto, un
+En definitiva, la estipulación de pre y postcondiciones dentro de la
+documentación de las funciones es una forma de especificar claramente el
+comportamiento del código.  Las pre y postcondiciones son, en efecto, un
 \textit{contrato} entre el código invocante y el invocado.
 
 \section{Invariantes de ciclo}
@@ -377,6 +541,11 @@ las postcondiciones.
 \section{Resumen}
 
 \begin{itemize}
+\item La \textbf{documentación} tiene como objetivo explicar \emph{qué} hace el código,
+    y está dirigida a quien desee utilizar la función o módulo.
+\item Los \textbf{comentarios} tienen como objetivo explicar \emph{cómo} funciona el
+    código y \emph{por qué} se decidió implementarlo de esa manera, y están dirigidos a
+    quien esté leyendo el código fuente.
 \item Las \textbf{precondiciones} son las condiciones que deben cumplir los
 parámetros recibidos por una función.
 \item Las \textbf{postcondiciones} son las condiciones cumplidads por los
@@ -392,6 +561,16 @@ función.
 \end{itemize}
 
 \begin{referencia_python}
+
+\begin{sintaxis}{Documentación: \lstinline|"..."| ó \lstinline|"""..."""|}
+    Por convención, si la primera línea de una función o módulo es una cadena,
+    esa será su documentación
+\end{sintaxis}
+
+\begin{sintaxis}{Comentarios: \lstinline|# ...|}
+    El intérprete ignora cualquier texto que se encuentra desde el caracter
+    |#| hasta el fin de la línea.
+\end{sintaxis}
 
 \begin{sintaxis}{\lstinline!assert condicion[, mensaje]!}
 Verifica si la condición es verdadera.  En caso contrario, provoca un error
