@@ -73,7 +73,7 @@ como la \emph{intención} del programa, el \emph{diseño} de alto nivel, las
 
 \subsection{Código autodocumentado}
 
-En teoría, si nestro código pudiera transmitir en forma eficiente todos esos
+En teoría, si nuestro código pudiera transmitir en forma eficiente todos esos
 conceptos, la documentación no sería necesaria. De hecho, existe una técnica de
 programación llamada \emph{código autodocumentado}, en la que la idea principal
 es elegir los nombres de funciones y variables de forma tal que la
@@ -102,9 +102,9 @@ Otra opción, según la técnica de código autodocumentado, es simplemente asig
 nombres descriptivos a las variables:
 
 \begin{codigo-python-sn}
-aceleracionGravitacional = 9.81
-tiempoEnSegundos = 5
-desplazamientoMetros = 0.5 * aceleracionGravitacional * tiempoEnSegundos ** 2
+aceleracion_gravitacional = 9.81
+tiempo_segundos = 5
+desplazamiento_metros = 0.5 * aceleracion_gravitacional * tiempo_segundos ** 2
 \end{codigo-python-sn}
 
 De esta manera logramos que no sea necesario ningún comentario ni documentación
@@ -137,17 +137,17 @@ puerta'', ``este es el picaporte'' y ``empujar hacia abajo para abrir''. De
 la misma manera, podríamos decir que el siguiente código peca de ser sobredocumentado:
 
 \begin{codigo-python-sn}
-def buscarElemento(listaDeNumeros, numero):
+def buscar_elemento(lista_de_numeros, numero):
     """Esta función devuelve el índice (contando desde 0) en el que se
-       encuentra el número `numero` en la lista `listaDeNumeros`. Si el elemento
-       no está en la lista devuelve -1.
+       encuentra el número `numero` en la lista `lista_de_numeros`.
+       Si el elemento no está en la lista devuelve -1.
     """
     # Recorremos todos los índices de la lista, desde 0 (inclusive) hasta N
     # (no inclusive)
-    for indice in range(len(listaDeNumeros)):
+    for indice in range(len(lista_de_numeros)):
         # Si el elemento en la posicion `indice` es el buscado
-        if listaDeNumeros[indice] == numero:
-            # Devolvemos sl índice en el que está el elememto
+        if lista_de_numeros[indice] == numero:
+            # Devolvemos el índice en el que está el elemento
             return indice
     # No lo encontramos, devolvemos -1
     return -1
@@ -156,9 +156,9 @@ def buscarElemento(listaDeNumeros, numero):
 Algunas cosas que podemos mejorar:
 
 \begin{itemize}
-\item En la firma de la función los nombres |buscarElemento|,
-    |listaDeNumeros| y |numero| se pueden simplificar a |buscar|, |secuencia| y
-    |elemento|. Cambiamos |listaDeNumeros| por |secuencia|, ya que la función
+\item En la firma de la función los nombres |buscar_elemento|,
+    |lista_de_numeros| y |numero| se pueden simplificar a |buscar|, |secuencia| y
+    |elemento|. Cambiamos |lista_de_numeros| por |secuencia|, ya que la función
     puede recibir secuencias de cualquier tipo, con elementos de cualquier
     tipo, y no hay ninguna razón para limitar a que sea una lista de números.
 \item Las variable interna |indice| también se pueden simplificar:
