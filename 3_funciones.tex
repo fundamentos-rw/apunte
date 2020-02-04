@@ -65,9 +65,9 @@ a su documentación mediante la función \lstinline!help! provista por Python.
 Suponiendo que la función |hola| está definida en el archivo |saludo.py|:
 
 \begin{codigo-python-sn}
-(~\$~) python -i saludo
->>> help(hola)
-Help on function hola in module __main__:
+>>> import saludo
+>>> help(saludo.hola)
+Help on function hola in module saludo:
 
 hola(alguien)
     Devuelve un saludo dirigido a la persona indicada por parámetro.
@@ -76,6 +76,8 @@ hola(alguien)
 De esta forma no es necesario mirar el código de una función para saber lo que
 hace, simplemente llamando a \lstinline!help! es posible obtener esta
 información.
+
+En la sección \ref{sec:modulos} se explica qué hace la instrucción |import|.
 \end{sabias_que}
 
 \section{Imprimir versus devolver}
@@ -291,7 +293,7 @@ main()
 $(0,0,1)$:
 
 \begin{codigo-nohl-sn}
-(~\$~) python tres_tiempos.py
+(~\$~) python3 tres_tiempos.py
 Cuantas horas?: 1
 Cuantos minutos?: 0
 Cuantos segundos?: 0
@@ -487,7 +489,7 @@ main()
 ternas de \lstinline!(1,0,0)!, \lstinline!(0,1,0)! y \lstinline!(0,0,1)!:
 
 \begin{codigo-nohl-sn}
-(~\$~) python tarifador.py
+(~\$~) python3 tarifador.py
 Cuanto cuesta 1 segundo de comunicacion?: 0.40
 Cuantas comunicaciones hubo?: 3
 Cuantas horas?: 1
@@ -602,7 +604,7 @@ ValueError: need more than 3 values to unpack^)
 
 \section{Módulos}
 
-A medida que los programas se hacen más grandes y complejos suele ser
+\label{sec:modulos}A medida que los programas se hacen más grandes y complejos suele ser
 conveniente dividirlos en \emph{módulos}. Cada uno de los programas que
 escribimos hasta ahora están formados por un único módulo, ya que cada archivo
 |.py| es un módulo.

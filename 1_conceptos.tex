@@ -219,11 +219,6 @@ cambios introducidos son incompatibles con las versiones anteriores. Por esta
 razón, las ramas 2.x y 3.x coexisten con distintos grados de adopción.
 \end{sabias_que}
 
-El lenguaje Python nos provee de un \emph{intérprete}, es decir un programa que
-interpreta las órdenes que le damos a medida que las escribimos. La forma más
-típica de invocar al intérprete es ejecutar el comando |python3| en
-la terminal.
-
 \begin{atencion}
 De forma tal de aprovechar al máximo este libro, recomendamos instalar Python 3
 en una computadora, y acompañar la lectura probando todos los ejemplos de
@@ -235,17 +230,81 @@ descargar Python, y en
 acerca de cómo ejecutar el intérprete en cada sistema operativo.
 \end{atencion}
 
+El lenguaje Python nos provee de un \emph{intérprete}, es decir un programa que
+interpreta las órdenes que le damos a medida que las escribimos. La forma más
+típica de invocar al intérprete es ejecutar el comando |python3| en
+la {\bf terminal}.
+
+\subsection{La terminal}
+
+La \emph{terminal} o \emph{consola} del sistema operativo permite ingresar
+órdenes a la computadora en forma de líneas de texto. Los tres sistemas
+operativos más populares (Windows, Mac OS y Linux) están equipados con una
+terminal. Está fuera del alcance de este apunte cubrir el uso detallado de la
+terminal, pero para empezar será suficiente con saber cómo acceder a la misma.
+
+Para abrir la terminal:
+
+\begin{itemize}
+        \item En Windows, presionar las teclas \keys{Windows}~+~\keys{R}, luego
+            escribir |cmd| y presionar \keys{Enter}.
+        \item En Mac OS, presionar las teclas \keys{\cmdmac}~+~\keys{Espacio},
+            luego escribir |terminal|  y presionar \keys{Enter}.
+        \item En Linux (Ubuntu), presionar \keys{Ctrl}~+~\keys{Alt}~+~\keys{T}.
+\end{itemize}
+
+La terminal debería mostrar algo como se ve en la Figura~\ref{fig:terminal1}.
+En la figura se muestra la terminal en un sistema operativo Linux; en otros
+sistemas operativos puede verse ligeramente diferente, pero siempre debería
+mostrar un espacio de texto con un cursor para escribir.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{graficos/terminal1}
+\end{center}
+\caption{La terminal en un sistema operativo Linux.}
+\label{fig:terminal1}
+\end{figure}
+
+\subsection{El intérprete interactivo de Python}
+
+Una vez que accedimos a la terminal del sistema operativo, el próximo paso es
+abrir el intérprete de Python. Para eso, escribimos |python3| y presionamos
+\keys{Enter}.
+
+La terminal debería mostrar algo como se ve en la Figura~\ref{fig:terminal2}.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{graficos/terminal2}
+\end{center}
+\caption{El intérprete de Python.}
+\label{fig:terminal2}
+\end{figure}
+
+\edef\myindent{\the\parindent}%
+\noindent%
+\begin{minipage}{\textwidth}\setlength{\parindent}{\myindent}
+A partir de ahora vamos a mostrar el contenido de la terminal utilizando el
+siguiente formato:
+
 \begin{codigo-nohl-sn}
-(~\$~) python3
+(~\$~) python3 (~\circled{1}~)
 Python 3.6.0 (default, Dec 23 2016, 11:28:25)
 [GCC 6.2.1 20160830] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>>
+>>> (~\circled{2}~)
 \end{codigo-nohl-sn}
+\end{minipage}
 
-Para orientarnos, el intérprete muestra los símbolos |>>>| (llamaremos a esto
-el \emph{prompt}), indicando que podemos escribir a continuación una
-\emph{sentencia} u orden que será evaluada.
+\circled{1} Las líneas que comienzan con \verb|$| indican órdenes que le damos
+al sistema operativo (en este caso la orden es |python3|, es decir \emph{abrir
+el intérprete de Python}).
+
+\circled{2} Para orientarnos, el intérprete de Python muestra los símbolos |>>>|
+(llamaremos a esto el \emph{prompt}), indicando que podemos escribir a continuación una
+\emph{sentencia} u orden que será evaluada por Python (en lugar de ser evaluada
+directamente por el sistema operativo).
 
 Algunas sentencias sencillas, por ejemplo, permiten utilizar el intérprete como
 una calculadora simple con números enteros. Para esto escribimos la
@@ -260,10 +319,10 @@ resultado en la línea siguiente. Luego nos presenta nuevamente el \emph{prompt}
 \end{codigo-python-sn}
 
 Python permite utilizar las operaciones |+|, |-|, |*|, |/|, |//| y |**|
-(suma, resta, multiplicación, división, división entera y potenciación). La sintaxis es la
+(suma, resta, multiplicación, división, división entera y potencia). La sintaxis es la
 convencional (valores intercalados con operaciones), y se puede usar
 paréntesis para modificar el orden de asociación natural de las operaciones
-(potenciación, producto/división, suma/resta).
+(potencia, producto/división, suma/resta).
 
 \begin{codigo-python-sn}
 >>> 5*7
@@ -280,30 +339,54 @@ paréntesis para modificar el orden de asociación natural de las operaciones
 25
 \end{codigo-python-sn}
 
+\section{Valores y tipos}
+
+En la operación |5 * 7| cuyo resultado es |35|, decimos que |5|, |7| y |35|
+son \emph{valores}. En Python, cada valor tiene un \emph{tipo de dato} asociado. El
+tipo de dato del valor |35| es \emph{número entero}.
+
 \label{punto-flotante}
-En Python tenemos dos tipos de datos numéricos: los \emph{números enteros} y los
-\emph{números de punto flotante}. Los números enteros representan el valor entero exacto que
-ingresemos. Los números flotantes son parecidos a la notación científica,
+Hay dos tipos de datos numéricos: los {\bf números enteros} y los
+{\bf números de punto flotante}. Los números enteros (|42|, |0|, |-5|,
+|10000|) representan el valor entero exacto que
+ingresemos. Los números de punto flotante (|5.3|, |-98.28109|,
+|0.0|)\footnote{Notar que se utiliza el punto decimal y no la coma decimal.} son
+parecidos a la notación científica,
 almacenan una cantidad limitada de dígitos significativos y un exponente, por
 lo que sirven para representar magnitudes en forma aproximada. Según
 los operandos y las operaciones que hagamos usaremos la aritmética de los
-enteros o de los flotantes.
+enteros o de los de punto flotante.
 
 Vamos a elegir enteros cada vez que necesitemos recordar un valor exacto:
 la cantidad de alumnos, cuántas veces repito una operación, un número de
 documento, el dinero en una cuenta bancaria\footnote{¿Pero la moneda no tiene
 decimales?, ¡sí!, pero conviene representar el saldo como la cantidad total de
 centavos, que es un número entero, ya que es muy importante almacenar la suma exacta
-que hay en la cuenta.}. En cambio
-vamos a elegir flotantes cuando nos interese más la magnitud y no tanto la
+que hay en la cuenta.}.
+
+Cuando operamos con números enteros, el resultado es exacto:
+
+\begin{codigo-python-sn}
+>>> 1 + 2
+3
+\end{codigo-python-sn}
+
+Vamos a elegir punto flotante cuando nos interese más la magnitud y no tanto la
 exactitud, lo cual suele ser típico en la física y la ingeniería: la temperatura, el seno de un
 ángulo, la distancia recorrida, el número de Avogadro, el factorial de un número\footnote{¿Pero
 el factorial no es entero?, ¡sí!, pero si lo necesitamos, por ejemplo, para
 calcular un polinomio de Taylor, el factorial figura como denominador y ahí nos
 importa más su magnitud que su valor exacto.}.
 
+Cuando hay números de punto flotante involucrados en la operación, el resultado es aproximado:
+
+\begin{codigo-python-sn}
+>>> 0.1 + 0.2
+0.30000000000000004
+\end{codigo-python-sn}
+
 Además de efectuar operaciones matemáticas, Python nos permite trabajar con
-porciones de texto, que llamaremos \emph{cadenas}, y que se introducen entre
+porciones de texto, que llamaremos {\bf cadenas}, y que se introducen entre
 comillas simples (|'|) o dobles (|"|):
 
 \begin{codigo-python-sn}
@@ -677,7 +760,7 @@ Para ejecutar el programa debemos abrir una consola del sistema y ejecutar
 |python cuad100.py|:
 
 \begin{codigo-nohl-sn}
-(~\$~) python cuad100.py
+(~\$~) python3 cuad100.py
 La suma de los primeros 100 cuadrados es 338350
 \end{codigo-nohl-sn}
 
@@ -723,7 +806,7 @@ tecla \keys{Enter}, |input| devuelve la cadena ingresada. Luego llamamos a
 Para ejecutar el programa, nuevamente escribimos en la consola del sistema:
 
 \begin{codigo-nohl-sn}
-(~\$~) python saludar.py
+(~\$~) python3 saludar.py
 Por favor ingrese su nombre: Alan
 Hola Alan!
 \end{codigo-nohl-sn}
@@ -763,7 +846,7 @@ imprimir_cuadrados()
 Como siempre, podemos ejecutar el programa en la consola del sistema:
 
 \begin{codigo-nohl-sn}
-(~\$~) python cuadrados.py
+(~\$~) python3 cuadrados.py
 Se calcularán cuadrados de números
 Ingrese un número entero: 5
 Ingrese otro número entero: 8
@@ -980,7 +1063,7 @@ imprimir_cuadrados()
 En este caso, la salida del programa será:
 
 \begin{codigo-nohl-sn}
-(~\$~) python cuadrados.py
+(~\$~) python3 cuadrados.py
 Se calcularán cuadrados de números
 Ingrese un número entero: 5
 el valor de n1 es: 5
