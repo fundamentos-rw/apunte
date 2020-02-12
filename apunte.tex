@@ -363,21 +363,49 @@ itemsep=0.5\parsep}
 
 \section*{Recomendaciones al realizar las guías.}
 
-\textbf{Generales:}
 \begin{itemize}
-	\item Sea claro y prolijo. Es muy importante que el código sea lo más claro y legible posible.
-	\item Es muy importante que los identificadores de funciones y variables sean coherentes. El identificador debe ser suficientemente descriptivo.
-	\item Ponga una línea en blanco entre las definiciones de función para simplificar la lectura del programa.
-	\item Las expresiones matemáticas complejas pueden representarse en varios pasos.
+	\item Probá el código que escribas ejecutándolo con el intérprete Python,
+        para verificar que tu solución sea correcta.
+	\item Prestá atención al leer el enunciado del ejercicio. En particular:
+    \begin{itemize}
+        \item Revisá si lo que se pide es una \emph{función} o un
+            \emph{programa}. Si se pide un programa, se espera que produzcas
+            un archivo \verb|.py|, que puede contener varias
+            funciones y ser ejecutado con el comando \verb|python3 archivo.py|.
+        \item Si se pide que una función \emph{devuelva} o \emph{calcule}
+            un valor, la función debe tener una instrucción
+            \verb|return| y {\bf no} utilizar las funciones \verb|input| ni
+            \verb|print|.
+        \item Si se pide que una función o programa \emph{imprima} o
+            \emph{muestre} un valor, la función debe llamar a \verb|print|.
+        \item Si se pide que una función o programa \emph{pida} o
+            \emph{pregunte} un valor al usuaio, debe haber al menos una
+            invocación de la función \verb|input|.
+    \end{itemize}
+    \item Cada ejercicio puede tener muchas soluciones posibles. Una vez que
+        encuentres una solución, en lugar de pasar al siguiente ejercicio pensá
+        si se te ocurre una solución cuya codificación sea más simple.
+	\item Es muy importante que el código que escribas sea lo más claro y legible posible.
+    \begin{itemize}
+	    \item En particular, los nombres de funciones y variables deben ser descriptivos.
+	    \item También prestá atención a los espacios. Por ejemplo, una línea en
+            blanco entre las definiciones de función simplifica la lectura del programa.
+    \end{itemize}
 	\item Los ejercicios marcados con el símbolo $\dificil$ son más difíciles y no son de resolución obligatoria.
+	\item No documentes en exceso, pero tampoco ahorres documentación necesaria. La documentación
+        debe ser breve y concisa.
+    \begin{itemize}
+        \item Documentá con \verb|"""| \emph{qué} hace cada una de las funciones
+            que desarrolles. ¿Qué parámetros recibe? ¿Qué devuelve? ¿Imprime algo?
+            ¿Recibe información del usuario?
+        \item En caso de ser necesario, documentá con comentarios (\verb|#|) \emph{cómo} funciona
+            el código. Sólo debería ser necesario en secciones de código complejas, donde sea difícil
+            entender la intención del código.
+    \end{itemize}
 \end{itemize}
 
-\textbf{Documentación:}
-\begin{itemize}
-	\item Documente correctamente las funciones y módulos que desarrolle.
-	\item Documente partes del código cuyo significado pudiera no quedar del todo claro.
-	\item No documente en exceso, pero tampoco ahorre documentación necesaria. La documentación debe ser breve y concisa.
-\end{itemize}
+\newpage
+
 \end{extract}
 
 \title{{\bf Algoritmos y Programación I} \\ Aprendiendo a programar usando Python como herramienta}
