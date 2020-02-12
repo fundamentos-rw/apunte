@@ -529,13 +529,21 @@ función.
 [1, 8, 27, 64]
 \end{codigo-python-sn}
 
-\begin{atencion}
-En general, se espera que una función que recibe parámetros mutables no los
-modifique, ya que si se los modifica se podría perder información valiosa.
+\begin{observacion}
+Si una función modifica un valor mutable que recibe por parámetro, se dice
+que esa función opera \emph{in-place} (en el lugar).
+\end{observacion}
 
-En el caso en que por una decisión de diseño o especificación se modifiquen
-los parámetros recibidos, esto debe estar claramente documentado, dentro de
-las postcondiciones.
+Por ejemplo, la función de Python |list.sort()| es in-place ya que modifica la
+lista que recibe.  En cambio, la función |sorted()| no es in-place, ya que
+devuelve una nueva lista ordenada, dejando la lista original intacta.
+
+\begin{atencion}
+Por omisión se espera que las funciones no operen in-place, es decir que no
+modifiquen los valores mutables que recibe.
+
+En el caso en que por una decisión de diseño o especificación una función opere
+in-place, esto debe estar claramente documentado como parte de las postcondiciones.
 \end{atencion}
 
 \section{Resumen}
@@ -546,18 +554,17 @@ las postcondiciones.
 \item Los \textbf{comentarios} tienen como objetivo explicar \emph{cómo} funciona el
     código y \emph{por qué} se decidió implementarlo de esa manera, y están dirigidos a
     quien esté leyendo el código fuente.
-\item Las \textbf{precondiciones} son las condiciones que deben cumplir los
-parámetros recibidos por una función.
-\item Las \textbf{postcondiciones} son las condiciones cumplidads por los
-resultados que la función devuelve y por los parámetros recibidos, siempre
-que las precondiciones hayan sido válidas.
+\item El \textbf{contrato} de una función especifica qué condiciones se deben
+    cumplir para que la función pueda ser invocada (\textbf{precondiciones}),
+    y qué condiciones se garantiza que serán válidas cuando la función termine
+    su ejecución (\textbf{postcondiciones}).
 \item Los \textbf{invariantes de ciclo} son las condiciones que deben
 cumplirse al comienzo de cada iteración de un ciclo.
 \item En el caso en que estas \textbf{aseveraciones} no sean verdaderas, se
 deberá a un error en el diseño o utilización del código.
-\item En general una función no debe modificar el contenido de sus parámetros,
-aún cuando esto sea posible, a menos que sea la funcionalidad explícita de esa
-función.
+\item Si una función modifica un valor mutable que recibe por parámetro, se dice
+que esa función opera \textbf{in-place}, y eso debe estar explícitamente aclarado
+en su documentación.
 \end{itemize}
 
 \begin{referencia_python}
@@ -638,3 +645,57 @@ Teniendo en cuenta que hay una única I en la cadena inicial MI, y que uno no
 es múltiplo de tres, es imposible llegar a MU con estas reglas, ya que MU
 tiene cero Is, que sí es múltiplo de tres.
 \end{subappendices}
+
+\newpage
+\section{Ejercicios}
+
+\begin{extract*}
+Analizar cada una de las siguientes funciones.
+¿Cuál es el contrato de la función?
+¿Se puede mejorar la legibilidad del código?
+¿Es necesario agregar comentarios?
+¿Hay alguna invariante de ciclo?
+\end{extract*}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+\item \begin{verbatim}
+def Abs(i):
+    if i >= 0:
+        return i
+    else:
+        return -i
+\end{verbatim}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+\item \begin{verbatim}
+def emails(diccionario):
+    for k, v in diccionario.items():
+        print(f"El e-mail de {k} es {v}")
+\end{verbatim}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+\item \begin{verbatim}
+def emails2(diccionario):
+    buenos = {}
+    for k, v in diccionario.items():
+        if '@' in v:
+            buenos[k] = v
+    return buenos
+\end{verbatim}
+\end{ejercicio}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+\item \begin{verbatim}
+def emails3(nombres, direcciones):
+    for nom in range(len(nombres)):
+        if direcciones[nom] == None:
+            nombre, apellido = ' '.split(nombres[nom])
+            direcciones[nom] = nombre[0].lower() + apellido.lower() + '@ejemplo.com'
+\end{verbatim}
+\end{ejercicio}
