@@ -529,21 +529,13 @@ función.
 [1, 8, 27, 64]
 \end{codigo-python-sn}
 
-\begin{observacion}
-Si una función modifica un valor mutable que recibe por parámetro, se dice
-que esa función opera \emph{in-place} (en el lugar).
-\end{observacion}
-
-Por ejemplo, la función de Python |list.sort()| es in-place ya que modifica la
-lista que recibe.  En cambio, la función |sorted()| no es in-place, ya que
-devuelve una nueva lista ordenada, dejando la lista original intacta.
-
 \begin{atencion}
-Por omisión se espera que las funciones no operen in-place, es decir que no
-modifiquen los valores mutables que recibe.
+Por omisión se espera que una función que recibe parámetros mutables no los
+modifique, ya que si se los modifica se podría perder información valiosa.
 
-En el caso en que por una decisión de diseño o especificación una función opere
-in-place, esto debe estar claramente documentado como parte de las postcondiciones.
+En el caso en que por una decisión de diseño o especificación se modifiquen
+los parámetros mutables recibidos, esto debe estar claramente documentado
+como parte de las postcondiciones.
 \end{atencion}
 
 \section{Resumen}
@@ -562,9 +554,8 @@ in-place, esto debe estar claramente documentado como parte de las postcondicion
 cumplirse al comienzo de cada iteración de un ciclo.
 \item En el caso en que estas \textbf{aseveraciones} no sean verdaderas, se
 deberá a un error en el diseño o utilización del código.
-\item Si una función modifica un valor mutable que recibe por parámetro, se dice
-que esa función opera \textbf{in-place}, y eso debe estar explícitamente aclarado
-en su documentación.
+\item Si una función modifica un valor mutable que recibe por parámetro, eso
+    debe estar explícitamente aclarado en su documentación.
 \end{itemize}
 
 \begin{referencia_python}
@@ -585,6 +576,65 @@ con el mensaje recibido por parámetro.
 \end{sintaxis}
 
 \end{referencia_python}
+
+\newpage
+\section{Ejercicios}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Analizar cada una de las siguientes funciones.
+¿Cuál es el contrato de la función? ¿Cómo sería su documentación?
+¿Es necesario agregar comentarios?
+¿Se puede simplificar el código y/o mejorar su legibilidad?
+¿Hay algún invariante de ciclo?
+
+\begin{partes}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def Abs(i):
+    if i >= 0:
+        return i
+    else:
+        return -i
+\end{lstlisting}
+\end{minipage}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def emails(diccionario):
+    for k, v in diccionario.items():
+        print(f"El e-mail de {k} es {v}")
+\end{lstlisting}
+\end{minipage}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def emails2(diccionario):
+    buenos = {}
+    for k, v in diccionario.items():
+        if '@' in v:
+            buenos[k] = v
+    return buenos
+\end{lstlisting}
+\end{minipage}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def emails3(nombres, direcciones):
+    for nom in range(len(nombres)):
+        if direcciones[nom] == None:
+            nombre, apellido = ' '.split(nombres[nom].lower())
+            direcciones[nom] = nombre[0] + apellido + '@ejemplo.com'
+\end{lstlisting}
+\end{minipage}
+
+\end{partes}
+\end{ejercicio}
 
 \newpage
 \begin{subappendices}
@@ -645,57 +695,3 @@ Teniendo en cuenta que hay una única I en la cadena inicial MI, y que uno no
 es múltiplo de tres, es imposible llegar a MU con estas reglas, ya que MU
 tiene cero Is, que sí es múltiplo de tres.
 \end{subappendices}
-
-\newpage
-\section{Ejercicios}
-
-\begin{extract*}
-Analizar cada una de las siguientes funciones.
-¿Cuál es el contrato de la función?
-¿Se puede mejorar la legibilidad del código?
-¿Es necesario agregar comentarios?
-¿Hay alguna invariante de ciclo?
-\end{extract*}
-
-\extractionlabel{guia}
-\begin{ejercicio}
-\item \begin{verbatim}
-def Abs(i):
-    if i >= 0:
-        return i
-    else:
-        return -i
-\end{verbatim}
-\end{ejercicio}
-
-\extractionlabel{guia}
-\begin{ejercicio}
-\item \begin{verbatim}
-def emails(diccionario):
-    for k, v in diccionario.items():
-        print(f"El e-mail de {k} es {v}")
-\end{verbatim}
-\end{ejercicio}
-
-\extractionlabel{guia}
-\begin{ejercicio}
-\item \begin{verbatim}
-def emails2(diccionario):
-    buenos = {}
-    for k, v in diccionario.items():
-        if '@' in v:
-            buenos[k] = v
-    return buenos
-\end{verbatim}
-\end{ejercicio}
-
-\extractionlabel{guia}
-\begin{ejercicio}
-\item \begin{verbatim}
-def emails3(nombres, direcciones):
-    for nom in range(len(nombres)):
-        if direcciones[nom] == None:
-            nombre, apellido = ' '.split(nombres[nom])
-            direcciones[nom] = nombre[0].lower() + apellido.lower() + '@ejemplo.com'
-\end{verbatim}
-\end{ejercicio}
