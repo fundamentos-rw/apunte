@@ -530,12 +530,12 @@ función.
 \end{codigo-python-sn}
 
 \begin{atencion}
-En general, se espera que una función que recibe parámetros mutables no los
+Por omisión se espera que una función que recibe parámetros mutables no los
 modifique, ya que si se los modifica se podría perder información valiosa.
 
 En el caso en que por una decisión de diseño o especificación se modifiquen
-los parámetros recibidos, esto debe estar claramente documentado, dentro de
-las postcondiciones.
+los parámetros mutables recibidos, esto debe estar claramente documentado
+como parte de las postcondiciones.
 \end{atencion}
 
 \section{Resumen}
@@ -546,18 +546,16 @@ las postcondiciones.
 \item Los \textbf{comentarios} tienen como objetivo explicar \emph{cómo} funciona el
     código y \emph{por qué} se decidió implementarlo de esa manera, y están dirigidos a
     quien esté leyendo el código fuente.
-\item Las \textbf{precondiciones} son las condiciones que deben cumplir los
-parámetros recibidos por una función.
-\item Las \textbf{postcondiciones} son las condiciones cumplidads por los
-resultados que la función devuelve y por los parámetros recibidos, siempre
-que las precondiciones hayan sido válidas.
+\item El \textbf{contrato} de una función especifica qué condiciones se deben
+    cumplir para que la función pueda ser invocada (\textbf{precondiciones}),
+    y qué condiciones se garantiza que serán válidas cuando la función termine
+    su ejecución (\textbf{postcondiciones}).
 \item Los \textbf{invariantes de ciclo} son las condiciones que deben
 cumplirse al comienzo de cada iteración de un ciclo.
 \item En el caso en que estas \textbf{aseveraciones} no sean verdaderas, se
 deberá a un error en el diseño o utilización del código.
-\item En general una función no debe modificar el contenido de sus parámetros,
-aún cuando esto sea posible, a menos que sea la funcionalidad explícita de esa
-función.
+\item Si una función modifica un valor mutable que recibe por parámetro, eso
+    debe estar explícitamente aclarado en su documentación.
 \end{itemize}
 
 \begin{referencia_python}
@@ -578,6 +576,65 @@ con el mensaje recibido por parámetro.
 \end{sintaxis}
 
 \end{referencia_python}
+
+\newpage
+\section{Ejercicios}
+
+\extractionlabel{guia}
+\begin{ejercicio}
+Analizar cada una de las siguientes funciones.
+¿Cuál es el contrato de la función? ¿Cómo sería su documentación?
+¿Es necesario agregar comentarios?
+¿Se puede simplificar el código y/o mejorar su legibilidad?
+¿Hay algún invariante de ciclo?
+
+\begin{partes}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def Abs(i):
+    if i >= 0:
+        return i
+    else:
+        return -i
+\end{lstlisting}
+\end{minipage}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def emails(diccionario):
+    for k, v in diccionario.items():
+        print(f"El e-mail de {k} es {v}")
+\end{lstlisting}
+\end{minipage}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def emails2(diccionario):
+    buenos = {}
+    for k, v in diccionario.items():
+        if '@' in v:
+            buenos[k] = v
+    return buenos
+\end{lstlisting}
+\end{minipage}
+
+\item
+\begin{minipage}{0.95\linewidth}
+\begin{lstlisting}[numbers=none]
+def emails3(nombres, direcciones):
+    for nom in range(len(nombres)):
+        if direcciones[nom] == None:
+            nombre, apellido = ' '.split(nombres[nom].lower())
+            direcciones[nom] = nombre[0] + apellido + '@ejemplo.com'
+\end{lstlisting}
+\end{minipage}
+
+\end{partes}
+\end{ejercicio}
 
 \newpage
 \begin{subappendices}
