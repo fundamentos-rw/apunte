@@ -4,16 +4,142 @@ En esta unidad nos dedicaremos a construir nuestras propias listas, que
 consistirán de cadenas de objetos enlazadas mediante referencias, como las
 vistas en la unidad anterior.
 
-Si bien Python ya cuenta con sus propias listas, las listas enlazadas que
-implementaremos en esta unidad nos resultarán también útiles.
+Si bien Python ya cuenta con sus propias listas, éstas vienen con un conjunto
+de fortalezas y debilidades. La lista que implementaremos en esta unidad
+tendrá sus propias cualidades: dependiendo del tipo de problema que estemos
+resolviendo será preferible utilizar las listas de Python o nuestras listas
+enlazadas.
 
-\section{Una clase sencilla de \emph{vagones}}
+\section{Tipos abstractos de datos}
 
-En primer lugar, definiremos una clase muy simple, \lstinline!Nodo!, que se
-comportará como un vagón: tendrá sólo dos atributos: \lstinline!dato!, que
+Los tipos nuevos que habíamos definido en unidades anteriores fueron tipos de
+datos concretos: un punto se definía como un par ordenado de números, un hotel
+se definía por dos cadenas de caracteres (nombre y unicación) y dos números
+(calidad y precio), etc.
+
+Otra forma de definir tipos de datos es enumerando las
+operaciones que tienen y por lo que tienen que hacer esas
+operaciones (cuál es el resultado esperado de esas operaciones).
+Esta manera de definir datos se conoce como \emph{tipos abstractos de datos} o
+\emph{TAD}.
+
+Lo novedoso de este enfoque respecto del anterior es que en general se puede
+encontrar más de una representación mediante tipos concretos para representar
+el mismo TAD, y que se puede elegir la representación más conveniente en cada
+caso, según el contexto de uso.
+Los programas que los usan hacen referencia a las operaciones que tienen, no a
+la representación, y por lo tanto ese programa sigue funcionando si se cambia
+la representación.
+
+Dentro del ciclo de vida de un TAD hay dos fases: la programación del TAD y
+la construcción de los programas que lo usan.
+
+Durante la fase de programación del TAD, habrá que elegir una
+representación, y luego programar cada uno de los métodos sobre esa
+representación.
+Cuando la representación involucra un conjunto de valores, se debe elegir una
+forma de organizarlos en la memoria de la computadora. Para ello se diseña una
+\emph{estructura de datos} que permita que los datos puedan ser accedidos y
+manipulados en forma eficiente.  En una estructura de datos se define la
+colección de valores que se almacenan, cómo están agrupados y cómo se
+relacionan entre ellos.
+
+Durante la fase de construcción de los programas, no será relevante para el
+programador que utiliza el TAD cómo está implementado, sino únicamente los
+métodos que posee.
+Utilizando el concepto de \emph{interfaz} visto en la unidad anterior, podemos
+decir que a quien utilice el TAD sólo le interesará la interfaz que éste
+ofrezca.
+
+Veamos un ejemplo con un tipo de dato que ya conocemos. El \emph{TAD Número
+Entero} está definido por el conjunto de los números enteros y todas las
+operaciones que podemos hacer con ellos: sumar, restar, multiplicar, dividir,
+etc. ¿Cómo representamos un número entero en la memoria?
+
+\begin{itemize}
+\item En Python, el tipo de dato |int| es una implementación concreta del TAD
+número entero, que soporta números de precisión arbitraria: puede almacenar
+números arbitrariamente grandes mientras haya memoria suficiente para hacerlo.
+Para lograr esto, internamente el valor numérico se guarda en una estructura de
+datos que, simplificando para no entrar en detalles, es una secuencia de dígitos.
+
+\item En otros lenguajes como C, la representación interna del tipo de dato entero es
+de tamaño fijo, y solo puede almacenar números en un rango limitado. Por
+ejemplo, el tipo de dato |uint8_t| internamente utiliza 8 bits para codificar
+un número entero no negativo. Con 8 bits tenemos $2^8=256$ combinaciones
+posibles; por lo tanto el tipo de dato |uint8_t| puede representar números
+entre 0 y 255. Como ventaja, la manipulación de números de tamaño fijo es más
+eficiente que los de tamaño arbitrario como en Python.
+\end{itemize}
+
+\subsection{El TAD Lista}
+
+El \emph{TAD Lista} representa un conjunto de valores ordenados y enumerables.
+Una implementación del TAD lista debería ofrecer una serie de operaciones;
+algunas de las más importantes son:
+
+\begin{itemize}
+    \item Crear una lista vacía
+    \item Obtener la longitud de la lista
+    \item Acceder (leer) un elemento de la lista dado su índice (posición)
+    \item Modificar (escribir) un elemento de la lista dado su índice (posición)
+    \item Iterar los elementos de la lista
+    \item Agregar un elemento en una posición determinada
+    \item Quitar un elemento
+\end{itemize}
+
+\section{Arreglos}
+
+Las listas de Python son una implementación del TAD lista. La representación
+interna utiliza una estructura de datos llamada \emph{arreglo}.
+Un arreglo es la forma más simple de almacenar una secuencia de datos en la
+memoria, ya que los elementos están contiguos.
+
+Acceder a un elemento cualquiera de un arreglo dada su posición |i|
+(es decir, lo que hacemos en Python con la operación |lista[i]|) es una
+operación de \emph{tiempo constante}, es decir que lo que tarda la
+operación no depende de la cantidad de elementos que contiene el arreglo:
+
+\begin{codigo-python-sn}
+>>> # Creamos una lista con 100000 elementos:
+>>> numeros = list(range(100000))
+>>> numeros[3692] # esta operación es de tiempo constante
+3691
+\end{codigo-python-sn}
+
+Esta es una cualidad muy útil de los arreglos (y en particular de
+las listas de Python), que nos permite tener listas de millones de elementos
+y acceder a cualquiera de ellos casi instantáneamente (siempre que sepamos su
+posición).
+
+En cambio, dado que los elementos deben estar siempre contiguos en la memoria,
+agregar o quitar elementos en una posición dada del arreglo es una operación de
+\emph{tiempo lineal}: lo que tarde será proporcional a la cantidad de elementos
+en la lista (y la posición en donde queremos insertar o quitar).
+
+\begin{codigo-python-sn}
+>>> numeros.pop(3692) # esta operación es de tiempo lineal
+\end{codigo-python-sn}
+
+Esta es una desventaja importante de los arreglos. Si para resolver un problema
+determinado tenemos una lista de millones de elementos y tenemos que insertar
+o eliminar elementos frecuentemente, la implementación resultará poco
+eficiente.
+
+El arreglo no es la única representación posible del TAD lista. A continuación
+veremos una estructura de datos muy diferente al arreglo, con sus propias
+ventajas y desventajas.
+
+\section{Listas enlazadas}
+
+Una lista enlazada está formada por \emph{nodos}, y cada nodo guarda
+un elemento y una referencia a otro nodo, como si fueran vagones en un tren.
+
+Vamos a explorar este concepto en Python.
+En primer lugar, definiremos una clase muy simple, \lstinline!Nodo!, que
+tendrá dos atributos: \lstinline!dato!, que
 servirá para almacenar cualquier información, y \lstinline!prox!, que servirá
-para poner una referencia al siguiente vagón.
-
+para poner una referencia al siguiente nodo.
 Además, como siempre, implementaremos el constructor y el método
 \lstinline!__str__! para poder obtener una representación en cadena de texto.
 
@@ -73,7 +199,7 @@ Con esto hemos generado la estructura de la Figura~\ref{nodos}.
 \node[umlclass,fit=(titulo) (attrs)]         (n1)   {};
 \draw[-] (titulo.south-|n1.west)--(titulo.south-|n1.east);
 
-\node[umlattr,above=0.5cm of n1] (v1) {v1};
+\node[umlattr,above=0.5cm of n1] (v1) {n1};
 \draw[flecha] (v1.south)--(n1.north);
 
 \node[umlattr,anchor=west,right=1cm of dato.east]           (dato) {dato: "Peras"};
@@ -83,7 +209,7 @@ Con esto hemos generado la estructura de la Figura~\ref{nodos}.
 \node[umlclass,fit=(titulo) (attrs)]         (n2)   {};
 \draw[-] (titulo.south-|n2.west)--(titulo.south-|n2.east);
 
-\node[umlattr,above=0.5cm of n2] (v2) {v2};
+\node[umlattr,above=0.5cm of n2] (v2) {n2};
 \draw[flecha] (v2.south)--(n2.north);
 \draw[flecha] (prox1.east)--(prox1-|n2.west);
 
@@ -94,7 +220,7 @@ Con esto hemos generado la estructura de la Figura~\ref{nodos}.
 \node[umlclass,fit=(titulo) (attrs)]         (n3)   {};
 \draw[-] (titulo.south-|n3.west)--(titulo.south-|n3.east);
 
-\node[umlattr,above=0.5cm of n3] (v3) {v3};
+\node[umlattr,above=0.5cm of n3] (v3) {n3};
 \draw[flecha] (v3.south)--(n3.north);
 \draw[flecha] (prox2.east)--(prox2-|n3.west);
 
@@ -107,7 +233,7 @@ Con esto hemos generado la estructura de la Figura~\ref{nodos}.
 \end{figure}
 
 El atributo \lstinline!prox! de \lstinline!n3! tiene una referencia nula,
-lo que indica que \lstinline!n3! es el último vagón de nuestra estructura.
+lo que indica que \lstinline!n3! es el último nodo de nuestra estructura.
 
 Hemos creado una lista en forma manual. Si nos interesa recorrerla, podemos
 hacer lo siguiente:
@@ -139,7 +265,7 @@ siguiente:
 referencias dentro de los nodos.
 \end{itemize}
 
-Si se desea \emph{desenganchar} un vagón del medio de la lista, alcanza con
+Si se desea \emph{desenganchar} un nodo del medio de la lista, alcanza con
 cambiar la referencia |prox|:
 
 \begin{codigo-python-sn}
@@ -217,45 +343,14 @@ Peras
 Bananas
 \end{codigo-python-sn}
 
-\section{Tipos abstractos de datos}
+Ya podemos ver una ventaja importante de las listas enlazadas:
+eliminar el primer elemento es una operación de \emph{tiempo constante}, es
+decir que no depende de la longitud de la lista. En las listas de
+Python, como ya vimos, esta operación requiere un \emph{tiempo lineal}.
 
-Los tipos nuevos que habíamos definido en unidades anteriores fueron tipos de
-datos concretos: un punto se definía como un par ordenado de números, un hotel
-se definía por dos cadenas de caracteres (nombre y unicación) y dos números
-(calidad y precio), etc.
-
-Vamos a ver ahora una nueva manera de definir datos: por las
-operaciones que tienen y por lo que tienen que hacer esas
-operaciones (cuál es el resultado esperado de esas operaciones).
-
-Esa manera de definir datos se conoce como \emph{tipos abstractos de datos} o
-\emph{TADs}.
-
-Lo novedoso de este enfoque respecto del anterior es que en general se puede
-encontrar más de una representación mediante tipos concretos para representar
-el mismo TAD, y que se puede elegir la representación más conveniente en cada
-caso, según el contexto de uso.
-
-Los programas que los usan hacen referencia a las operaciones que tienen, no a
-la representación, y por lo tanto ese programa sigue funcionando si se cambia
-la representación.
-
-Dentro del ciclo de vida de un TAD hay dos fases: la programación del TAD y
-la construcción de los programas que lo usan.
-
-Durante la fase de programación del TAD, habrá que elegir una
-representación, y luego programar cada uno de los métodos sobre esa
-representación.
-
-Durante la fase de construcción de los programas, no será relevante para el
-programador que utiliza el TAD cómo está implementado, sino únicamente los
-métodos que posee.
-
-\begin{observacion}
-Utilizando el concepto de \emph{interfaz} visto en la unidad anterior, podemos
-decir que a quien utilice el TAD sólo le interesará la interfaz que éste
-ofrezca.
-\end{observacion}
+Sin embargo no todo es tan positivo: el acceso a la posición $p$ se realiza
+en \emph{tiempo proporcional a $p$}, mientras que en las listas de Python esta
+operación se realiza en \emph{tiempo constante}.
 
 \section{La clase {\tt ListaEnlazada}}
 
@@ -266,9 +361,9 @@ manipular las referencias, definiremos ahora la clase
 referencias internas de los nodos, sino que se lo pueda hacer a través de
 operaciones de lista.
 
-Más allá de la implementación en particular, se podrá notar que implementaremos
-los mismos métodos de las listas de Python, de modo que más allá del
-funcionamiento interno, ambas serán {\bf listas}.
+Se podrá notar que implementaremos los mismos métodos de las listas de Python,
+de modo que más allá del funcionamiento interno, ambas serán implementaciones
+del TAD lista.
 
 Definimos a continuación las operaciones que inicialmente deberá cumplir la
 clase \lstinline!ListaEnlazada!.
@@ -348,12 +443,9 @@ Python tiene una convención para hacer que atributos, métodos o clases
 dentro de una clase dada no puedan ser usados por los usuarios, y sólo
 tengan acceso a ellos quienes programan la clase: su nombre tiene que
 empezar con un guión bajo y terminar sin guión bajo. Así que para hacer que
-los nodos sean privados, cambiaremos el nombre de la clase a \lstinline|_Nodo|.
-
-\begin{observacion}
-Se trata sólo de una convención, aun con el nombre \lstinline!_Nodo! la
-clase está disponible, pero respetaremos esa convención de aquí en adelnte.
-\end{observacion}
+los nodos sean privados, cambiaremos el nombre de la clase a
+|_Nodo|\footnote{Se trata solo de una convención; aun con el nombre
+\lstinline!_Nodo! la clase es visible desde otros módulos.}.
 
 \subsection{Construcción de la lista}
 
@@ -371,7 +463,8 @@ class ListaEnlazada:
         self.len = 0
 \end{codigo-python-sn}
 
-Nuestra estructura ahora será como la representada por la Figura~\ref{lista_enlazada}.
+Si la lista contiene dos elementos (|"Peras"| y |"Bananas"|), su estructura
+será como la representada por la Figura~\ref{lista_enlazada}.
 
 \begin{figure}[htb]
 \begin{tikzpicture}
@@ -403,27 +496,12 @@ Nuestra estructura ahora será como la representada por la Figura~\ref{lista_enl
 
 \path[flecha] (prox3.east) -| (none);
 \end{tikzpicture}
-\caption{Una lista enlazada}
+\caption{Una lista enlazada con dos elementos.}
 \label{lista_enlazada}
 \end{figure}
 
 \ejercicioc{Escribir los métodos \lstinline!__str__! y \lstinline!__len__!
 para la lista}.
-
-\begin{sabias_que}
-Una característica importante de la implementación de listas enlazadas es que
-eliminar el primer elemento es una operación de \emph{tiempo constante}, es
-decir que no depende de la longitud de la lista. En las listas de
-Python, por contraste, esta operación requiere un \emph{tiempo proporcional a la
-longitud de la lista}.
-
-Sin embargo no todo es tan positivo: el acceso a la posición $p$ se realiza
-en \emph{tiempo proporcional a $p$}, mientras que en las listas de Python esta
-operación se realiza en \emph{tiempo constante}.
-
-Conociendo las ventajas y desventajas podremos elegir el tipo de lista que
-necesitemos según los requerimientos de cada problema.
-\end{sabias_que}
 
 \subsection{Eliminar un elemento de una posición}
 
@@ -844,19 +922,189 @@ siguiente, aplicando así una ``ronda de turnos'' sin que haya una primera o una
 
 \section{Iteradores}
 
+A la interfaz de nuestra lista enlazada le falta una operación muy importante:
+una que permita \emph{iterar} la lista; es decir ``recorrer'' cada uno de los
+elementos para procesarlos de alguna manera (por ejemplo imprimirlos, insertar
+uno nuevo entre otros dos, eliminar los que cumplan alguna condición, etc.).
+
+Para iterar la lista vamos a tener que guardar en algún lugar la posición
+actual en la lista, que empezará en el primer nodo, irá avanzando a medida que
+iteramos hasta que llega al último nodo. Este estado de iteración (la posición
+actual) no sería apropiado guardarlo en la clase |ListaEnlazada|, ya que la
+iteración es una operación externa a la lista, y no es su responsabilidad saber
+en qué estado se encuentra.
+
+Es por eso que vamos a implementar una clase nueva para guardar el estado de
+iteración. Nuestra clase se llamará |IteradorListaEnlazada|, y la forma de
+utilizarla será:
+
+\begin{codigo-python-sn}
+>>> l = ListaEnlazada()
+>>> l.append(7)
+>>> l.append(3)
+>>> l.append(5)
+>>> it = IteradorListaEnlazada(l)
+>>> it.esta_al_final()
+False
+>>> it.dato_actual()
+7
+>>> it.avanzar()
+>>> it.esta_al_final()
+False
+>>> it.dato_actual()
+3
+>>> it.avanzar()
+>>> it.esta_al_final()
+False
+>>> it.dato_actual()
+5
+>>> it.avanzar()
+>>> it.esta_al_final()
+True
+\end{codigo-python-sn}
+
+Otra forma de utilizar el iterador sería mediante un ciclo |while|:
+
+\begin{codigo-python-sn}
+>>> it = IteradorListaEnlazada(l)
+>>> while not it.esta_al_final():
+...     print(it.dato_actual())
+...     it.avanzar()
+7
+3
+5
+\end{codigo-python-sn}
+
+Para cumplir con la interfaz propuesta, se muestra la implementación de la
+clase |IteradorListaEnlazada| en el Código~\ref{cod:iterador-le}:
+
+\begin{codigo}{IteradorListaEnlazada}{Iterador de la lista enlazada}
+\label{cod:iterador-le}
+\begin{codigo-python}
+class IteradorListaEnlazada:
+    """Almacena el estado de una iteración sobre la ListaEnlazada."""
+
+    def __init__(self, lista):
+        """Crea un iterador para la lista dada"""
+        self.lista = lista
+        self.anterior = None
+        self.actual = lista.prim
+
+    def avanzar(self):
+        """Avanza la iteración un paso hacia adelante.
+        Pre: la iteración no debe haber llegado al final.
+        """
+        self.anterior = self.actual
+        self.actual = self.actual.prox
+
+    def dato_actual(self):
+        """Devuelve el elemento en la posición actual de iteración.
+        Pre: la iteración no debe haber llegado al final.
+        """
+        return self.actual.dato
+
+    def esta_al_final(self):
+        """Devuelve verdadero si la iteración llegó al final de la lista."""
+        return self.actual is None
+\end{codigo-python}
+\end{codigo}
+
+Notar que en el constructor guardamos una referencia a la instancia de
+|ListaEnlazada|, que no se utiliza en ninguno de los otros métodos. Además
+guardamos una referencia al nodo anterior además del actual, cuando sería
+suficiente con solo guardar el nodo actual.  Estas referencias serán de
+utilidad cuando implementemos métodos para insertar y eliminar elementos,
+como se muestra a continuación.
+
+\subsection{Insertar y eliminar}
+
+Ahora que tenemos una manera de iterar la lista enlazada, resulta muy fácil
+agregar a nuestro iterador métodos para insertar o eliminar elementos en el
+medio de la iteración. A diferencia de los métodos |insert| y |remove| de la
+clase |ListaEnlazada|, estos nuevos métodos nos permitirán modificar la lista
+en \emph{tiempo constante} una vez que tengamos una referencia a un nodo
+cualquiera mediante un iterador.
+
+Supongamos que tenemos una lista |l| de palabras y queremos insertar la palabra
+|'mundo'| después de todas las apariciones de la palabra |'hola'|. La idea
+sería utilizar nuestro iterador, por cada elemento verificar si es o no la
+palabra buscada y en caso de que lo sea insertar el nodo nuevo.
+
+\begin{codigo-python-sn}
+>>> it = IteradorListaEnlazada(l)
+>>> while not it.esta_al_final():
+...     if it.dato_actual() == 'hola'
+...         it.avanzar() # queremos agregar 'mundo' después de 'hola'
+...         it.insertar('mundo')
+...     it.avanzar()
+\end{codigo-python-sn}
+
+La implementación del método |insertar| del iterador se muestra en el
+Código~\ref{cod:iterador-le-insertar}:
+
+\begin{codigo}{insertar}{Método insertar del iterador}
+\label{cod:iterador-le-insertar}
+\begin{codigo-python}
+    def insertar(self, x):
+        """Insertar un elemento en el lugar de la iteración actual.
+        Una vez insertado, el nuevo elemento será el actual de la iteración,
+        y el elemento que antes era el actual será el siguiente.
+        """
+        nuevo = _Nodo(x)
+        if self.anterior:
+            nuevo.prox = self.anterior.prox
+            self.anterior.prox = nuevo
+        else:
+            nuevo.prox = self.lista.prim
+            self.lista.prim = nuevo
+        self.actual = nuevo
+\end{codigo-python}
+\end{codigo}
+
+Nuestro iterador también puede permitirnos eliminar elementos. Por ejemplo, si
+dada nuestra lista de palabras queremos eliminar todas las que contengan |'ñ'|,
+haríamos algo como esto:
+
+\begin{codigo-python-sn}
+>>> it = IteradorListaEnlazada(l)
+>>> while not it.esta_al_final():
+...     if 'ñ' in it.dato_actual()
+...         it.eliminar()
+...         # luego de eliminar ya estamos en el nodo siguiente
+...     else:
+...         it.avanzar()
+\end{codigo-python-sn}
+
+La implementación del método |eliminar| del iterador se muestra en el
+Código~\ref{cod:iterador-le-eliminar}:
+
+\begin{codigo}{insertar}{Método eliminar del iterador}
+\label{cod:iterador-le-eliminar}
+\begin{codigo-python}
+    def eliminar(self):
+        dato = self.dato_actual()
+        if self.anterior:
+            self.anterior.prox = self.actual.prox
+            self.actual = self.anterior.prox
+        else:
+            self.lista.prim = self.actual.prox
+            self.actual = self.lista.prim
+        return dato
+\end{codigo-python}
+\end{codigo}
+
+\subsection{Iteradores de Python}
+
 En la unidad anterior se hizo referencia a que todas las secuencias
-pueden ser recorridas mediante una misma estructura
+pueden ser recorridas mediante una misma estructura de control
 (\lstinline!for variable in secuencia!), ya que todas implementan el método
-especial \lstinline!__iter__!.  Este método debe devolver un \emph{iterador}
-capaz de recorrer la secuencia como corresponda.
+especial \lstinline!__iter__!.  Este método debe devolver un iterador
+capaz de recorrer la secuencia como corresponda. Los iteradores de Python son
+muy parecidos al iterador que hicimos para la lista enlazada, con la diferencia
+de que deben implementar una interfaz particular definida por el lenguaje.
 
-\begin{observacion}
-Un iterador es un objeto que permite recorrer uno a uno los elementos
-almacenados en una estructura de datos, y operar con ellos.
-\end{observacion}
-
-Un ejemplo de iteradores que estuvimos usando desde la primera unidad es la
-función |range|:
+Tomemos a la función |range| como ejemplo, y veamos en detalle qué ocurre
+cuando la llamamos:
 
 \begin{codigo-python-sn}
 >>> r = range(3)
@@ -870,8 +1118,8 @@ iterador a partir de este objeto podemos aplicar la función |iter| (que a su
 vez llamará al método |__iter__|):
 
 \begin{codigo-python-sn}
->>> i = iter(r)
->>> type(i)
+>>> it = iter(r)
+>>> type(it)
 <class 'range_iterator'>
 \end{codigo-python-sn}
 
@@ -883,13 +1131,13 @@ levantar una excepción de tipo \lstinline!StopIteration!.
 La función |next| permite invocar manualmente al método |__next__|:
 
 \begin{codigo-python-sn}
->>> next(i)
+>>> next(it)
 0
->>> next(i)
+>>> next(it)
 1
->>> next(i)
+>>> next(it)
 2
->>> next(i)
+>>> next(it)
 (^Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 StopIteration^)
@@ -901,11 +1149,13 @@ cada iteración.
 
 Es decir que las siguientes estructuras son equivalentes:
 
+\noindent\begin{minipage}{.45\textwidth}
 \begin{codigo-python-sn}
 for elemento in secuencia:
 	# hacer algo con elemento
 \end{codigo-python-sn}
-
+\end{minipage}\hfill%
+\begin{minipage}{.45\textwidth}
 \begin{codigo-python-sn}
 iterador = iter(secuencia)
 while True:
@@ -915,83 +1165,56 @@ while True:
         break
     # hacer algo con elemento
 \end{codigo-python-sn}
+\end{minipage}
 
-\subsection*{Iterador para la lista enlazada}
+\subsection{Iterador de Python para la lista enlazada}
 
-Si queremos implementar un iterador para la lista enlazada,
-la mejor solución implica crear una nueva clase,
-\lstinline!_IteradorListaEnlazada!, que implemente el método
-\lstinline!__next__! de la forma apropiada.
-
-\begin{atencion}
-Utilizamos la notación de clase privada, utilizada también para la clase
-\lstinline!_Nodo!, ya que si bien se devolverá el iterador cuando sea
-necesario, un programador externo no debería construir el iterador sin
-pasar a través de la lista enlazada.
-\end{atencion}
-
-Para inicializar la clase, lo único que se necesita es una referencia al
-primer elemento de la lista.
+Veamos qué pasa si intentamos iterar nuestra lista enlazada utilizando un ciclo
+|for|:
 
 \begin{codigo-python-sn}
-class _IteradorListaEnlazada:
-    def __init__(self, prim):
-        self.actual = prim
+>>> l = ListaEnlazada()
+>>> l.append(7)
+>>> l.append(3)
+>>> l.append(5)
+>>> for valor in l:
+...    print(valor)
+...
+(^Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'ListaEnlazada' object is not iterable^)
 \end{codigo-python-sn}
 
-A partir de allí, el iterador irá avanzando a través de los elementos de la
-lista mediante el método \lstinline!__next__!.  Para verificar que no se haya
-llegado al final de la lista, se corroborará que la referencia
-\lstinline!self.actual! sea distinta de \lstinline!None!.
+Nuestra lista enlazada aun no es \emph{iterable} para Python, ya que si bien
+hemos implementado un iterador, el mismo no cumple con la interfaz definida por
+Python. La buena noticia es que es muy fácil adaptarlo para que lo haga.
+
+Lo primero que debemos hacer es que la clase |ListaEnlazada| responda al método
+|__iter__|, devolviendo un iterador:
 
 \begin{codigo-python-sn}
-if self.actual is None:
-    raise StopIteration()
-\end{codigo-python-sn}
-
-Una vez que se pasó la verificación, la primera llamada a \lstinline!__next__!
-debe devolver el primer elemento, pero también debe avanzar, para que la
-siguiente llamada devuelva el siguiente elemento.  Por ello, se utiliza la
-estructura \emph{guardar, avanzar, devolver}.
-
-\begin{codigo-python-sn}
-dato = self.actual.dato
-self.actual = self.actual.prox
-return dato
-\end{codigo-python-sn}
-
-En el Código~\ref{iterador_enlazada} se puede ver el código completo del
-iterador.
-
-\begin{codigo}{\_IteradorListaEnlazada}{Un iterador para la lista enlazada}
-\label{iterador_enlazada}
-\begin{codigo-python}
-class _IteradorListaEnlazada:
-    def __init__(self, prim):
-        self.actual = prim
-
-    def __next__(self):
-        if self.actual is None:
-            raise StopIteration()
-
-        dato = self.actual.dato
-        self.actual = self.actual.prox
-        return dato
-\end{codigo-python}
-\end{codigo}
-
-Finalmente, es necesario modificar la clase \lstinline!ListaEnlazada! para que
-devuelva una instancia del iterador
-cuando se llama al método \lstinline!__iter__!.
-
-\begin{codigo-python-sn}
+class ListaEnlazada:
     def __iter__(self):
-        """Devuelve un iterador de la lista."""
-        return _IteradorListaEnlazada(self.prim)
+        return IteradorListaEnlazada(self)
 \end{codigo-python-sn}
 
-Con todo esto será posible recorrer nuestra lista con la estructura a la
-que estamos acostumbrados.
+El iterador, por su parte, debe responder al método |__next__|. Este método,
+como ya vimos, debe hacer dos cosas: devolver el elemento actual y además
+avanzar la iteración. Y en caso de haber llegado al final, lanzar
+|StopIteration|:
+
+\begin{codigo-python-sn}
+class IteradorListaEnlazada:
+    def __next__(self):
+        if self.esta_al_final():
+            raise StopIteration("No hay más elementos en la lista")
+        dato = self.dato_actual()
+        self.avanzar()
+        return dato
+\end{codigo-python-sn}
+
+Habiendo hecho estos cambios, será posible recorrer nuestra lista con el ciclo
+|for| al que estamos acostumbrados:
 
 \begin{codigo-python-sn}
 >>> l = ListaEnlazada()
@@ -1007,7 +1230,7 @@ que estamos acostumbrados.
 \end{codigo-python-sn}
 
 No solo eso, sino que además podremos utilizar la lista enlazada en cualquier
-operación que requiera una secuencia \emph{iterable}:
+operación que requiera una secuencia iterable:
 
 \begin{codigo-python-sn}
 >>> list(l) # convertir a una lista de Python
@@ -1026,29 +1249,26 @@ operación que requiera una secuencia \emph{iterable}:
 definido por las operaciones que contiene y cómo se comportan (su
 \emph{interfaz}), no por la forma en la que esas operaciones están implementadas.
 
-\item Una {\bf lista enlazada} es una implementación del TAD \emph{lista}.
-Se trata de una lista compuesta por nodos, en la que
+\item Una {\bf estructura de datos} es un formato para organizar un conjunto de
+datos en la memoria de la computadora, de forma tal de que la información pueda
+ser accedida y manipulada en forma eficiente.
+
+\item Las listas de Python son una implementación del TAD lista, utilizando una
+estructura de datos llamada {\bf arreglo}.  En un arreglo, es \emph{barato}
+(tiempo constante) acceder a cualquier elemento dada su posición, y es
+\emph{caro} (tiempo lineal) insertar o eliminar elementos.
+
+\item Una {\bf lista enlazada} es otra implementación del TAD lista.
+Se trata de una secuencia compuesta por nodos, en la que
 cada nodo contiene un dato y una referencia al nodo que le sigue.
 
-\item En las listas enlazadas, es \emph{barato} insertar o eliminar
+\item En las listas enlazadas, es \emph{barato} (tiempo constante) insertar o eliminar
 elementos, ya que simplemente se deben alterar un par de referencias; pero
-es \emph{caro} acceder a un elemento en particular, ya que es necesario
+es \emph{caro} (tiempo lineal) acceder a un elemento en particular, ya que es necesario
 pasar por todos los anteriores para llegar a él.
 
-\item Tanto al insertar como al remover elementos de una lista enlazada, se
-utiliza la técnica de \emph{máquina de parejas}, mediante la cual se va
-recorriendo la lista hasta encontrar el lugar apropiado donde operar con
-las referencias.
-
-\item Una {\bf lista doblemente enlazada} es aquella cuyos nodos además del
-dato contienen una referencia al nodo anterior y otra al nodo siguiente, de
-modo que se la puede recorrer en ambos sentidos.
-
-\item Una {\bf lista circular} es aquella en la que el último nodo contiene
-una referencia al primero, y puede ser recorrida infinitamente.
-
 \item Un {\bf iterador} es un objeto que permite recorrer uno a uno los
-elementos de una secuencia.
+elementos de una secuencia, y procesarlos a medida que avanza la iteración.
 
 \end{itemize}
 
