@@ -6,7 +6,7 @@ def abrir(nombre_log):
     Pre: el nombre corresponde a un nombre de archivo válido.
     Post: el archivo ha sido abierto posicionándose al final."""
     archivo_log = open(nombre_log, "a")
-    guardar_log(archivo_log, "Iniciando registro de errores")
+    guardar(archivo_log, "Iniciando registro de errores")
     return archivo_log
 
 def guardar(archivo_log, mensaje):
@@ -22,5 +22,5 @@ def cerrar(archivo_log):
     """ Cierra el archivo de log.
     Pre: el archivo de log ha sido abierto correctamente.
     Post: el archivo de log se ha cerrado. """
-    guardar_log(archivo_log, "Fin del registro de errores")
+    guardar(archivo_log, "Fin del registro de errores")
     archivo_log.close()
