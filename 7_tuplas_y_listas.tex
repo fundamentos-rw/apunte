@@ -1123,10 +1123,16 @@ mediante una lista, son linealmente independientes o no.
 
 \extractionlabel{guia}
 \begin{ejercicio}
-$\dificil$ {\bf Plegado de un texto.} Escribir una función que reciba un texto y una
-longitud y devuelva una lista de cadenas de como máximo esa longitud. Las
+$\dificil$ {\bf Plegado de un texto.} Escribir una función que reciba un
+párrafo de texto (palabras separadas por espacios) y una longitud $n$, y
+devuelva una lista conteniendo líneas de texto de longitud máxima $n$. Las
 líneas deben ser cortadas correctamente en los espacios (sin cortar las
-palabras).
+palabras). Asumir que ninguna palabra tiene longitud mayor a $n$. Ejemplo:
+
+\begin{lstlisting}[numbers=none]
+>>> plegar('El viejo Señor Gómez pedía queso, kiwi y habas, pero le ha tocado un saxofón', 20)
+['El viejo Señor Gómez', 'pedía queso, kiwi y', 'habas, pero le ha', 'tocado un saxofón']
+\end{lstlisting}
 \end{ejercicio}
 
 
