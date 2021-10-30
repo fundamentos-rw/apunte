@@ -27,7 +27,7 @@ def main():
     vector = pedir_vector()
     try:
         m = modulo(vector)
-        print("El modulo de {} es {}".format(vector, m))
+        print(f"El modulo de {vector} es {m}")
     except (TypeError, ValueError) as e:
         print("Error:", e)
 

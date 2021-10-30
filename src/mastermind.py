@@ -19,7 +19,7 @@ def mastermind():
         ))
         propuesta = input("Propone otro codigo: ")
 
-    print("Felicitaciones! Adivinaste el codigo en {} intentos.".format(intentos))
+    print(f"Felicitaciones! Adivinaste el codigo en {intentos} intentos.")
 
 def elegir_codigo():
     """Devuelve un codigo de 4 digitos elegido al azar"""

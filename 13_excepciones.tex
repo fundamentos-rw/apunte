@@ -465,7 +465,7 @@ def pedir_entero():
         try:
             return int(valor)
         except ValueError:
-            print("'{}' no es un número entero.".format(valor))
+            print(f"'{valor!r}' no es un número entero.")
 \end{codigo-python-sn}
 
 Podría ser deseable, además, poner un límite a la cantidad máxima de intentos
@@ -484,7 +484,7 @@ def pedir_entero():
         try:
             return int(valor)
         except ValueError:
-            print("'{}' no es un número entero.".format(valor))
+            print(f"{valor!r} no es un número entero.")
             (@intentos += 1@)
     (@raise ValueError("Valor incorrecto ingresado en 5 intentos")@)
 \end{codigo-python-sn}

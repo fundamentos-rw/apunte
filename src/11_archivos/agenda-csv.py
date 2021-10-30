@@ -38,7 +38,7 @@ def buscar(nombre, apellido, agenda):
 def menu_alta(nombre, apellido, agenda):
     """Pregunta si se desea ingresar un nombre y apellido y
        de ser así, pide los datos al usuario."""
-    print("No se encuentra {} {} en la agenda.".format(nombre, apellido))
+    print(f"No se encuentra {nombre} {apellido} en la agenda.")
     confirmacion = input("¿Desea ingresarlo? (s/n): ")
     if confirmacion.lower() != "s":
         return
@@ -50,9 +50,9 @@ def mostrar_item(item):
     """Muestra por pantalla un item en particular."""
     nombre, apellido, telefono, cumple = item
     print()
-    print("{} {}".format(nombre, apellido))
-    print("Telefono: {}".format(telefono))
-    print("Cumpleaños: {}".format(cumple))
+    print(f"{nombre} {apellido}")
+    print(f"Telefono: {telefono}")
+    print(f"Cumpleaños: {cumple}")
     print()
 
 def menu_item():

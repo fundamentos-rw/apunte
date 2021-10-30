@@ -1,5 +1,6 @@
 \chapter{Objetos}
 
+\label{objetos}
 Los \emph{objetos} son una manera de organizar datos y de relacionar esos datos
 con el código apropiado para manejarlo.  Son los protagonistas de un
 paradigma de programación llamado \emph{Programación Orientada a Objetos}.
@@ -280,7 +281,7 @@ sean numéricos, utilizando la función \lstinline!validar_numero!:
 def validar_numero(valor):
     "Si el valor es numérico, lo devuelve. En caso contrario lanza TypeError."
     if not isinstance(valor, (int, float, complex)):
-        raise TypeError("{:r} no es un valor numérico".format(valor))
+        raise TypeError(f"{valor!r} no es un valor numérico")
     return valor
 \end{codigo-python-sn}
 
@@ -304,7 +305,7 @@ Este constructor impide que se creen instancias con valores inválidos para
   File "punto.py", line 12, in __init__
     self.x = validar_numero(x)
   File "punto.py", line 5, in validar_numero
-    raise TypeError("{!r} no es un valor numérico".format(valor))
+    raise TypeError(f"{valor!r} no es un valor numérico")
 TypeError: 'A' no es un valor numérico^)
 \end{codigo-python-sn}
 
@@ -451,7 +452,7 @@ escribimos el siguiente método dentro de la clase \lstinline!Punto!:
     def __str__(self):
         """Devuelve la representación del Punto como
            cadena de texto."""
-        return "({}, {})".format(self.x, self.y)
+        return f"({self.x}, {self.y})"
 \end{codigo-python-sn}
 
 Una vez definido este método, nuestro punto se mostrará como un par
@@ -516,7 +517,7 @@ podemos implementarlo para modificar el comportamiento por omisión:
     def __repr__(self):
         """Devuelve la representación formal del Punto como
            cadena de texto."""
-        return "Punto({}, {})".format(self.x, self.y)
+        return f"Punto({self.x}, {self.y})"
 \end{codigo-python-sn}
 
 \begin{codigo-python-sn}

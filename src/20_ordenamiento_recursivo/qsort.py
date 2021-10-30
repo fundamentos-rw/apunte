@@ -1,5 +1,4 @@
 def swap(l, i, j):
-    print("intercambiando {}, {} ".format((i, j), l)
     l[j], l[i] = l[i], l[j]
 
 def quick_sort(lista, inicio, fin):

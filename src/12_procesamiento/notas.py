@@ -16,10 +16,10 @@ def imprimir_notas_alumnos(alumnos, notas):
         nota = next(notas_csv, None)
         while alumno:
             padron, apellido, nombre, carrera = alumno
-            print("{}, {} ({})".format(apellido, nombre, padron))
+            print(f"{apellido}, {nombre} ({padron})")
             if not nota or nota[0] != padron:
                 print("\tNo se registran notas")
             while nota and nota[0] == padron:
-                print("\t{}: {}".format(nota[1], nota[2]))
+                print(f"\t{nota[1]}: {nota[2]}")
                 nota = next(notas_csv, None)
             alumno = next(alumnos_csv, None)

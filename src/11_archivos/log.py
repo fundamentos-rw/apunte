@@ -16,7 +16,7 @@ def guardar(archivo_log, mensaje):
     # Obtiene la hora actual en formato de texto
     hora_actual = str(datetime.datetime.now())
     # Guarda la hora actual y el mensaje de error en el archivo
-    archivo_log.write("[{}] {}\n".format(hora_actual, mensaje))
+    archivo_log.write(f"[{hora_actual}] {mensaje}\n")
 
 def cerrar(archivo_log):
     """ Cierra el archivo de log.

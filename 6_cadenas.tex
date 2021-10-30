@@ -465,13 +465,11 @@ en minúscula.}
 
 \end{enumerate}
 
-\section{Darle formato a las cadenas}
+\section{Interpolación de cadenas}
 
-Muchas veces es necesario darle un formato determinado a las cadenas, o dicho de
-otro modo, procesar los datos de entrada para que las cadenas resultantes se
-vean de una manera en particular. Además, separar el formato del texto de los
-datos a mostrar nos permite enfocarnos en la presentación cuando eso es lo que
-queremos.
+Muchas veces es necesario generar una cadena a partir de la concatenación de
+múltiples valores de diferentes tipos. Esta operación se conoce como
+\emph{interpolar} una cadena.
 
 Por ejemplo, si queremos saludar al usuario y mostrarle la
 cantidad de mensajes sin leer, y en el estado tenemos |nombre| $\rightarrow$ |'Veronika'| y
@@ -483,75 +481,80 @@ cantidad de mensajes sin leer, y en el estado tenemos |nombre| $\rightarrow$ |'V
 \end{codigo-python-sn}
 
 Pero también podemos obtener el mismo resultado utilizando una \emph{cadena de
-formato} y la función |format|:
-
-\begin{codigo-python-sn}
->>> "Hola {}, tenés {} mensajes sin leer".format(nombre, no_leidos)
-'Hola Veronika, tenés 8 mensajes sin leer'
-\end{codigo-python-sn}
-
-La función |format| devuelve la cadena resultante de reemplazar en la cadena de
-formato todas las marcas |{}| por los valores indicados, convirtiendo los
-valores automáticamente a cadenas de texto.
-
-\begin{sabias_que}
-La función |format| se utiliza con una sintaxis que hasta ahora no habíamos
-visto: |cadena.format(v1, v2)| en lugar de la notación usual
-|format(cadena, v1, v2)|.
-
-Por ahora es suficiente con entender que en la llamada
-|cadena.format(v1, v2)|,
-es como si la función |format| recibiera tres parámetros: |cadena|,
-|v1| y |v2|.
-
-Esta notación es propia de la \emph{orientación a objetos}. Aprenderemos más
-sobre objetos en la unidad~\ref{objetos}.
-\end{sabias_que}
-
-Al usar una cadena de formato de
-esta manera, podemos ver claramente cuál es el contenido del mensaje, evitando
-errores con respecto a espacios de más o de menos, interrupciones en el texto
-que complican su lectura, etc.
-
-En el caso de los valores numéricos, es posible modificar la forma en la que el
-número es presentado. Por ejemplo, si se trata de un monto monetario, usualmente
-queremos mostrarlo con dos dígitos decimales, para ello utilizaremos la
-marca |{:.2}| para indicar dos dígitos luego del separador decimal.
-
-\begin{codigo-python-sn}
->>> precio = 205.5
->>> 'Sin IVA: ${:.2}. Con IVA: ${:.2}'.format(precio, precio * 1.21)
-'Sin IVA: $205.50. Con IVA: $248.66'
-\end{codigo-python-sn}
-
-En otras situaciones, como el caso de un valor en un estudio médico, podemos
-querer mostrar el número en notación científica. En este caso utilizaremos la
-marca |{:.1e}|, indicando que queremos un dígito significativo luego del separador
-decimal.
-
-\begin{codigo-python-sn}
->>> rojos = 4640000
->>> 'Glóbulos rojos: {:.1e}/uL'.format(rojos)
-'Glóbulos rojos: 4.6e+06/uL'
-\end{codigo-python-sn}
-
-\begin{sabias_que}
-En la versión 3.7 de Python se introdujo una sintaxis nueva para generar
-cadenas de formato, anteponiendo la cadena con la letra |f|. Las tres
-siguientes expresiones son equivalentes a los ejemplos mostrados con la
-función |format|:
+formato}:
 
 \begin{codigo-python-sn}
 >>> f"Hola {nombre}, tenés {no_leidos} mensajes sin leer"
 'Hola Veronika, tenés 8 mensajes sin leer'
->>> f'Sin IVA: ${precio:.2}. Con IVA: ${precio * 1.21:.2}'
+\end{codigo-python-sn}
+
+Esta sintaxis (|f"..."| o |f'...'|) permite generar la cadena interpolada reemplazando
+todas las marcas |{}| por el resultado de las expresiones
+indicadas, convirtiendo los valores automáticamente a cadenas de texto.
+
+Al usar una cadena de formato de
+esta manera, podemos ver claramente cuál es el contenido del mensaje, evitando
+errores con respecto a espacios de más o de menos, interrupciones en el texto
+que complican su lectura, etc. En otras palabras, separar el \emph{formato} del texto de los
+\emph{datos} a mostrar nos permite enfocarnos en la presentación cuando eso es lo que
+queremos.
+
+En el caso de los valores numéricos, es posible modificar la forma en la que el
+número es presentado. Por ejemplo, si se trata de un monto monetario, usualmente
+queremos mostrarlo con dos dígitos decimales. Para ello utilizaremos el
+modificador |:.2| para indicar dos dígitos luego del separador decimal.
+
+\begin{codigo-python-sn}
+>>> precio = 205.5
+>>> f'Sin IVA: ${precio:.2}. Con IVA: ${(precio * 1.21):.2}'
 'Sin IVA: $205.50. Con IVA: $248.66'
->>> f'Glóbulos rojos: {rojos:.1e}/uL'
+\end{codigo-python-sn}
+
+En otras situaciones, como el caso de un valor en un estudio médico, podemos
+querer mostrar el número en notación científica. En este caso utilizaremos el
+modificador |{:.1e}|, indicando que queremos un dígito significativo luego del separador
+decimal.
+
+\begin{codigo-python-sn}
+>>> rojos = 4640000
+>>> 'Glóbulos rojos: {rojos:.1e}/uL'
 'Glóbulos rojos: 4.6e+06/uL'
 \end{codigo-python-sn}
+
+\section{Otras funciones para manipular cadenas}
+
+Algunas operaciones con cadenas son llevadas a cabo tan frecuentemente que el lenguaje
+Python pone a nuestra disposición una \emph{biblioteca de funciones}
+para manipular cadenas, para ahorrarnos el trabajo de implementar dichas
+funciones.
+
+Por ejemplo, si quisiéramos convertir una cadena a mayúsculas, podríamos
+implementar una función |a_mayusculas(cadena)| que resuelva el problema,
+pero no hace falta porque tenemos a nuestra disposición la función |.upper|:
+
+\begin{codigo-python-sn}
+>>> cadena = "Hola Mundo!"
+>>> cadena.upper()
+'HOLA MUNDO!'
+\end{codigo-python-sn}
+
+\begin{sabias_que}
+La función |.upper| se utiliza con una sintaxis que hasta ahora no habíamos
+visto: |cadena.upper()| en lugar de la notación usual |upper(cadena)|.
+
+Por ahora es suficiente con entender que esto es simplemente una sintaxis
+alternativa; algunas funciones (como |len|) usan la sintaxis tradicional y
+otras (como |.upper|) utilizan esta nueva forma. Más allá de ese detalle
+|.upper| es una función como cualquier otra.
+
+Esta notación alternativa es propia de la \emph{orientación a objetos}. Aprenderemos más
+sobre objetos en la unidad~\ref{objetos}.
 \end{sabias_que}
 
-
+Para conocer todas las funciones que tenemos a nuestra disposición para
+manipular cadenas, podemos invocar en el modo interactivo: |help(str)|.
+Para ver la documentación de una función en particular, por ejemplo |.upper|,
+podemos invocar |help(str.upper)|.
 
 \section{Nuestro primer juego}
 
@@ -766,7 +769,7 @@ import random
 def mastermind():
     """Funcion principal del juego Mastermind"""
     print("Bienvenido/a al Mastermind!")
-    print("Tienes que adivinar un numero de (~\bfseries{\{\}}~) cifras distintas"(@.format(CANT_DIGITOS)@))
+    print(f"Tienes que adivinar un numero de {(~\bfseries{CANT\_DIGITOS}~)} cifras distintas")
 \end{codigo-python-sn}
 
 Por convención, el nombre de la variable se escribe en mayúsculas, para indicar
@@ -818,9 +821,9 @@ mensajes:
 
 \begin{codigo-python-sn}
     (@if propuesta == ME_DOY:@)
-        (@print("Mala suerte! El código era: {}".format(codigo))@)
+        (@print(f"Mala suerte! El código era: {codigo}")@)
     (@else:@)
-        print("Felicitaciones! Adivinaste el codigo en {} intentos.".format(intentos))
+        print(f"Felicitaciones! Adivinaste el codigo en {intentos} intentos.")
 \end{codigo-python-sn}
 
 En el Código~\ref{cod:mastermind_enh} se muestra el código completo luego de
@@ -888,45 +891,50 @@ caso de que se omita \lstinline!j!, se asume \lstinline!len(cadena)!.  Si
 se omiten ambos, se obtiene la cadena completa.
 \end{sintaxis}
 
-\begin{sintaxis}{\lstinline!cadena.format(valores)!}
-Genera otra cadena reemplazando las marcas de formato por el valor
+\begin{sintaxis}{\lstinline!f"..."! / \lstinline!f'...'!}
+Genera una cadena interpolada, reemplazando las marcas de formato por el valor
 correspondiente, luego de convertirlo de acuerdo a lo especificado en la
 marca de formato.
 
 Las marcas de formato se indican con |{}|, incluyendo opcionalmente
-diversos parámetros de conversión.
+diversos modificadores de conversión.
 
-A continuación una referencia de algunos tipos de conversión utilizados
+A continuación una referencia de algunos modificadores de conversión utilizados
 frecuentemente:
 
 \begin{center}
-\begin{tabular}{l p{4cm} l}
- {\bf Tipo} & {\bf Significado} & {\bf Ejemplo} \\
+\begin{tabular}{l p{6cm} l}
+ {\bf Modificador} & {\bf Significado} & {\bf Ejemplo} \\
 \hline
-\verb!{:d}! & {\footnotesize Valor entero en decimal} & \lstinline!'{:d}'.format(10.5)! $\rightarrow$ \lstinline!'10'! \\
-\verb!{:o}! & {\footnotesize Valor entero en octal} & \lstinline!'{:o}'.format(8)! $\rightarrow$ \lstinline!'10'! \\
-\verb!{:x}! & {\footnotesize Valor entero en hexadecimal} & \lstinline!'{:x}'.format(16)! $\rightarrow$ \lstinline!'10'! \\
-\verb!{:f}! & {\footnotesize Valor de punto flotante, en decimal} &
-  \lstinline!'{:f}'.format(0.1**5)! $\rightarrow$ \lstinline!'0.000010'! \\
-\verb!{:.2f}! & {\footnotesize Punto flotante, con dos dígitos de precisión} &
-  \lstinline!'{:.2f}'.format(0.1**5)! $\rightarrow$ \lstinline!'0.00'! \\
-\verb!{:e}! & {\footnotesize Punto flotante, en notación exponencial} &
-  \lstinline!'{:e}'.format(0.1**5)! $\rightarrow$ \lstinline!'1.000000e-05'! \\
-\verb!{:g}! & {\footnotesize Punto flotante, lo que sea más corto} &
-  \lstinline!'{:g}'.format(0.1**5)! $\rightarrow$ \lstinline!'0.00001'! \\
-\verb!{:.2s}! & {\footnotesize Cadena recortada en 2 caracteres} &
-  \lstinline!'{:.2s}'.format('Python')! $\rightarrow$ \lstinline!'Py'! \\
-\verb!{:<6s}! & {\footnotesize Cadena alineada a la izquierda, ocupando 6 caracteres} &
-  \lstinline!'{:<6s}'.format('Py')! $\rightarrow$ \lstinline!'Py    '! \\
-\verb!{:^6s}! & {\footnotesize Cadena centrada} &
-  \lstinline!'{:^6s}'.format('Py')! $\rightarrow$ \lstinline!'  Py  '! \\
-\verb!{:>6s}! & {\footnotesize Cadena alineada a la derecha} &
-  \lstinline!'{:>6s}'.format('Py')! $\rightarrow$ \lstinline!'    Py'! \\
-\verb!{{! & {\footnotesize Un \verb!{!} \\
-\verb!}}! & {\footnotesize Un \verb!}!} \\
+\verb!:d! & {\footnotesize Valor entero en base decimal} &
+  \lstinline!f'{10.5:d}'! $\rightarrow$ \lstinline!'10'! \\
+\verb!:o! & {\footnotesize Valor entero en base octal} &
+  \lstinline!f'{8:o}'! $\rightarrow$ \lstinline!'10'! \\
+\verb!:x! & {\footnotesize Valor entero en base hexadecimal} &
+  \lstinline!f'{16:x}'! $\rightarrow$ \lstinline!'10'! \\
+\verb!:f! & {\footnotesize Valor de punto flotante, en base decimal} &
+  \lstinline!f'{0.1**5:f}'! $\rightarrow$ \lstinline!'0.000010'! \\
+\verb!:.2f! & {\footnotesize Punto flotante, con dos dígitos de precisión} &
+  \lstinline!f'{0.1**5:.2f}'! $\rightarrow$ \lstinline!'0.00'! \\
+\verb!:e! & {\footnotesize Punto flotante, en notación exponencial} &
+  \lstinline!f'{0.1**5:e}'! $\rightarrow$ \lstinline!'1.000000e-05'! \\
+\verb!:g! & {\footnotesize Punto flotante, lo que sea más corto} &
+  \lstinline!f'{0.1**5:g}'! $\rightarrow$ \lstinline!'0.00001'! \\
+\verb!:.2s! & {\footnotesize Cadena recortada en 2 caracteres} &
+  \lstinline!f'{"Python":.2s}'! $\rightarrow$ \lstinline!'Py'! \\
+\verb!:<6s! & {\footnotesize Cadena alineada a la izquierda, ocupando 6 caracteres} &
+  \lstinline!f'{"Py":<6s}'! $\rightarrow$ \lstinline!'Py    '! \\
+\verb!:^6s! & {\footnotesize Cadena centrada} &
+  \lstinline!f'{"Py":^6s}'! $\rightarrow$ \lstinline!'  Py  '! \\
+\verb!:>6s! & {\footnotesize Cadena alineada a la derecha} &
+  \lstinline!f'{"Py":>6s}'! $\rightarrow$ \lstinline!'    Py'! \\
 \end{tabular}
 \end{center}
+\end{sintaxis}
 
+\begin{sintaxis}{\lstinline!cadena.format(valores)!}
+Al igual que |f"..."|, genera una cadena interpolada, pero a partir de una
+cadena de formato separada de los valores a interpolar.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline!cadena.isdigit()!}

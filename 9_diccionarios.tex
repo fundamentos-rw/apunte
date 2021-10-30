@@ -160,7 +160,7 @@ es posible iterar por sus claves y usar esas claves para acceder a los valores:
 
 \begin{codigo-python-sn}
 for dia in materias:
-    print("El {} tengo que cursar {}".format(dia, materias[dia])
+    print(f"El {dia} tengo que cursar {materias[dia]}")
 \end{codigo-python-sn}
 
 Es posible, también, obtener los valores como tuplas donde el primer
@@ -168,7 +168,7 @@ elemento es la clave y el segundo el valor.
 
 \begin{codigo-python-sn}
 for dia, codigos in materias.items():
-    print("El {} tengo que cursar {}".format(dia, codigos)
+    print(f"El {dia} tengo que cursar {codigos}"
 \end{codigo-python-sn}
 
 Recordar que el orden de los elementos no es relevante; por lo tanto no podemos

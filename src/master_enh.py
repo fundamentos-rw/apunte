@@ -5,7 +5,7 @@ CANT_DIGITOS = 5
 def mastermind():
     """Funcion principal del juego Mastermind"""
     print("Bienvenido/a al Mastermind!")
-    print("Tienes que adivinar un numero de {} cifras distintas".format(CANT_DIGITOS))
+    print(f"Tienes que adivinar un numero de {CANT_DIGITOS} cifras distintas")
 
     codigo = elegir_codigo()
     intentos = 1
@@ -23,9 +23,9 @@ def mastermind():
         propuesta = input("Propone otro codigo: ")
 
     if propuesta == ME_DOY:
-        print("Mala suerte! El código era: {}".format(codigo))
+        print(f"Mala suerte! El código era: {codigo}")
     else:
-        print("Felicitaciones! Adivinaste el codigo en {} intentos.".format(intentos))
+        print(f"Felicitaciones! Adivinaste el codigo en {intentos} intentos.")
 
 def elegir_codigo():
     """Devuelve un codigo de CANT_DIGITOS digitos elegido al azar"""

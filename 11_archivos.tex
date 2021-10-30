@@ -112,7 +112,7 @@ archivo = open("archivo.txt")
 i = 1
 for linea in archivo:
     linea = linea.rstrip("\n")
-    print("{}: {}".format(i, linea))
+    print(f"{i}: {linea}")
     i += 1
 archivo.close()
 \end{codigo-python-sn}
@@ -129,7 +129,7 @@ Notar que sería equivalente usar el bloque |with| para ahorrarnos la llamada a
     i = 1
     for linea in archivo:
         linea = linea.rstrip("\n")
-        print("{}: {}".format(i, linea))
+        print(f"{i}: {linea}")
         i += 1
 \end{codigo-python-sn}
 
@@ -156,7 +156,7 @@ contador |i| a mano:
 with open("archivo.txt") as archivo:
     (@for i, linea in enumerate(archivo):@)
         linea = linea.rstrip("\n")
-        print("{}: {}".format(i, linea))
+        print(f"{i}: {linea}")
 \end{codigo-python-sn}
 
 \section{Modo de apertura de los archivos}
