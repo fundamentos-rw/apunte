@@ -786,7 +786,7 @@ texto contenga dos arrobas una a continuación de la otra, se devolverá una
 componente vacía:
 
 \begin{codigo-python-sn}
->>> d="@@Una@@@cadena@@@con@@arrobas@"
+>>> d = "@@Una@@@cadena@@@con@@arrobas@"
 >>> d.split("@")
 ['', '', 'Una', '', '', 'cadena', '', '', 'con', '', 'arrobas', '']
 \end{codigo-python-sn}
@@ -844,6 +844,239 @@ Se lo transcribe como: \\
 Extender la función anterior para agregar el tratamiento de los puntos.
 \end{partes}
 }
+
+\section{Listas y tuplas anidadas}
+
+Las listas y tuplas pueden contener valores de cualquier tipo, ¡incluso otras
+listas y tuplas! Cuando una lista contiene otras listas decimos que tenemos
+listas \emph{anidadas} (y lo mismo con tuplas).
+
+\begin{codigo-python-sn}
+>>> lista_de_listas = [[1, 2, 3], ["a", "b", "c", "d"]]
+\end{codigo-python-sn}
+
+Aquí |lista_de_listas| es una lista que contiene 2 elementos, que a su vez son
+también listas. Así, |lista_de_listas[0]| sería la lista |[1, 2, 3]| y
+|lista_de_listas[1]| sería |["a", "b", "c", "d"]|.
+
+Si quisiéramos, por ejemplo, reemplazar la |"c"| por una |"C"|, podríamos
+hacerlo en dos pasos: primero obteniendo una referencia a la segunda lista (que
+es la que está en la posición 1), y luego mutándola como ya vimos:
+
+\begin{codigo-python-sn}
+>>> lista_de_letras = lista_de_listas[1]
+>>> lista_de_letras[2] = "C"
+\end{codigo-python-sn}
+
+O bien podríamos hacerlo en una única operación:
+
+\begin{codigo-python-sn}
+>>> lista_de_listas[1][2] = "C"
+\end{codigo-python-sn}
+
+\subsection{Matrices}
+
+Una aplicación muy frecuente de listas y tuplas anidadas es para representar
+matrices (o, en general, estructuras de datos de más de una dimensión).
+Por ejemplo, sea la siguiente matriz de números:
+
+$$
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{pmatrix}
+$$
+
+Para representarla en una variable en Python, debemos elegir una
+\emph{estructura de datos} apropiada. Lo primero a tener en cuenta suele ser si
+necesitamos que nuestra matriz sea mutable o inmutable; es decir, una vez
+creada la matriz ¿será necesario modificarla? Si la respuesta es que sí,
+seguramente sea conveniente usar listas; en caso contrario tuplas.
+
+Supongamos que queremos que nuestra matriz sea mutable, así que decidimos usar
+listas. Tenemos varias alternativas para representar la matriz:
+
+\begin{enumerate}
+\item Una lista de números:
+\begin{codigo-python-sn}
+>>> m = [1, 2, 3, 4, 5, 6]
+\end{codigo-python-sn}
+
+\item Una lista de listas de números, donde cada sublista representa una
+    fila de la matriz:
+\begin{codigo-python-sn}
+>>> m = [[1, 2, 3], [4, 5, 6]]
+\end{codigo-python-sn}
+
+\item Una lista de listas de números, donde cada sublista representa una
+    columna de la matriz:
+\begin{codigo-python-sn}
+>>> m = [[1, 4], [2, 5], [3, 6]]
+\end{codigo-python-sn}
+\end{enumerate}
+
+Podríamos pensar más opciones, pero estas son las más intuitivas. Cada una de
+ellas tiene ventajas y desventajas, y dependiendo del problema específico que
+estemos resolviendo convendrá elegir una u otra. Analicemos cada una por
+separado.
+
+\begin{enumerate}
+\item La primera opción (|m = [1, 2, 3, 4, 5, 6]|, una lista \emph{plana}) es,
+tal vez, la menos intuitiva de las tres, pero en algunos casos puede ser la
+más conveniente. Aquí asumimos que las dimensiones de la matriz son
+conocidas (2 filas y 3 columnas) ya que no es posible deducirlo a
+partir de la lista que tiene longitud 6 (podría ser de 2x3, 3x2, 1x6,
+...).
+
+\begin{codigo-python-sn}
+>>> m = [1, 2, 3, 4, 5, 6]
+>>> cantidad_de_filas = 2    # las filas posibles son: 0, 1
+>>> cantidad_de_columnas = 3 # las columnas posibles son: 0, 1, 2
+\end{codigo-python-sn}
+
+Si quisiéramos acceder a un elemento particular sabiendo su fila y columna,
+tendremos que calcular el índice de la lista correspondiente. Por ejemplo,
+para imprimir la matriz fila por fila:
+
+\begin{codigo-python-sn}
+>>> def imprimir_matriz(m, cantidad_de_filas, cantidad_de_columnas):
+>>>     for f in range(cantidad_de_filas):
+>>>         for c in range(cantidad_de_columnas):
+>>>             print((@m[fila * cantidad_de_columnas + columna]@), end=' ') (~\circled{1}~)
+>>>         print() # para pasar a la siguiente línea
+>>>
+>>> m = [1, 2, 3, 4, 5, 6]
+>>> imprimir_matriz(m, 2, 3)
+1 2 3
+4 5 6
+\end{codigo-python-sn}
+
+\circled{1} Sabiendo las dimensiones de la matriz, y la fila y columna de un elemento
+en particular, podemos calcular su índice en la lista de la forma
+|fila * cantidad_de_columnas + columna| (donde |fila| y |columna| cuentan desde 0).
+
+\item Si la matriz está representada como una \emph{lista de filas}, todas las operaciones
+se vuelven un poco más simples. Podemos deducir las dimensiones de la matriz a partir de las
+longitudes de las listas, y ya no hace falta hacer cuentas para determinar la posición de un
+elemento sabiendo su fila y columna:
+
+\begin{codigo-python-sn}
+>>> def imprimir_matriz(m):
+>>>     (@cantidad_de_filas = len(m)@)
+>>>     (@cantidad_de_columnas = len(m[0])@)
+>>>     for f in range(cantidad_de_filas):
+>>>         for c in range(cantidad_de_columnas):
+>>>             print((@m[fila][columna]@), end=' ')
+>>>         print() # para pasar a la siguiente línea
+>>>
+>>> m = [[1, 2, 3], [4, 5, 6]]
+>>> imprimir_matriz(m)
+1 2 3
+4 5 6
+\end{codigo-python-sn}
+
+
+\item Lo mismo si la matriz está representada como una \emph{lista de columnas}, solo que tenemos que
+tener cuidado en invertir el orden de los índices:
+
+\begin{codigo-python-sn}
+>>> def imprimir_matriz(m):
+>>>     (@cantidad_de_columnas = len(m)@)
+>>>     (@cantidad_de_filas = len(m[0])@)
+>>>     for f in range(cantidad_de_filas):
+>>>         for c in range(cantidad_de_columnas):
+>>>             print((@m[columna][fila]@), end=' ')
+>>>         print() # para pasar a la siguiente línea
+>>>
+>>> m = [[1, 4], [2, 5], [3, 6]]
+>>> imprimir_matriz(m)
+1 2 3
+4 5 6
+\end{codigo-python-sn}
+
+\end{enumerate}
+
+También es importante prestar atención a la hora de crear una nueva matriz en
+forma \emph{programática}. Por ejemplo, sea la siguiente matriz de 4x4:
+
+$$
+\begin{pmatrix}
+"a1" & "b1" & "c1" & "d1" \\
+"a2" & "b2" & "c2" & "d2" \\
+"a3" & "b3" & "c3" & "d3" \\
+"a4" & "b4" & "c4" & "d4" \\
+\end{pmatrix}
+$$
+
+Podríamos escribir esta matriz en Python en forma \emph{literal}:
+|m = [["a1", "b1", "c1", "d1"], ...]|, pero ¿qué pasaría si necesitamos representar una
+matriz similar de 100x100? ¿O si las dimensiones son ingresadas por el usuario?
+Aquí es donde se vuelve necesario crear la matriz en forma programática:
+
+\problemac{Escribir una función que reciba las dimensiones (cantidad de filas y columnas)
+y devuelva una matriz donde cada elemento sea una cadena de la forma |"xy"|, donde |x| es
+una letra representando la columna e |y| un número representando la fila.}
+
+\begin{solucion}
+Nuevamente, la forma de resolver el problema dependerá de cómo decidimos representar la matriz:
+
+\begin{enumerate}
+
+\item Si representamos la matriz como una lista plana:
+
+\begin{codigo-python-sn}
+LETRAS = 'abcdefghijklmnopqrstuvwxyz'(~\footnote{Por supuesto, esto limita nuestra solución a un máximo de 26 columnas. Decidimos ignorar ese detalle para no complicar el ejemplo.}~)
+
+def crear_matriz_xy(filas, columnas):
+    (@m = []@)
+    for f in range(filas):
+        y = str(f + 1)
+        for c in range(columnas):
+            x = LETRAS[c]
+            (@m.append(x + y)@)
+    (@return m@)
+\end{codigo-python-sn}
+
+\item Si representamos la matriz como una lista de filas:
+
+\begin{codigo-python-sn}
+def crear_matriz_xy(filas, columnas):
+    (@m = []@)
+    for f in range(filas): (~\circled{1}~)
+        (@fila = []@)
+        y = str(f + 1)
+        for c in range(columnas):
+            x = LETRAS[c]
+            (@fila.append(x + y)@)
+        (@m.append(fila)@)
+    (@return m@)
+\end{codigo-python-sn}
+
+
+\item Si representamos la matriz como una lista de columnas:
+
+\begin{codigo-python-sn}
+def crear_matriz_xy(filas, columnas):
+    (@m = []@)
+    for c in range(columnas): (~\circled{2}~)
+        (@columna = []@)
+        x = LETRAS[c]
+        for f in range(filas):
+            y = str(f + 1)
+            (@columna.append(x + y)@)
+        (@m.append(columna)@)
+    (@return m@)
+\end{codigo-python-sn}
+
+\begin{atencion}
+\circled{1} \circled{2} Notar que el orden de los ciclos anidados es diferente; en cada caso
+debemos analizar con cuidado si conviene iterar primero filas y luego columnas, o al revés.
+\end{atencion}
+
+\end{enumerate}
+\end{solucion}
+
+
 
 \section{Resumen}
 
