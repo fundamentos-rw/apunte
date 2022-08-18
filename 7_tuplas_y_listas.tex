@@ -877,7 +877,7 @@ O bien podríamos hacerlo en una única operación:
 \subsection{Matrices}
 
 Una aplicación muy frecuente de listas y tuplas anidadas es para representar
-matrices (o, en general, estructuras de datos de más de una dimensión).
+matrices (o, en general, arreglos de dos o más dimensiones).
 Por ejemplo, sea la siguiente matriz de números:
 
 $$
@@ -894,71 +894,22 @@ creada la matriz ¿será necesario modificarla? Si la respuesta es que sí,
 seguramente sea conveniente usar listas; en caso contrario tuplas.
 
 Supongamos que queremos que nuestra matriz sea mutable, así que decidimos usar
-listas. Tenemos varias alternativas para representar la matriz:
+listas. Hay muchas alternativas para representar la matriz, pero hay dos que son
+las más frecuentemente utilizadas:
 
 \begin{enumerate}
-\item Una lista de números:
-\begin{codigo-python-sn}
->>> m = [1, 2, 3, 4, 5, 6]
-\end{codigo-python-sn}
 
-\item Una lista de listas de números, donde cada sublista representa una
-    fila de la matriz:
+\item La forma más usual de representar matrices es mediante una \emph{lista de filas}:
+
 \begin{codigo-python-sn}
 >>> m = [[1, 2, 3], [4, 5, 6]]
 \end{codigo-python-sn}
 
-\item Una lista de listas de números, donde cada sublista representa una
-    columna de la matriz:
-\begin{codigo-python-sn}
->>> m = [[1, 4], [2, 5], [3, 6]]
-\end{codigo-python-sn}
-\end{enumerate}
+De esta forma, las dimensiones de la matriz (cantidad de filas y columnas) están dadas por
+las longitudes de las listas. Y si quisiéramos acceder a un elemento particular sabiendo
+su fila y columna, usaremos la notación |m[fila][columna]|.
 
-Podríamos pensar más opciones, pero estas son las más intuitivas. Cada una de
-ellas tiene ventajas y desventajas, y dependiendo del problema específico que
-estemos resolviendo convendrá elegir una u otra. Analicemos cada una por
-separado.
-
-\begin{enumerate}
-\item La primera opción (|m = [1, 2, 3, 4, 5, 6]|, una lista \emph{plana}) es,
-tal vez, la menos intuitiva de las tres, pero en algunos casos puede ser la
-más conveniente. Aquí asumimos que las dimensiones de la matriz son
-conocidas (2 filas y 3 columnas) ya que no es posible deducirlo a
-partir de la lista que tiene longitud 6 (podría ser de 2x3, 3x2, 1x6,
-...).
-
-\begin{codigo-python-sn}
->>> m = [1, 2, 3, 4, 5, 6]
->>> cantidad_de_filas = 2    # las filas posibles son: 0, 1
->>> cantidad_de_columnas = 3 # las columnas posibles son: 0, 1, 2
-\end{codigo-python-sn}
-
-Si quisiéramos acceder a un elemento particular sabiendo su fila y columna,
-tendremos que calcular el índice de la lista correspondiente. Por ejemplo,
-para imprimir la matriz fila por fila:
-
-\begin{codigo-python-sn}
->>> def imprimir_matriz(m, cantidad_de_filas, cantidad_de_columnas):
->>>     for f in range(cantidad_de_filas):
->>>         for c in range(cantidad_de_columnas):
->>>             print((@m[fila * cantidad_de_columnas + columna]@), end=' ') (~\circled{1}~)
->>>         print() # para pasar a la siguiente línea
->>>
->>> m = [1, 2, 3, 4, 5, 6]
->>> imprimir_matriz(m, 2, 3)
-1 2 3
-4 5 6
-\end{codigo-python-sn}
-
-\circled{1} Sabiendo las dimensiones de la matriz, y la fila y columna de un elemento
-en particular, podemos calcular su índice en la lista de la forma
-|fila * cantidad_de_columnas + columna| (donde |fila| y |columna| cuentan desde 0).
-
-\item Si la matriz está representada como una \emph{lista de filas}, todas las operaciones
-se vuelven un poco más simples. Podemos deducir las dimensiones de la matriz a partir de las
-longitudes de las listas, y ya no hace falta hacer cuentas para determinar la posición de un
-elemento sabiendo su fila y columna:
+Por ejemplo, para imprimir la matriz fila por fila:
 
 \begin{codigo-python-sn}
 >>> def imprimir_matriz(m):
@@ -966,18 +917,23 @@ elemento sabiendo su fila y columna:
 >>>     (@cantidad_de_columnas = len(m[0])@)
 >>>     for f in range(cantidad_de_filas):
 >>>         for c in range(cantidad_de_columnas):
->>>             print((@m[fila][columna]@), end=' ')
+>>>             print((@m[f][c]@), end=' ')
 >>>         print() # para pasar a la siguiente línea
 >>>
->>> m = [[1, 2, 3], [4, 5, 6]]
 >>> imprimir_matriz(m)
 1 2 3
 4 5 6
 \end{codigo-python-sn}
 
+\item Una forma menos frecuente (pero igualmente válida) es representar la
+matriz como una \emph{lista de columnas}:
 
-\item Lo mismo si la matriz está representada como una \emph{lista de columnas}, solo que tenemos que
-tener cuidado en invertir el orden de los índices:
+\begin{codigo-python-sn}
+>>> m = [[1, 4], [2, 5], [3, 6]]
+\end{codigo-python-sn}
+
+Todas las operaciones resultan muy similares, teniendo cuidado en invertir el
+orden de los índices:
 
 \begin{codigo-python-sn}
 >>> def imprimir_matriz(m):
@@ -985,10 +941,9 @@ tener cuidado en invertir el orden de los índices:
 >>>     (@cantidad_de_filas = len(m[0])@)
 >>>     for f in range(cantidad_de_filas):
 >>>         for c in range(cantidad_de_columnas):
->>>             print((@m[columna][fila]@), end=' ')
+>>>             print((@m[c][f]@), end=' ')
 >>>         print() # para pasar a la siguiente línea
 >>>
->>> m = [[1, 4], [2, 5], [3, 6]]
 >>> imprimir_matriz(m)
 1 2 3
 4 5 6
@@ -1022,24 +977,11 @@ Nuevamente, la forma de resolver el problema dependerá de cómo decidimos repre
 
 \begin{enumerate}
 
-\item Si representamos la matriz como una lista plana:
+\item Si representamos la matriz como una lista de filas:
 
 \begin{codigo-python-sn}
 LETRAS = 'abcdefghijklmnopqrstuvwxyz'(~\footnote{Por supuesto, esto limita nuestra solución a un máximo de 26 columnas. Decidimos ignorar ese detalle para no complicar el ejemplo.}~)
 
-def crear_matriz_xy(filas, columnas):
-    (@m = []@)
-    for f in range(filas):
-        y = str(f + 1)
-        for c in range(columnas):
-            x = LETRAS[c]
-            (@m.append(x + y)@)
-    (@return m@)
-\end{codigo-python-sn}
-
-\item Si representamos la matriz como una lista de filas:
-
-\begin{codigo-python-sn}
 def crear_matriz_xy(filas, columnas):
     (@m = []@)
     for f in range(filas): (~\circled{1}~)
@@ -1076,7 +1018,45 @@ debemos analizar con cuidado si conviene iterar primero filas y luego columnas, 
 \end{enumerate}
 \end{solucion}
 
+Ya conocemos dos opciones para representar matrices: lista de filas y lista de columnas.
+¿Alguna de ellas es mejor que la otra? ¿Cómo decidimos cuál utilizar?
 
+Tal vez el factor más importante a considerar es en qué orden vamos a
+querer \emph{recorrer} la matriz al manipularla. Hay dos maneras obvias de recorrer
+los elementos de una matriz: \emph{orden principal de fila} y \emph{orden principal de columna},
+mostrados en la Figura \ref{orden-matriz}.
+
+\begin{figure}[hbt]
+\begin{tikzpicture}
+  \matrix (f)
+  {
+    \node (fa11) {$a_{11}$}; & \node (fa12) {$a_{12}$}; & \node (fa13) {$a_{13}$}; \\
+    \node (fa21) {$a_{21}$}; & \node (fa22) {$a_{22}$}; & \node (fa23) {$a_{23}$}; \\
+    \node (fa31) {$a_{31}$}; & \node (fa32) {$a_{32}$}; & \node (fa33) {$a_{33}$}; \\
+  };
+  \node[node distance=0pt,anchor=south,above=of f.north] {orden principal de fila};
+  \matrix[anchor=west,right=4cm of f.east] (c)
+  {
+    \node (ca11) {$a_{11}$}; & \node (ca12) {$a_{12}$}; & \node (ca13) {$a_{13}$}; \\
+    \node (ca21) {$a_{21}$}; & \node (ca22) {$a_{22}$}; & \node (ca23) {$a_{23}$}; \\
+    \node (ca31) {$a_{31}$}; & \node (ca32) {$a_{32}$}; & \node (ca33) {$a_{33}$}; \\
+  };
+  \node[node distance=0pt,anchor=south,above=of c.north] {orden principal de columna};
+  \begin{scope}[transparency group, opacity=0.3]
+      \draw[flecha,line width=0.5ex] (fa11.center)--(fa13.center)--(fa21.center)--(fa23.center)--(fa31.center)--(fa33.center);
+      \draw[flecha,line width=0.5ex] (ca11.center)--(ca31.center)--(ca12.center)--(ca32.center)--(ca13.center)--(ca33.center);
+  \end{scope}
+\end{tikzpicture}
+\caption{Dos maneras de recorrer los elementos de una matriz.}
+\label{orden-matriz}
+\end{figure}
+
+Si normalmente vamos a querer recorrer la matriz en orden principal de fila,
+entonces la representación de lista de filas es más adecuada. Esto es lo más
+usual.
+
+En cambio, si frecuentemente vamos a recorrer en orden principal de columna,
+entonces elegiremos lista de columnas.
 
 \section{Resumen}
 
