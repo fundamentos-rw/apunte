@@ -1,36 +1,226 @@
-% TODO: temas que faltan:
-% - acceso secuencial y aleatorio, (para la siguiente unidad: datos de tamaño
-% fijo, indice)
-% - entrada y salida estandard y estandard error
-
-% TODO importante (errores vistos en los alumnos)
-%  1) Mostrar ejemplos de lecturas que NO sean csv
-%  2) Mostrar uso de csv como for linea in archivo
-
 \chapter{Manejo de archivos}
 \label{uni:archivos}
 
-Veremos en esta unidad cómo manejar archivos desde nuestros
-programas.
+Veremos en esta unidad cómo manipular archivos desde nuestros programas. Los
+archivos permiten almacenar información que persistirá luego de que el programa
+finalice su ejecución. Los archivos también se pueden compartir o ser
+transmitidos entre diferentes computadoras, mediante dispositivos de
+almacenamiento o redes como Internet.
 
-Existen dos formas básicas de acceder a un archivo, una es
-utilizarlo como un archivo de texto, que procesaremos línea por
-línea; la otra es tratarlo como un archivo binario, que
-procesaremos byte por byte.
+\section{¿Qué es un archivo?}
 
-En Python, para abrir un archivo usaremos la función \lstinline!open!, que
-recibe el nombre del archivo a abrir.
+Un archivo no es otra cosa más que una secuencia de bytes. Por ejemplo, un
+archivo puede contener la secuencia de 4 bytes: |48 6f 6c 61| (notación
+hexadecimal).
+
+\begin{sabias_que}
+\edef\myindent{\the\parindent}%
+\noindent%
+\begin{minipage}{.55\textwidth}
+Un byte está formado de 8 bits, y según el valor de cada uno de los bits, un byte
+puede representar $2^8 = 256$ combinaciones diferentes.
+Si asignamos un valor numérico a cada una de esas combinaciones, comenzando
+de 0, con un byte podemos representar cualquier número entre 0 y 255.
+
+\setlength{\parindent}{\myindent}
+Cuando se representan datos binarios, en lugar de utilizar la notación
+binaria (base 2) o la decimal (base 10), se suele utilizar la notación
+\emph{hexadecimal} (base 16).
+
+En Python se puede escribir un número en notación binaria con el prefijo |0b|,
+y en notación hexadecimal con el prefijo |0x|. Además, las funciones |bin|
+y |hex| permiten obtener la representación de un número en binario y
+hexadecimal, respectivamente.
+
+\begin{codigo-python-sn}
+>>> 0b11111101
+253
+>>> 0xfd
+253
+>>> bin(0xfd)
+'0b11111101'
+>>> hex(253)
+'0xfd'
+\end{codigo-python-sn}
+\end{minipage}\hfill%
+\begin{minipage}{.44\textwidth}
+\begin{center}
+\begin{tabular}{r r r}
+{\bf Binario} & {\bf Decimal} & {\bf Hexadecimal} \\
+\hline
+\lstinline!00000000! & \lstinline!0! & \lstinline!00! \\
+\lstinline!00000001! & \lstinline!1! & \lstinline!01! \\
+\lstinline!00000010! & \lstinline!2! & \lstinline!02! \\
+\lstinline!00000011! & \lstinline!3! & \lstinline!03! \\
+\lstinline!00000100! & \lstinline!4! & \lstinline!04! \\
+\lstinline!00000101! & \lstinline!5! & \lstinline!05! \\
+\lstinline!00000110! & \lstinline!6! & \lstinline!06! \\
+\lstinline!00000111! & \lstinline!7! & \lstinline!07! \\
+\lstinline!00001000! & \lstinline!8! & \lstinline!08! \\
+\lstinline!00001001! & \lstinline!9! & \lstinline!09! \\
+\lstinline!00001010! & \lstinline!10! & \lstinline!0a! \\
+\lstinline!00001011! & \lstinline!11! & \lstinline!0b! \\
+\lstinline!00001100! & \lstinline!12! & \lstinline!0c! \\
+\lstinline!00001101! & \lstinline!13! & \lstinline!0d! \\
+\lstinline!00001110! & \lstinline!14! & \lstinline!0e! \\
+\lstinline!00001111! & \lstinline!15! & \lstinline!0f! \\
+\lstinline!00010000! & \lstinline!16! & \lstinline!10! \\
+\lstinline!...!      & \lstinline!...! & \lstinline!...! \\
+\lstinline!11111101! & \lstinline!253! & \lstinline!fd! \\
+\lstinline!11111110! & \lstinline!254! & \lstinline!fe! \\
+\lstinline!11111111! & \lstinline!255! & \lstinline!ff! \\
+\end{tabular}
+\end{center}
+\end{minipage}
+\end{sabias_que}
+
+Un archivo se identifica con un \emph{nombre}, por ejemplo |hola.txt|. Para
+facilitar la gestión y búsqueda eficiente, los archivos se organizan en
+\emph{carpetas} y \emph{subcarpetas}, formando una estructura jerárquica: cada
+carpeta puede contener archivos y otras carpetas, permitiendo una organización
+lógica y estructurada de la información.
+
+La ubicación de un archivo se identifica mediante una \emph{ruta}, que es una
+cadena formada por la secuencia de carpetas y subcarpetas que lleva a dicho
+archivo desde la \emph{carpeta raíz} (\lstinline!/!). Por ejemplo, si nuestro
+archivo se encuentra dentro de la carpeta |home| y subcarpeta |alan|, su ruta
+sería \verb!"/home/alan/hola.txt"!\footnote{En sistemas Windows se utiliza el
+caracter {\tt \textbackslash} como separador en lugar del caracter
+\lstinline!/!. Sin embargo, al especificar rutas en nuestros programas Python
+se acepta que utilicemos el separador \lstinline!/!; de esta manera nuestros
+programas podrán funcionar en cualquier sistema operativo.}. Una ruta se puede
+escribir en forma \emph{absoluta} (comenzando con \lstinline!/! y conteniendo
+la secuencia completa de carpetas y subcarpetas desde la carpeta raíz), o
+\emph{relativa} a alguna carpeta (sin comenzar con \lstinline!/!). En nuestro
+ejemplo, la ruta del archivo relativa a la carpeta \verb!"/home"! sería
+\verb!"alan/hola.txt"!.
+
+\section{Formatos de archivos}
+
+Para cualquier información que se desee almacenar en un archivo, se debe elegir
+una codificación que permita representar esa información mediante una secuencia
+de bytes.
+
+Por ejemplo, si deseamos almacenar el texto \texttt{"Hola mundo!"} en un archivo, lo
+más simple sería elegir la codificación ASCII, en la que cada caracter se
+almacena como 1 byte. De esta manera el archivo contendría en total 11 bytes:
+|48 6f 6c 61 20 6d 75 6e 64 6f 21|.
+Según la codificación ASCII, el caracter |H| se codifica con el valor
+hexadecimal |48|, el caracter |o| con el valor |6f|, y así sucesivamente.
+
+ASCII es un ejemplo de un \emph{formato de codificación de texto}, pero no es
+el único. La limitación principal del formato ASCII es que solo permite
+representar 128 caracteres. El formato UTF-8 es más complejo que ASCII,
+ya que representa cada caracter con una cantidad variable de bytes, pero a
+cambio permite representar más de un millón de caracteres. UTF-8 es la codificación
+que se usa por defecto en la mayoría de los sistemas.
+
+Si en lugar de texto deseamos almacenar una imagen en un archivo, tendríamos
+que elegir otra codificación. En la Figura~\ref{fig-bmp} se muestra una imagen
+codificada en formato BMP. Notar que en este caso el algoritmo de codificación
+no es tan directo o intuitivo.
+
+\begin{figure}[htb]
+\hfill%
+\begin{minipage}{.1\textwidth}
+  \includegraphics[width=\textwidth]{graficos/bmp}
+\end{minipage}%
+\hfill%
+\begin{minipage}{.85\textwidth}\raggedright%
+\noindent{\footnotesize\tt%
+4d 42 00 ba 00 00 00 00 00 00 00 8a 00 00 00 7c 00 00 00 04 00 00 00 04 00 00 \\
+00 01 00 18 00 00 00 00 00 30 00 00 2e 23 00 00 2e 23 00 00 00 00 00 00 00 00 \\
+00 00 00 00 00 ff ff 00 00 00 00 ff 00 00 00 00 00 00 47 42 73 52 00 00 00 00 \\
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 \\
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 00 00 00 \\
+00 00 00 00 00 00 00 00 11 11 ff f9 00 00 11 11 ff f9 00 00 00 ff 11 00 f9 11 \\
+00 ff 11 00 f9 11 11 11 ff f9 00 00 11 11 ff f9 00 00 00 ff 11 00 f9 11 00 ff \\
+11 00 f9 11 \\}%
+\end{minipage}
+\hfill%
+\caption{Una imagen de 4x4 pixels codificada en formato BMP.}
+\label{fig-bmp}
+\end{figure}
+
+BMP, JPG y PNG son algunos ejemplos de formatos de codificación de imágenes.
+También hay formatos de codificación para sonido, video y cualquier otro tipo
+de información. Se dice que todos estos son \emph{formatos binarios}, en
+contraste con los formatos de texto.\footnote{La distinción entre formatos
+``de texto`` y ``binarios`` es histórica, pero cabe destacar que técnicamente
+todos los formatos son binarios, incluso los de texto.}
+
+Notar que el archivo está definido únicamente por su contenido (la secuencia de
+bytes), independientemente de lo que representen esos bytes. Si solo tenemos el
+contenido de un archivo dado, no hay manera de saber qué codificación se
+utilizó para crear esos datos; es decir, de qué formato es el archivo. Es por
+eso que se utiliza la convención de agregar una \emph{extensión} al nombre del
+archivo para indicar su formato. Por ejemplo, a los archivos de texto se les
+agrega la extensión |.txt|, a los archivos en formatp BMP se les agrega la
+extensión |.bmp|, etc. Si bien es una práctica recomendable, no es obligatorio
+que el nombre del archivo incluya una extensión, o que concuerde con el formato
+real del archivo.
+
+A continuación veremos cómo manipular archivos en nuestros programas Python.
+
+\section{Abrir un archivo}
+
+En Python (así como en la mayoría de los lenguajes de programación) hay dos
+\emph{modos} para acceder a un archivo:
+
+\begin{itemize}
+    \item {\bf Modo texto} en el que podemos leer o escribir cadenas de texto (|str|), que
+        serán codificadas automáticamente según la codificación elegida (ASCII, UTF-8, etc.).
+        En la mayoría de los sistemas, el modo por defecto es texto con codificación UTF-8.
+    \item {\bf Modo binario} en el que no se aplica ninguna codificación, y leemos o escribimos
+        datos de tipo |bytes|.
+\end{itemize}
+
+Para poder leer o escribir un archivo, primero debemos pedirle permiso al
+sistema operativo. Esta operación se llama \emph{abrir} el archivo. En Python,
+para abrir un archivo usaremos la función \lstinline!open!, que recibe la
+ruta del archivo a abrir.
 
 \begin{codigo-python-sn}
 archivo = open("archivo.txt")
 \end{codigo-python-sn}
 
-Esta función intentará abrir el archivo con el nombre indicado.  Si tiene
-éxito devolverá un valor de un tipo especial, que nos permitirá manipular el
-archivo de diversas maneras.
+Esta función intentará abrir el archivo con el nombre indicado, por defecto en
+modo texto. Si tiene éxito devolverá un valor de un tipo especial, que nos
+permitirá manipular el archivo de diversas maneras.
+
+\section{Leer un archivo de texto}
 
 La operación más sencilla a realizar sobre un archivo es leer su contenido.
-Para procesarlo línea por línea, es posible hacerlo de la siguiente forma:
+Podemos utilizar la función |read| para leer uno o más caracteres. Por ejemplo,
+para almacenar en |s| una cadena con los 3 primeros caracteres leidos del archivo:
+
+\begin{codigo-python-sn}
+s = archivo.read(3)
+\end{codigo-python-sn}
+
+Si volvemos a invocar a |read(3)| se leerán los próximos 3 caracteres del archivo.
+Esto es así ya que cada archivo que se encuentre abierto tiene una
+posición asociada, que indica el último punto que fue leído.  Cada vez que
+se lee un byte, avanza esa posición.
+
+Lo más usual al trabajar con archivos de texto es procesarlos línea por línea;
+es decir, leer hasta que encontramos el caracter \emph{nueva línea} o \verb!\n!. La
+función |readline| hace esto de forma automática:
+
+\begin{sabias_que}
+Los archivos de texto son sencillos de manejar, pero existen por lo menos 3
+formas distintas de marcar un fin de línea. En Unix tradicionalmente se usa
+el caracter '\verb!\n!' (código ASCII~10, definido como ``nueva línea'') para
+el fin de línea, mientras que en los sitemas de Apple el fin de línea se solía
+representar como un '\verb!\r!' (valor ASCII~13, definido como retorno de
+carro) y en Windows se usan ambos caracteres '\verb!\r\n!'.
+
+Al leer archivos en modo texto, Python acepta cualquier tipo de fin
+de línea como si fuese un |\n|. Al escribir archivos, Python elegirá
+automáticamente el modo más apropiado. Si queremos modificar este
+comportamiento podemos especificar el modo utilizando la opción |newline| de la
+función |open|.
+\end{sabias_que}
 
 \begin{codigo-python-sn}
 linea = archivo.readline()
@@ -39,14 +229,7 @@ while linea != '':
     linea = archivo.readline()
 \end{codigo-python-sn}
 
-Esto funciona ya que cada archivo que se encuentre abierto tiene una
-posición asociada, que indica el último punto que fue leído.  Cada vez que
-se lee una línea, avanza esa posición. Es por ello que
-\lstinline!readline()! devuelve cada vez una línea distinta y no siempre la
-misma.
-
-La siguiente estructura es una forma equivalente a la vista en el ejemplo
-anterior.
+El lenguaje Python nos permite hacer lo mismo de una manera más abreviada:
 
 \begin{codigo-python-sn}
 for linea in archivo:
@@ -68,8 +251,8 @@ todas las líneas del archivo.
 
 \begin{atencion}
 Es importante tener en cuenta que cuando se utilizan funciones como
-\lstinline!archivo.readlines()!, se está cargando en memoria
-el archivo completo.  Siempre que una instrucción cargue un archivo
+\lstinline!archivo.readlines()!, se está cargando en la memoria de la computadora
+el contenido completo del archivo.  Siempre que una instrucción cargue un archivo
 completo en memoria debe tenerse cuidado de utilizarla sólo con archivos
 pequeños, ya que de otro modo podría agotarse la memoria de la computadora.
 \end{atencion}
@@ -102,7 +285,7 @@ with open("archivo.txt") as archivo:
 # el archivo se cierra automáticamente.
 \end{codigo-python-sn}
 
-\section{Ejemplo de procesamiento de archivos}
+\section{Ejemplo: procesamiento de archivos de texto}
 
 Por ejemplo, para mostrar todas las líneas de un archivo,
 precedidas por el número de línea, podemos hacerlo de la siguiente manera:
@@ -133,21 +316,6 @@ Notar que sería equivalente usar el bloque |with| para ahorrarnos la llamada a
         i += 1
 \end{codigo-python-sn}
 
-\begin{sabias_que}
-Los archivos de texto son sencillos de manejar, pero existen por lo menos 3
-formas distintas de marcar un fin de línea. En Unix tradicionalmente se usa
-el caracter '\verb!\n!' (valor de ASCII~10, definido como nueva línea) para
-el fin de línea, mientras que en OSX el fin de línea se solía
-representar como un '\verb!\r!' (valor ASCII~13, definido como retorno de
-carro) y en Windows se usan ambos caracteres '\verb!\r\n!'.
-
-Al leer archivos en modo texto, Python acepta cualquier tipo de fin
-de línea como si fuese un |\n|. Al escribir archivos, Python elegirá
-automáticamente el modo más apropiado. Si queremos modificar este
-comportamiento podemos especificar el modo utilizando la opción |newline| de la
-función |open|.
-\end{sabias_que}
-
 También podemos utilizar la función |enumerate| (explicada en la
 sección~\ref{enumerate}) para no tener que mantener el
 contador |i| a mano:
@@ -162,8 +330,9 @@ with open("archivo.txt") as archivo:
 \section{Modo de apertura de los archivos}
 
 La función \lstinline!open! recibe un parámetro opcional para indicar el
-modo en que se abrirá el archivo.  Los tres modos de apertura que se pueden
-especificar son:
+modo en que se abrirá el archivo. Como ya mencionamos, un archivo se puede abrir en \textbf{modo texto} (|'t'|) o \textbf{modo binario} (|'b'|).
+
+También se pueden especificar tres modos en cuanto a los permisos de lectura y escritura:
 
 \begin{itemize}
 \item Modo de \textbf{sólo lectura} (\lstinline!'r'!).   En este caso no es
@@ -177,10 +346,15 @@ archivo es truncado (vaciado) si existe, y se lo crea si no existe.
 (\lstinline!a!). En este caso se crea el archivo, si no existe, pero en
 caso de que exista se posiciona al final, manteniendo el contenido
 original.
-
 \end{itemize}
 
-Por otro lado, en cualquiera de estos modos se puede agregar un
+Por ejemplo, para abrir un archivo en modo binario y escritura:
+
+\begin{codigo-python-sn}
+archivo = open("imagen.jpg", "wb")
+\end{codigo-python-sn}
+
+En cualquiera de los modos |r|, |w| o |a| se puede agregar un
 \lstinline!+! para pasar a un modo lectura-escritura. El comportamiento de
 \lstinline!r+! y de \lstinline!w+! no es el mismo, ya que en el primer caso
 se tiene el archivo completo, y en el segundo caso se trunca el archivo,
@@ -202,7 +376,7 @@ Si un archivo existente se abre en modo escritura (\lstinline!'w'! o
 por lo que se escriba en él.
 \end{atencion}
 
-\section{Escribir en un archivo}
+\section{Escribir un archivo de texto}
 
 De la misma forma que para la lectura, existen dos formas distintas de
 escribir a un archivo.  Mediante cadenas:
@@ -309,12 +483,7 @@ El archivo de log generado tendrá la forma:
 2016-04-10 15:22:10.109376 Fin del registro de errores
 \end{codigo-nohl-sn}
 
-\section{Manipular un archivo en forma binaria}
-
-No todos los archivos son archivos de texto, y por lo tanto no todos los
-archivos pueden ser procesados por líneas. Existen archivos en los que cada
-byte tiene un significado particular, y es necesario manipularlos conociendo
-el formato en que están los datos para poder procesar esa información.
+\section{Archivos binarios}
 
 Para abrir un archivo y manejarlo de forma binaria es necesario agregarle
 una \verb!'b'! al parametro de modo:
@@ -323,23 +492,12 @@ una \verb!'b'! al parametro de modo:
 archivo_binario = open('imagen.jpg', 'rb')
 \end{codigo-python-sn}
 
-\begin{sabias_que}
-La \texttt{b} en el modo de apertura viene de \textit{binario}, por el
-sistema de numeración binaria, ya que en el procesador de la computadora la
-información es manejada únicamente mediante ceros o unos (bits) que
-conforman números binarios.
-
-Si bien no es necesaria en todos los sistemas (en general el mismo sistema
-detecta que es un archivo binario sin que se lo pidamos), es una buena
-costumbre usarla, por más que sirva principalmente como documentación.
-\end{sabias_que}
-
 Para procesar el archivo de a bytes en lugar de líneas, se utiliza la
 función \lstinline!contenido = archivo.read(n)! para leer \lstinline!n!
 bytes y \lstinline!archivo.write(contenido)!, para
 escribir \lstinline!contenido! en la posición actual del archivo.
 
-Al manejar un archivo binario, es necesario poder conocer la
+Al manejar un archivo binario, frecuentemente es necesario conocer la
 posición actual en el archivo y poder modificarla. Para obtener la
 posición actual se utiliza \lstinline!archivo.tell()!, que
 indica la cantidad de bytes desde el comienzo del archivo.
@@ -361,7 +519,7 @@ b'\xff\xd8\xff'
 3
 >>> f.seek(0)
 0
->>> datos = f.read()
+>>> datos = f.read() # leer el contenido completo del archivo
 >>> len(datos)
 3150
 \end{codigo-python-sn}
@@ -458,7 +616,7 @@ preciado en un programador.
 \subsection{Persistencia en archivos CSV}
 
 Un formato que suele usarse para transferir datos entre programas es
-\textbf{csv} (del inglés \emph{comma separated values}: valores separados
+\textbf{CSV} (del inglés \emph{comma separated values}: valores separados
 por comas). Es un formato bastante sencillo, tanto para leerlo como para
 procesarlo desde el código, parecido al formato visto en el ejemplo
 anteriormente.
@@ -487,7 +645,7 @@ La funciones del ejemplo anterior podrían programarse mediante el módulo
 que utiliza este módulo.  Si se prueba este código, se obtiene un resultado
 idéntico al obtenido anteriormente.
 
-\begin{codigo}{puntajes\_csv.py}{Módulo para guardar y recuperar puntajes en un archivo que usa csv}
+\begin{codigo}{puntajes\_csv.py}{Módulo para guardar y recuperar puntajes en un archivo CSV}
 \label{puntajes_csv}
 \lstinputlisting{src/11_archivos/puntajes_csv.py}
 \end{codigo}
@@ -506,15 +664,23 @@ código anterior no tenía en cuenta que el nombre pudiera contener una coma.
 \end{observacion}
 
 En el apéndice de esta unidad puede verse una aplicación completa de una
-agenda, que almacena los datos del programa en archivos csv.
+agenda, que almacena los datos del programa en archivos CSV.
 
 \subsection{Persistencia en archivos binarios}
 
 En el caso de que decidiéramos grabar los datos en un archivo binario,
-Python incluye una herramienta llamada \textit{pickle} que permite hacerlo
-de forma muy sencilla.  Hay que tener en cuenta, sin embargo, que no es
-nada simple acceder a un archivo en este formato desde un programa que no
-esté escrito en Python.
+Python incluye varios módulos que pueden ser de ayuda. Entre ellos se
+destacan los módulos |pickle| y |struct|.
+
+El módulo |pickle| permite codificar automáticamente un valor de cualquier tipo
+a una secuencia de bytes, y luego decodificarlo. Hay que tener en cuenta, sin
+embargo, que no es nada simple acceder a un archivo en el formato |pickle|
+desde un programa que no esté escrito en Python.
+
+El módulo |struct| permite codificar y decodificar a mano cada fragmento de
+información. Es bastante más complicado de usar que |pickle|, pero es esencial
+si deseamos codificar datos binarios de forma tal que podamos decodificarlos en
+otros sistemas o lenguajes.
 
 En el Código~\ref{puntajes_pickle} se muestra el mismo ejemplo de
 almacenamiento de puntajes, utilizando el módulo \lstinline!pickle!.
@@ -525,41 +691,8 @@ almacenamiento de puntajes, utilizando el módulo \lstinline!pickle!.
 \lstinputlisting{src/11_archivos/puntajes_pickle.py}
 \end{codigo}
 
-El funcionamiento de este programa será idéntico a los anteriores.  Pero el
-archivo generado será muy distinto a los archivos generados anteriormente.
-En lugar de ser un archivo de fácil lectura, tendrá un contenido binario
-ilegible para un humano:
-
-\begin{codigo-nohl-sn}
-..]q.(X....Pepeq
-.KlX....4:16q..q
-.X....Juanaq.M..
-X....8:42q..q.e.
-\end{codigo-nohl-sn}
-
 En el apéndice de esta unidad puede verse una aplicación completa de una
-agenda, que utiliza \emph{pickle} para almacenar datos en archivos.
-
-\section{Directorios}
-
-Hasta aquí se ha mostrado el acceso a los archivos utilizando sólo el
-nombre del archivo. Esto nos permite acceder a los archivos en el
-directorio actual donde corre el programa.
-
-Un problema relacionado con la utilización de directorios es que los
-separadores de directorios en distintos sistemas son distintos: \verb!/! en
-Unix y OSX, y \verb!\! en Windows. La manera de acceder a directorios
-independientemente del sistema en el que estamos desde Python es usando el
-modulo \lstinline!os!.
-
-Por ejemplo, si queremos acceder al archivo |archivo.csv| que se encuentra en
-el directorio |data|:
-
-\begin{codigo-python-sn}
-ruta = os.path.join("data", "archivo.csv")
-with open(ruta) as f:
-    ...
-\end{codigo-python-sn}
+agenda, que utiliza el módulo|struct| para almacenar datos en archivos.
 
 \section{Resumen}
 
@@ -647,7 +780,7 @@ hasta el byte |posicion|.
 
 \begin{sintaxis}{\lstinline!os.path.exists(ruta)!}
 Indica si la ruta existe o no.
-No nos dice si es un directorio, un archivo u otro tipo de archivo especial
+No nos dice si es una carpeta, un archivo u otro tipo de archivo especial
 del sistema.
 \end{sintaxis}
 
@@ -656,11 +789,11 @@ Indica si la ruta existe y es un archivo.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline!os.path.isdir(ruta)!}
-Indica si la ruta existe y es un directorio.
+Indica si la ruta existe y es una carpeta (directorio).
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline!os.path.join(ruta, ruta1[, ... rutaN]])!}
-Une las rutas con el caracter de separación de directorios que le corresponda
+Une las rutas con el caracter de separación de carpetas que le corresponda
 al sistema en uso.
 \end{sintaxis}
 
@@ -723,28 +856,15 @@ con el formato \lstinline!clave, valor!.
 
 A continuación se muestra un programa de agenda que utiliza archivos
 CSV\@. Luego se muestran los cambios necesarios para que la agenda que utilice archivos
-en formato \emph{pickle}, en lugar de CSV.
+en formato binario utilizando el módulo |struct|, en lugar de CSV.
 
 \tituloCodigo{\lstinline|agenda-csv.py| Agenda con los datos en formato CSV}
 \lstinputlisting{src/11_archivos/agenda-csv.py}
 
-\tituloCodigo{\lstinline|agenda-pickle.py| Modificaciones a la agenda para
-guardar los datos en formato \emph{pickle}}
-\begin{codigo-python}
-import pickle, os
+\section{Agenda con archivos binarios}
 
-ARCHIVO = "agenda.dat"
+\tituloCodigo{\lstinline|agenda-struct.py| Modificaciones a la agenda para
+guardar los datos en formato binario, utilizando el módulo \texttt{struct}}
+\lstinputlisting[firstline=1,lastline=49]{src/11_archivos/agenda-struct.py}
 
-def cargar_agenda(archivo):
-    """Carga todos los datos del archivo en una lista y la devuelve."""
-    if not os.path.exists(archivo):
-        return []
-    with open(archivo) as f:
-        return pickle.load(f)
-
-def guardar_agenda(datos, archivo):
-    """Guarda la agenda en el archivo."""
-    with open(archivo, "wb") as f:
-        pickle.dump(archivo, datos)
-\end{codigo-python}
 \end{subappendices}

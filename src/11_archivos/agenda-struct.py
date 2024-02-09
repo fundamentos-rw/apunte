@@ -1,30 +1,52 @@
-import csv, os, datetime
+import struct, os, datetime
 
-RUTA = "agenda.csv"
 FORMATO_FECHA = "%d/%m/%Y"
+
+RUTA = "agenda.dat"
+STRUCT_CANTIDAD_ITEMS = struct.Struct("I") # 4 bytes, entero sin signo
+STRUCT_LONGITUD_CADENA = struct.Struct("H") # 2 bytes, entero sin signo
+STRUCT_FECHA = struct.Struct("BBH") # 1 byte, 1 byte, 2 bytes, enteros sin signo
+CODIFICACION_CADENAS = 'utf-8'
 
 def cargar_agenda(ruta):
     """Carga todos los datos del archivo en una lista y la devuelve."""
     agenda = []
     if not os.path.exists(ruta):
         return agenda
-    with open(ruta) as f:
-        datos_csv = csv.reader(f)
-        encabezado = next(datos_csv)
-        for item in datos_csv:
-            nombre, apellido, telefono, nacimiento = item
-            agenda.append((nombre, apellido, telefono, cadena_a_fecha(nacimiento)))
+    with open(ruta, "rb") as f:
+        (n,) = STRUCT_CANTIDAD_ITEMS.unpack(f.read(STRUCT_CANTIDAD_ITEMS.size))
+        for _ in range(n):
+            nombre = leer_cadena(f)
+            apellido = leer_cadena(f)
+            telefono = leer_cadena(f)
+            d, m, y = STRUCT_FECHA.unpack(f.read(STRUCT_FECHA.size))
+            nacimiento = datetime.date(y, m, d)
+            agenda.append((nombre, apellido, telefono, nacimiento))
     return agenda
 
 def guardar_agenda(agenda, ruta):
     """Guarda la agenda en el archivo."""
-    with open(ruta, "w") as f:
-        datos_csv = csv.writer(f)
-        # cabecera:
-        datos_csv.writerow(("Nombre", "Apellido", "Telefono", "FechaNacimiento"))
+    with open(ruta, "wb") as f:
+        f.write(STRUCT_CANTIDAD_ITEMS.pack(len(agenda)))
         for item in agenda:
             nombre, apellido, telefono, nacimiento = item
-            datos_csv.writerow((nombre, apellido, telefono, fecha_a_cadena(nacimiento)))
+            escribir_cadena(f, nombre)
+            escribir_cadena(f, apellido)
+            escribir_cadena(f, telefono)
+            d, m, y = nacimiento.day, nacimiento.month, nacimiento.year
+            f.write(STRUCT_FECHA.pack(d, m, y))
+
+def escribir_cadena(f, nombre):
+    """Escribe una cadena de longitud variable en el archivo"""
+    b = bytes(nombre, CODIFICACION_CADENAS)
+    f.write(STRUCT_LONGITUD_CADENA.pack(len(b)))
+    f.write(b)
+
+def leer_cadena(f):
+    """Lee una cadena de longitud variable del archivo"""
+    (n,) = STRUCT_LONGITUD_CADENA.unpack(f.read(STRUCT_LONGITUD_CADENA.size))
+    b = f.read(n)
+    return b.decode(CODIFICACION_CADENAS)
 
 def leer_busqueda():
     """Solicita al usuario nombre y apellido y los devuelve."""
