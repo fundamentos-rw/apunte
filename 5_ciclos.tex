@@ -4,9 +4,9 @@ El último problema analizado en la unidad anterior decía:
 
 \begin{quote}
 Leer un número. Si el número es positivo escribir un mensaje
-``Numero positivo'', si el número es igual a 0 un mensaje ``Igual a
-0'', y si el número es negativo escribir un mensaje ``Numero
-negativo''.
+\enquote{Numero positivo}, si el número es igual a 0 un mensaje \enquote{Igual a
+0}, y si el número es negativo escribir un mensaje \enquote{Numero
+negativo}.
 \end{quote}
 
 Se nos plantea a continuación un nuevo problema, similar al anterior:
@@ -105,11 +105,11 @@ Claramente, el cuerpo del ciclo es el ingreso de datos y la verificación de si
 es positivo, negativo o cero.  En cuanto a la condición, es que haya más datos
 para seguir calculando.
 
-Definimos una variable \lstinline!hay_mas_datos!, que valdrá ``Si'' mientras
+Definimos una variable \lstinline!hay_mas_datos!, que valdrá \enquote{Si} mientras
 haya datos.
 
 Se le debe preguntar al usuario, después de cada cálculo, si hay o no más datos.
-Cuando el usuario deje de responder ``Si'', dejaremos de ejecutar el cuerpo del
+Cuando el usuario deje de responder \enquote{Si}, dejaremos de ejecutar el cuerpo del
 ciclo.
 
 Una primera aproximación al código necesario para resolver este problema podría
@@ -153,7 +153,7 @@ booleana que lo controla sea evaluable.
 
 Una posibilidad es preguntarle al usario, antes de evaluar la condición, si
 tiene datos; otra posibilidad es suponer que si llamó a este programa es porque
-tenía algún dato para calcular, y darle el valor inicial ``Si'' a
+tenía algún dato para calcular, y darle el valor inicial \enquote{Si} a
 \lstinline!hay_mas_datos!.
 
 Encararemos la segunda opción:
@@ -377,7 +377,7 @@ Ya vimos que la instrucción |break| permite cortar la ejecución de un ciclo:
 
 \begin{observacion}
 Cuando la ejecución del cuerpo de un ciclo |for| o |while| llega a una
-instrucción |break|, la ejecución ``sale'' del ciclo inmediatamente.
+instrucción |break|, la ejecución \enquote{sale} del ciclo inmediatamente.
 
 \begin{codigo-python-sn}
 def f():
@@ -400,7 +400,7 @@ ellas es la instrucción |continue|:
 
 \begin{observacion}
 Cuando la ejecución del cuerpo de un ciclo |while| llega a una
-instrucción |continue|, la ejecución ``saltea'' la iteración actual del ciclo y
+instrucción |continue|, la ejecución \enquote{saltea} la iteración actual del ciclo y
 pasa a la siguiente.
 
 \begin{codigo-python-sn}
@@ -503,7 +503,7 @@ usando
 \item Un ciclo definido.
 \item Un ciclo interactivo.
 \item Un ciclo con centinela.
-\item Un ciclo ``infinito'' que se corta.
+\item Un ciclo \enquote{infinito} que se corta.
 \end{enumerate}
 }
 
@@ -521,7 +521,7 @@ Resolver este problema usando
 \begin{enumerate}
 \item Un ciclo interactivo.
 \item Un ciclo con centinela.
-\item Un ciclo ``infinito'' que se corta.
+\item Un ciclo \enquote{infinito} que se corta.
 \end{enumerate}
 
 ¿Tendría sentido hacerlo con ciclo definido? Justificar.
@@ -564,7 +564,7 @@ definidos como indefinidos.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline!continue!}
-``Saltea'' la ejecución del ciclo a la siguiente iteración. Puede utilizarse
+\enquote{Saltea} la ejecución del ciclo a la siguiente iteración. Puede utilizarse
 tanto para ciclos definidos como indefinidos.
 \end{sintaxis}
 

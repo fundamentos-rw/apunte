@@ -57,7 +57,7 @@ Seamos sinceros: nadie quiere escribir documentación. ¿Para qué repetir con
 palabras lo que ya está estipulado en el código? La documentación es algo que
 muy a menudo se deja \emph{para después}, y cuando llega el tan angustioso
 momento de escribirla, lo que se termina haciendo es escribir lo más
-escueto posible que pueda pasar como ``documentación''.
+escueto posible que pueda pasar como \enquote{documentación}.
 
 Incluso es muy frecuente que durante el desarrollo de un proyecto el código
 evolucione con el tiempo, pero que nos olvidemos de actualizar la documentación
@@ -132,8 +132,8 @@ La técnica de código autodocumentado presenta varias limitaciones. Entre ellas
 
 Si bien la ausencia de documentación suele ser perjudicial, el otro extremo
 también lo es: la \emph{sobredocumentación}. Después de todo, en la vida
-diaria no necesitamos carteles que nos recuerden cosas como ``esta es la
-puerta'', ``este es el picaporte'' y ``empujar hacia abajo para abrir''. De
+diaria no necesitamos carteles que nos recuerden cosas como \enquote{esta es la
+puerta}, \enquote{este es el picaporte} y \enquote{empujar hacia abajo para abrir}. De
 la misma manera, podríamos decir que el siguiente código peca de ser sobredocumentado:
 
 \begin{codigo-python-sn}
@@ -163,9 +163,9 @@ Algunas cosas que podemos mejorar:
     tipo, y no hay ninguna razón para limitar a que sea una lista de números.
 \item Las variable interna |indice| también se puede simplificar:
     por convención podemos usar |i|.
-\item ``Esta función'' es redundante: cuando alguien lea la documentación ya va
+\item \enquote{Esta función} es redundante: cuando alguien lea la documentación ya va
     a saber que se trata de una función.
-\item ``contando desde 0'' es redundante: en Python siempre contamos desde 0.
+\item \enquote{contando desde 0} es redundante: en Python siempre contamos desde 0.
 \item Los comentarios son excesivos: la función es suficientemente simple y
     cualquier persona que sepa programación básica podrá entender el algoritmo.
 \end{itemize}
@@ -326,7 +326,7 @@ comportamiento del código.  Las pre y postcondiciones son, en efecto, un
 
 % TODO: conseguir frase, la vida es siempre igual, siempre está cambiando.
 %\begin{quote}
-%``Dadme un punto de apoyo y moveré el mundo'' Arquímedes
+%\enquote{Dadme un punto de apoyo y moveré el mundo} Arquímedes
 %\end{quote}
 
 \label{invariantes}
@@ -342,8 +342,8 @@ aseveración que debe ser verdadera al comienzo de cada iteración.
 
 Por ejemplo, si el problema es ir desde el punto $A$ al punto $B$, las
 precondiciones dicen que estamos parados en $A$ y las postcondiciones que
-estamos parados en $B$, un invariante podría ser ``estamos en algún punto entre
-$A$ y $B$, en el punto más cercano a $B$ que estuvimos hasta ahora.''.
+estamos parados en $B$, un invariante podría ser \enquote{estamos en algún punto entre
+$A$ y $B$, en el punto más cercano a $B$ que estuvimos hasta ahora}.
 
 Más específicamente, si analizamos el ciclo para buscar el máximo en una lista
 desordenada, la precondición es que la lista contiene elementos que son
@@ -415,7 +415,7 @@ def suma(lista):
 
 \subsection{Comprobación de invariantes desde el código}
 
-Cuando la comprobación necesaria para saber si seguimos ``en camino'' es simple,
+Cuando la comprobación necesaria para saber si seguimos \enquote{en camino} es simple,
 se la puede tener directamente dentro del código.  Evitando seguir avanzando
 con el algoritmo si se produjo un error crítico.
 

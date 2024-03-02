@@ -246,7 +246,7 @@ Sin embargo \lstinline+s[0:0]+ no da error. ¿Por qué?
 \section{Las cadenas son inmutables}
 
 Resulta que la persona sobre la que estamos hablando en realidad se llama
-Veronika, con ``k''.  Como conocemos la notación de corchetes,
+Veronika, con \enquote{k}.  Como conocemos la notación de corchetes,
 tratamos de corregir sólo el carácter correspondiente de la variable
 \lstinline!s!:
 
@@ -273,12 +273,12 @@ que la variable \lstinline!s! se refiera a una nueva cadena:
 \section{Procesamiento sencillo de cadenas}
 
 \problemac{Nuestro primer problema es muy simple: Queremos contar
-cuántas letras ``A'' hay en una cadena \lstinline!s!.}
+cuántas letras \enquote{A} hay en una cadena \lstinline!s!.}
 
 \begin{enumerate}
 
 \item {\bf Especificación: } Dada una cadena \lstinline!s!, la función
-retorna un valor  \lstinline!contador! que representa cuántas letras ``A''
+retorna un valor  \lstinline!contador! que representa cuántas letras \enquote{A}
 tiene \lstinline!s!.
 
 \item {\bf Diseño: }
@@ -296,9 +296,9 @@ para cada letra de s
 \end{codigo-nohl-sn}
 
 Nos dice la especificación que se necesita una variable
-\lstinline!contador! que cuenta la cantidad de letras ``A'' que contiene
+\lstinline!contador! que cuenta la cantidad de letras \enquote{A} que contiene
 \lstinline!s!. Y por lo tanto sabemos que el tratamiento es: si la letra es
-``A'' se incrementa el contador en $1$, y si la letra no es ``A'' no se lo
+\enquote{A} se incrementa el contador en $1$, y si la letra no es \enquote{A} no se lo
 incrementa, o sea que nos quedamos con un esquema de la forma:
 
 \begin{codigo-nohl-sn}
@@ -350,7 +350,7 @@ UnboundLocalError: local variable 'contador' referenced before assignment^)
 
 ¿Qué es lo que falló? ¡Falló el diseño! Evidentemente la variable
 \lstinline+contador+ debe tomar un valor inicial antes de empezar a contar
-las apariciones del caracter ``A''. Volvamos al diseño entonces.
+las apariciones del caracter \enquote{A}. Volvamos al diseño entonces.
 
 \begin{observacion}
 Es muy tentador quedarse arreglando la implementación, sin volver al diseño,
@@ -370,10 +370,10 @@ retornar el valor del contador
 
 ¿Cuál es el valor inicial que debe tomar \lstinline+contador+?  Como nos
 dice la especificación \lstinline+contador+ cuenta la cantidad de letras
-``A'' que tiene la cadena \lstinline+s+. Pero si nos detenemos en medio de
+\enquote{A} que tiene la cadena \lstinline+s+. Pero si nos detenemos en medio de
 la computación, cuando aún no se recorrió toda la cadena sino sólo los
 primeros 10 caracteres, por ejemplo, el valor de \lstinline+contador+
-refleja la cantidad de ``A'' que hay en los primeros 10 caracteres de
+refleja la cantidad de \enquote{A} que hay en los primeros 10 caracteres de
 \lstinline+s+.
 
 Si llamamos \emph{parte izquierda de } \lstinline+s+ al segmento de
@@ -382,10 +382,10 @@ caracteres de \lstinline+s+, su parte izquierda es el segmento
 \lstinline+s[0:10]+.
 
 El valor inicial que debemos darle a \lstinline+contador+ debe reflejar la
-cantidad de ``A'' que contiene la parte izquierda de \lstinline+s+ cuando
+cantidad de \enquote{A} que contiene la parte izquierda de \lstinline+s+ cuando
 aún no iniciamos el recorrido, es decir cuando esta parte izquierda es
 \lstinline+s[0:0]+ (o sea la cadena vacía). Pero la cantidad de caracteres
-iguales a ``A'' de la cadena vacía es $0$.
+iguales a \enquote{A} de la cadena vacía es $0$.
 
 Por lo tanto el diseño será:
 
@@ -448,7 +448,7 @@ cuando la variable que queremos asignar es la misma que el primer operando:
 \item {\bf Mantenimiento:}
 
 Esta función resulta un poco limitada. Cuando necesitemos contar
-cuántas letras ``E'' hay en una cadena tendremos que hacer otra función.
+cuántas letras \enquote{E} hay en una cadena tendremos que hacer otra función.
 Tiene sentido hacer una función más general que nos permita contar cuántas
 veces aparece un carácter dado en una cadena.
 
@@ -456,7 +456,7 @@ veces aparece un carácter dado en una cadena.
 cuántas veces aparece un carácter \lstinline!c! dado en una cadena
 \lstinline!s!.}
 
-\ejercicioc{¿Hay más letras ``A'' o más letras ``E'' en una cadena?
+\ejercicioc{¿Hay más letras \enquote{A} o más letras \enquote{E} en una cadena?
 Escribir un programa que lo decida.}
 
 \ejercicioc{Escribir un programa que cuente cúantas veces aparecen cada una
@@ -566,7 +566,7 @@ deducir un código numérico de (por ejemplo) cuatro cifras.
 
 \item {\bf Análisis } (explicación del juego):
 
-Cada vez que se empieza un partido, el programa debe ``eligir'' un número de
+Cada vez que se empieza un partido, el programa debe \enquote{eligir} un número de
 cuatro cifras (sin cifras repetidas), que será el código que el jugador debe
 adivinar en la menor cantidad de intentos posibles. Cada intento consiste en
 una propuesta de un código posible que tipea el jugador, y una respuesta del
@@ -604,10 +604,10 @@ que el jugador adivine el código.
 \label{str:disenno}
 
 Lo primero que tenemos que hacer es indicarle al programa que tiene que
-``elegir'' un número de cuatro cifras al azar. Esto lo hacemos a través del
+\enquote{elegir} un número de cuatro cifras al azar. Esto lo hacemos a través del
 módulo \lstinline!random!. Este módulo provee funciones para hacer elecciones
 aleatorias\footnote{En realidad, la computadora nunca puede hacer
-elecciones \emph{completamente} aleatorias. Por eso los números ``al azar''
+elecciones \emph{completamente} aleatorias. Por eso los números \enquote{al azar}
 que puede elegir se llaman \emph{pseudoaleatorios}.}.
 
 La función del módulo que vamos a usar se llama \lstinline!choice!. Esta función

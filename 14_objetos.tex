@@ -499,9 +499,9 @@ hay algunos casos en los que Python imprime la representación por omisión:
 
 En estos casos, en lugar de llamar a |str| Python llama a la función |repr|.
 Mientras que La función |str| se usa para obtener una representación
-``informal'' o ``legible'' del objeto, pensada tal vez para mostrar a un
-usuario, el objetivo de |repr| es obtener una representación ``formal'' y
-``desambiguada'', pensada para mostrar a un programador:
+\enquote{informal} o \enquote{legible} del objeto, pensada tal vez para mostrar a un
+usuario, el objetivo de |repr| es obtener una representación \enquote{formal} y
+\enquote{desambiguada}, pensada para mostrar a un programador:
 
 \begin{codigo-python-sn}
 >>> str("hola")
@@ -856,9 +856,9 @@ En particular, cuando se quiere que los objetos puedan ser ordenados, es
 suficiente con definir el método |__lt__| (\emph{less than}), que corresponde al
 operador matemático de comparación |<|. El método |__lt__| recibe dos
 parámetros, |self| y |otro| y debe devolver |True| si |self| es
-comparativamente ``menor'' a |otro|.
+comparativamente \enquote{menor} a |otro|.
 
-En el caso de nuestra clase |Hotel|, podemos decir que un hotel es ``menor'' a
+En el caso de nuestra clase |Hotel|, podemos decir que un hotel es \enquote{menor} a
 otro si su relación calidad-precio es menor:
 
 \begin{codigo-python-sn}
@@ -884,8 +884,8 @@ comparar con los operadores |<| y |>| (El operador |>| se fija primero si
 existe |__gt__|, y si no existe invoca a |__lt__|).
 
 Pero aún quedan sin definir las operaciones |==|, |!=|, |<=| y |>=|.  Si
-queremos tener la posibilidad de preguntar si dos instancias son ``iguales'' o
-``distintas'' con |==| y |!=|, tenemos que definir el método |__eq__|. Y si
+queremos tener la posibilidad de preguntar si dos instancias son \enquote{iguales} o
+\enquote{distintas} con |==| y |!=|, tenemos que definir el método |__eq__|. Y si
 queremos tener la posibilidad de comparar con |<=| o |>=| tenemos que
 implementar el método |__le__|.
 
@@ -939,14 +939,14 @@ método \lstinline!ratio! en cada caso:
 Y vemos que efectivamente:
 
 \begin{itemize}
-\item ``Hotel 3* carisimo'', con la menor relación calidad-precio
+\item \verb!"Hotel 3* carisimo"!, con la menor relación calidad-precio
 aparece primero.
 
-\item ``Hotel 1* normal'' y ``Hotel 2* normal'' con la misma relación
+\item \verb!"Hotel 1* normal"! y \verb!"Hotel 2* normal"! con la misma relación
 calidad-precio (igual a 1.0 en ambos casos) aparecen en segundo
 y tercer lugar en la lista.
 
-\item ``Hotel vale la pena'' con la mayor relación calidad-precio
+\item \verb!"Hotel vale la pena"! con la mayor relación calidad-precio
 aparece en cuarto lugar en la lista.
 \end{itemize}
 
@@ -1099,13 +1099,13 @@ pasa a \lstinline!metodo! será |self| $\rightarrow$ \lstinline!variable!.
 
 \begin{sintaxis}{\lstinline!def __str__(self):!}
 Método especial que debe devolver una cadena de caracteres, con
-la representación ``informal'' de la instancia. Se invoca al hacer
+la representación \enquote{informal} de la instancia. Se invoca al hacer
 |str(variable)| o |print(variable)|.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline!def __repr__(self):!}
 Método especial que debe devolver una cadena de caracteres, con
-la representación ``formal'' de la instancia. Se invoca al hacer
+la representación \enquote{formal} de la instancia. Se invoca al hacer
 |repr(variable)|.
 \end{sintaxis}
 
@@ -1120,19 +1120,19 @@ resultado.
 Método especial para permitir la comparación de objetos mediante los
 operadores |<| y |>|.  Recibe las dos instancias a
 comparar. Debe devolver |True| si |self| es comparativamente
-``menor'' a |otro|.
+\enquote{menor} a |otro|.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline!def __le__(self, otro):!}
 Método especial para permitir la comparación de objetos mediante los
 operadores |<=| y |>=|. Devuelve |True| si |self| es comparativamente
-``menor o igual'' a |otro|.
+\enquote{menor o igual} a |otro|.
 \end{sintaxis}
 
 \begin{sintaxis}{\lstinline!def __eq__(self, otro):!}
 Método especial para permitir la comparación de objetos mediante los operadores
 |==| y |!=|. Devuelve |True| si |self| y |otro| son comparativamente
-``iguales''.
+\enquote{iguales}.
 \end{sintaxis}
 
 \end{referencia_python}
