@@ -1,3 +1,7 @@
+\lstset{
+    language=C,
+}
+
 \chapter{Lenguaje C}
 
 \begin{ejercicio}
@@ -74,14 +78,56 @@ no contiene ningún caracter |\n|. Por ejemplo, si se recibe la cadena
 \end{ejercicio}
 
 \begin{ejercicio}
-$\dificil$ Implementar una función que permita ejecutar cálculos matemáticos
-expresados en notación polaca inversa\footnote{%
-\url{https://es.wikipedia.org/wiki/Notaci\%C3\%B3n_polaca_inversa}}.
+Implementar una función que reciba una cadena de texto |s| y un número entero |n|, y
+devuelva una cadena de texto que contiene la cadena |s| repetida |n| veces.
+La cadena producida debe ser alojada en el \emph{heap}, y debe terminar con un
+|\0|.
+\end{ejercicio}
 
-Ejemplo: |calcular_rpn("5 1 2 + 4 * + 3 -")| devuelve 14, ya que la expresión
-ingresada es equivalente a $5+((1+2)*4)-3$.
+\begin{ejercicio}
+Analizar el funcionamiento de la siguiente función en lenguaje C. ¿Hay algún
+problema en su implementación?
 
-Ayuda: El algoritmo de notación polaca inversa hace uso de una pila,
-que se puede implementar en C mediante un arreglo con un tamaño
-fijo que determinará la cantidad máxima permitida de valores apilados.
+\begin{lstlisting}[numbers=none]
+void f() {
+    int *p = malloc(sizeof(int) * 100);
+    for (int i = 0; i < 10; i++) {
+        p[i] = i+1000;
+    }
+    for (int j = 0; j < 100; j++) {
+        printf("%d\n", p[i]);
+    }
+}
+\end{lstlisting}
+\end{ejercicio}
+
+\begin{ejercicio}
+Considerar el siguiente ejemplo. ¿La invocación a |free| realmente libera la
+memoria apuntada por el puntero |a|?
+
+\begin{lstlisting}[numbers=none]
+int *a = malloc(42);
+int *b = a;
+free(b);
+\end{lstlisting}
+\end{ejercicio}
+
+\begin{ejercicio}
+Considerar el siguiente ejemplo. ¿Hay algún problema con la implementación?
+
+\begin{lstlisting}[numbers=none]
+char *nombre;
+fputs(“Ingresa tu nombre: “, stdout);
+fgets(nombre, 100, stdin);
+printf(“Hola %s!\n”, nombre);
+\end{lstlisting}
+\end{ejercicio}
+
+\begin{ejercicio}
+Escribir una función que se comporte como la función |input| de Python. Debe
+recibir un mensaje a imprimir, y luego debe leer una línea de texto de la
+consola y devolverla. La cadena producida debe ser alojada en el \emph{heap},
+y debe terminar con un |\0|. Asumir que la línea de texto ingresada
+no puede superar los 100 caracteres. Utilizar las funciones de la
+biblioteca estándar |fputs| y |fgets|.
 \end{ejercicio}
