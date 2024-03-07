@@ -131,3 +131,31 @@ y debe terminar con un |\0|. Asumir que la línea de texto ingresada
 no puede superar los 100 caracteres. Utilizar las funciones de la
 biblioteca estándar |fputs| y |fgets|.
 \end{ejercicio}
+
+\begin{ejercicio}
+Escribir un programa que genere un archivo binario grabando en él los números
+enteros del 0 al 1000000.
+\end{ejercicio}
+
+\begin{ejercicio}
+Escribir un programa que cargue un arreglo de números enteros con los números
+almacenados en el archivo generado en el punto anterior.
+
+\begin{partes}
+  \item Asumiendo que se conoce la cantidad de números a leer.
+  \item $\dificil$ Asumiendo que no se conoce la cantidad de números a leer.
+\end{partes}
+\end{ejercicio}
+
+\begin{ejercicio}
+Dada la definición de la estructura |persona_t| como se muestra a continuación, escribir
+funciones para leer y escribir un arreglo de personas en un archivo:
+
+\begin{lstlisting}[numbers=none]
+struct persona {
+    unsigned uint32_t dni;
+    char nombre[100];
+};
+typedef struct persona persona_t;
+\end{lstlisting}
+\end{ejercicio}
